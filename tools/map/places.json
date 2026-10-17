@@ -1,0 +1,10 @@
+{
+	"institution.bundestag": { "lon": 13.376, "lat": 52.519, "city": "Berlin" },
+	"institution.constitutional_court": { "lon": 8.404, "lat": 49.013, "city": "Karlsruhe" },
+	"institution.domestic_intelligence": { "lon": 6.96, "lat": 50.94, "city": "Köln" },
+	"media.tabloid": { "lon": 9.99, "lat": 53.55, "city": "Hamburg" },
+	"media.quality": { "lon": 8.68, "lat": 50.11, "city": "Frankfurt am Main" },
+	"media.regional_south": { "lon": 11.58, "lat": 48.14, "city": "München" },
+	"media.regional_north": { "lon": 9.74, "lat": 52.37, "city": "Hannover" },
+	"media.public": { "lon": 8.27, "lat": 50.0, "city": "Mainz" }
+}

@@ -26,7 +26,9 @@ static func resolve(state: GameState, defs: GameDefs, orders: Array[ActionOrder]
 
 
 ## Returns why an order cannot be carried out, or an empty string if it can.
-static func check(state: GameState, defs: GameDefs, order: ActionOrder) -> String:
+## The optional budget {"action_points", "money", "activists"} replaces the party's current
+## resources, so the planning view can check an order against what earlier orders leave.
+static func check(state: GameState, defs: GameDefs, order: ActionOrder, budget: Dictionary = {}) -> String:
 	if not defs.actions.has(order.action_id):
 		return "unknown action"
 	var def := defs.actions[order.action_id]
@@ -49,11 +51,11 @@ static func check(state: GameState, defs: GameDefs, order: ActionOrder) -> Strin
 		if not def.delegable and performer.role != "chair":
 			return "action cannot be delegated"
 	var party := state.party
-	if action_point_cost(state, def, order) > party.action_points:
+	if action_point_cost(state, def, order) > budget.get("action_points", party.action_points):
 		return "not enough action points"
-	if def.cost_money > 0.0 and def.cost_money > party.money:
+	if def.cost_money > 0.0 and def.cost_money > budget.get("money", party.money):
 		return "not enough money"
-	if def.cost_activists > party.activists:
+	if def.cost_activists > budget.get("activists", party.activists):
 		return "not enough activists"
 	return ""
 

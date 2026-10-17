@@ -78,14 +78,29 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 
 **Bot-Lauf:** `godot --headless --path . -s src/tools/run_bots.gd -- --runs=200`
 
+- **M4 Karte und UI-Grundgerüst** erledigt (189 Tests grün):
+  - Karte aus Natural Earth v5.1.2 (gemeinfrei): `tools/map/build_map.py` (nur Standardbibliothek,
+    Download-URL und SHA-256 im Skript), Orte der Institutionen in `tools/map/places.json`,
+    Ergebnis `data/map/lands.json` (40 KB)
+  - `src/ui/`: `GameSession` (Logik ohne Nodes, testbar), `MapView` (Überlagerungen Regionen,
+    Umfrage, Wahlbeteiligung, Repräsentationslücke, Medienklima; Zoom; Klick auf Länder und
+    Institutionen), Reiter Auswahl/Partei/Personal/Medien/Planung/Bericht, Speichern/Laden
+    (`user://saves/`), Spielende-Dialog. Oberfläche wird im Code aufgebaut (`main.tscn` ist leer).
+  - Übersetzungen `i18n/de.po` und `i18n/en.po` (270 Schlüssel, vollständig in beiden Sprachen);
+    Test prüft, dass jeder benutzte Schlüssel existiert
+  - `ActionResolver.check()` nimmt optional ein Restbudget, damit die Planung mehrere Aufträge
+    gemeinsam prüft
+
+**Spiel starten:** `godot --path .` (oder im Editor F5).
+**Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
+
 ## Nächster Schritt
-- [ ] **M4 Karte und UI-Grundgerüst** (`prototyp-plan.md` Abschnitte 8 und 9):
-  - [ ] Karte aus Natural Earth (Verwaltungsgrenzen 1:10 Mio.), einmaliges Python-Skript in
-        `tools/map/` → `data/map/lands.json`
-  - [ ] Kartenansicht mit Überlagerungen, Zoom auf Süden und Norden
-  - [ ] Ansichten: Institutionspanel, Rundenplanung, Quartalsbericht, Partei, Personal,
-        Medien, Speichern/Laden (Platzhaltergrafik, alle Texte über `tr()`)
-  - [ ] Eine Partie von Hand spielbar
+- [ ] **Nutzer spielt eine Partie von Hand** und gibt Rückmeldung zur Bedienung
+- [ ] **M5 Inhalte und Lokalisierung** (`prototyp-plan.md` Abschnitt 11):
+  - [ ] ca. 20 Aktionen (derzeit 18), 30 Ereignisse (derzeit keine Ereignisse außer Krisen)
+  - [ ] Namenspools für Personen (derzeit namenlos, nur Funktion/Kandidat)
+  - [ ] Fiktive Namen für Konkurrenzparteien, Medienhäuser und Geldgeber statt Arbeitsnamen
+  - [ ] Lexikon-Texte (Institutionen, Normen, Vereinfachungen)
 
 ## Beobachtungen für später (M6 Spieltest)
 - **Das MVP ist eher zu leicht:** Geduldig und Radikal gewinnen fast immer, selbst der
@@ -98,7 +113,7 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 - [x] M1 Daten und Zustand
 - [x] M2 Kernschleife
 - [x] M3 Bots und Balancing
-- [ ] M4 Karte und UI-Grundgerüst
+- [x] M4 Karte und UI-Grundgerüst
 - [ ] M5 Inhalte und Lokalisierung
 - [ ] M6 Spieltest
 

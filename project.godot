@@ -12,8 +12,19 @@ config_version=5
 
 config/name="Kipppunkt"
 config/description="Educational strategy game about the fragility of democracy."
+run/main_scene="res://src/ui/main.tscn"
 config/features=PackedStringArray("4.7")
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://i18n/de.po", "res://i18n/en.po")
+locale/fallback="de"

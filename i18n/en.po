@@ -1,0 +1,814 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en\n"
+
+msgid "action.accept_large_donation.description"
+msgstr "Much money at once; the donor must be very satisfied."
+
+msgid "action.accept_large_donation.name"
+msgstr "Accept a large donation"
+
+msgid "action.appoint.description"
+msgstr "Fills a party function."
+
+msgid "action.appoint.name"
+msgstr "Appoint"
+
+msgid "action.campaign.description"
+msgstr "More votes in this quarter's election."
+
+msgid "action.campaign.name"
+msgstr "Election campaign"
+
+msgid "action.club_presence.description"
+msgstr "Some anchoring and new members."
+
+msgid "action.club_presence.name"
+msgstr "Presence in associations"
+
+msgid "action.court_donor.description"
+msgstr "Raises a donor's satisfaction."
+
+msgid "action.court_donor.name"
+msgstr "Court a donor"
+
+msgid "action.discredit_opponents.description"
+msgstr "Some support; raises radicalism and weakens democratic resilience."
+
+msgid "action.discredit_opponents.name"
+msgstr "Discredit opponents"
+
+msgid "action.dismiss.description"
+msgstr "Dismisses a person from their function; costs some unity."
+
+msgid "action.dismiss.name"
+msgstr "Dismiss"
+
+msgid "action.found_local_branch.description"
+msgstr "More anchoring in the region."
+
+msgid "action.found_local_branch.name"
+msgstr "Found local branch"
+
+msgid "action.outrage_wave.description"
+msgstr "Much reach and more attention for a topic; costs credibility and raises radicalism."
+
+msgid "action.outrage_wave.name"
+msgstr "Ride an outrage wave"
+
+msgid "action.party_congress.description"
+msgstr "Strengthens party unity."
+
+msgid "action.party_congress.name"
+msgstr "Party congress"
+
+msgid "action.press_conference.description"
+msgstr "Short-term attention in classic media."
+
+msgid "action.press_conference.name"
+msgstr "Press conference"
+
+msgid "action.purge.description"
+msgstr "Removes disloyal staff; costs unity and competence."
+
+msgid "action.purge.name"
+msgstr "Purge"
+
+msgid "action.regional_message.description"
+msgstr "Tells a region what it wants to hear. Deviating from the federal position raises the contradiction risk."
+
+msgid "action.regional_message.name"
+msgstr "Regional message"
+
+msgid "action.set_position.description"
+msgstr "Sets the federal position. Changing course later costs credibility."
+
+msgid "action.set_position.name"
+msgstr "Take a position"
+
+msgid "action.social_media_campaign.description"
+msgstr "More reach on platforms."
+
+msgid "action.social_media_campaign.name"
+msgstr "Social media campaign"
+
+msgid "action.third_party_funding.description"
+msgstr "Even more money without publication, at the risk of exposure."
+
+msgid "action.third_party_funding.name"
+msgstr "Funding through third parties"
+
+msgid "action.vet_person.description"
+msgstr "May reveal a hidden agenda; costs unity."
+
+msgid "action.vet_person.name"
+msgstr "Vet a staff member"
+
+msgid "action.win_influencer.description"
+msgstr "Lasting reach; the hidden payment can be exposed."
+
+msgid "action.win_influencer.name"
+msgstr "Win influencers"
+
+msgid "agenda.careerist"
+msgstr "Careerist"
+
+msgid "agenda.ideologue"
+msgstr "Ideologue"
+
+msgid "agenda.informant"
+msgstr "Informant"
+
+msgid "agenda.journalist"
+msgstr "Undercover journalist"
+
+msgid "agenda.none"
+msgstr "no agenda"
+
+msgid "crisis.energy.name"
+msgstr "Energy crisis"
+
+msgid "crisis.financial.name"
+msgstr "Financial crisis"
+
+msgid "donor.auto_supplier.name"
+msgstr "Family-owned car supplier"
+
+msgid "donor.food_producer.name"
+msgstr "Family-owned food producer"
+
+msgid "donor.machine_builder.name"
+msgstr "Medium-sized machine builder"
+
+msgid "donor.real_estate.name"
+msgstr "Real estate group"
+
+msgid "donor.wind_energy.name"
+msgstr "Wind energy corporation"
+
+msgid "institution.bundestag.description"
+msgstr "Goal of the MVP: entering the Bundestag with at least 5 %."
+
+msgid "institution.bundestag.name"
+msgstr "Bundestag"
+
+msgid "institution.constitutional_court.description"
+msgstr "Only matters in later phases."
+
+msgid "institution.constitutional_court.name"
+msgstr "Federal Constitutional Court"
+
+msgid "institution.domestic_intelligence.description"
+msgstr "Watches the party and raises its classification under high scrutiny."
+
+msgid "institution.domestic_intelligence.name"
+msgstr "Domestic intelligence (Verfassungsschutz)"
+
+msgid "land.bb.name"
+msgstr "Brandenburg"
+
+msgid "land.be.name"
+msgstr "Berlin"
+
+msgid "land.bw.name"
+msgstr "Baden-Württemberg"
+
+msgid "land.by.name"
+msgstr "Bavaria"
+
+msgid "land.hb.name"
+msgstr "Bremen"
+
+msgid "land.he.name"
+msgstr "Hesse"
+
+msgid "land.hh.name"
+msgstr "Hamburg"
+
+msgid "land.mv.name"
+msgstr "Mecklenburg-Western Pomerania"
+
+msgid "land.ni.name"
+msgstr "Lower Saxony"
+
+msgid "land.nw.name"
+msgstr "North Rhine-Westphalia"
+
+msgid "land.rp.name"
+msgstr "Rhineland-Palatinate"
+
+msgid "land.sh.name"
+msgstr "Schleswig-Holstein"
+
+msgid "land.sl.name"
+msgstr "Saarland"
+
+msgid "land.sn.name"
+msgstr "Saxony"
+
+msgid "land.st.name"
+msgstr "Saxony-Anhalt"
+
+msgid "land.th.name"
+msgstr "Thuringia"
+
+msgid "log.action"
+msgstr "%s%s carried out."
+
+msgid "log.action_abandoned"
+msgstr "%s abandoned: the person in charge left the party."
+
+msgid "log.action_failed"
+msgstr "%s%s failed."
+
+msgid "log.agenda_revealed"
+msgstr "Vetting: %s."
+
+msgid "log.crisis_ended"
+msgstr "%s is over."
+
+msgid "log.crisis_false_alarm"
+msgstr "The feared %s did not happen."
+
+msgid "log.crisis_omen"
+msgstr "Signs of a coming %s."
+
+msgid "log.crisis_started"
+msgstr "%s has begun."
+
+msgid "log.donor_returned"
+msgstr "%s supports the party again."
+
+msgid "log.donor_withdrew"
+msgstr "%s withdraws."
+
+msgid "log.election_federal"
+msgstr "Federal election: %.1f %% (turnout %.1f %%), below the 5 %% threshold."
+
+msgid "log.election_federal_seats"
+msgstr "Federal election: %.1f %% (turnout %.1f %%) – the party enters the Bundestag."
+
+msgid "log.election_municipal"
+msgstr "Municipal election in %s: %.1f %% (turnout %.1f %%)."
+
+msgid "log.election_state"
+msgstr "State election in %s: %.1f %% (turnout %.1f %%), below the 5 %% threshold."
+
+msgid "log.election_state_seats"
+msgstr "State election in %s: %.1f %% (turnout %.1f %%) – the party enters the state parliament."
+
+msgid "log.game_over"
+msgstr "Game over: %s."
+
+msgid "log.income"
+msgstr "Income: fees %s, donations %s, state funds %s; costs %s."
+
+msgid "log.media_conflict_newsroom"
+msgstr "%s: the newsroom defends its independence."
+
+msgid "log.media_conflict_owner"
+msgstr "%s: the owner prevails over the newsroom."
+
+msgid "log.media_new_owner"
+msgstr "%s has a new owner."
+
+msgid "log.order_rejected"
+msgstr "%s not carried out: %s."
+
+msgid "log.person_left"
+msgstr "%s has left the party."
+
+msgid "log.phase"
+msgstr "The party reaches phase %d."
+
+msgid "log.position_set"
+msgstr "New position on %s: %s (credibility −%.1f)."
+
+msgid "log.press_exposed_contradiction"
+msgstr "The press exposes contradicting regional messages."
+
+msgid "log.press_exposed_funding"
+msgstr "The press exposes hidden funding."
+
+msgid "log.press_exposed_insider"
+msgstr "An undercover person publishes party internals."
+
+msgid "log.purge"
+msgstr "Purge: %d people removed."
+
+msgid "log.regional_message_set"
+msgstr "Message in the %s on %s: %s."
+
+msgid "log.surveillance_lowered"
+msgstr "Domestic intelligence lowers the classification: %s."
+
+msgid "log.surveillance_raised"
+msgstr "Domestic intelligence raises the classification: %s."
+
+msgid "media.public.name"
+msgstr "Public broadcasting"
+
+msgid "media.quality.name"
+msgstr "Quality press publishing family"
+
+msgid "media.regional_north.name"
+msgstr "Regional newspaper group North"
+
+msgid "media.regional_south.name"
+msgstr "Regional newspaper group South"
+
+msgid "media.tabloid.name"
+msgstr "Tabloid dynasty"
+
+msgid "outcome.bankrupt"
+msgstr "Bankrupt"
+
+msgid "outcome.bankrupt.description"
+msgstr "The party is insolvent. No party sustains itself without members and supporters."
+
+msgid "outcome.irrelevant"
+msgstr "Irrelevant"
+
+msgid "outcome.irrelevant.description"
+msgstr "The party has faded into irrelevance."
+
+msgid "outcome.split"
+msgstr "Split"
+
+msgid "outcome.split.description"
+msgstr "The party broke apart over internal conflicts."
+
+msgid "outcome.timeout"
+msgstr "Time is up"
+
+msgid "outcome.timeout.description"
+msgstr "The party did not reach its goal in the available time."
+
+msgid "outcome.won"
+msgstr "Bundestag reached"
+
+msgid "outcome.won.description"
+msgstr "The party has entered the Bundestag. In the full game, the path into the institutions would begin now – exactly where a democracy shows how resilient it is."
+
+msgid "party.conservatives.name"
+msgstr "Conservatives"
+
+msgid "party.labour.name"
+msgstr "Labour Party"
+
+msgid "party.liberals.name"
+msgstr "Economic Liberals"
+
+msgid "position.-1"
+msgstr "−1 against"
+
+msgid "position.-2"
+msgstr "−2 strongly against"
+
+msgid "position.0"
+msgstr "0 neutral"
+
+msgid "position.1"
+msgstr "+1 for"
+
+msgid "position.2"
+msgstr "+2 strongly for"
+
+msgid "reason.action_cannot_be_delegated"
+msgstr "action cannot be delegated"
+
+msgid "reason.action_has_no_target"
+msgstr "action has no target"
+
+msgid "reason.already_planned"
+msgstr "already planned for this turn"
+
+msgid "reason.donor_has_withdrawn"
+msgstr "donor has withdrawn"
+
+msgid "reason.donor_is_not_satisfied_enough"
+msgstr "donor is not satisfied enough"
+
+msgid "reason.game_is_over"
+msgstr "the game is over"
+
+msgid "reason.land_is_not_playable"
+msgstr "land is not playable in the MVP"
+
+msgid "reason.no_election_in_this_land"
+msgstr "no election in this land"
+
+msgid "reason.not_enough_action_points"
+msgstr "not enough action points"
+
+msgid "reason.not_enough_activists"
+msgstr "not enough activists"
+
+msgid "reason.not_enough_money"
+msgstr "not enough money"
+
+msgid "reason.performer_is_not_on_the_staff"
+msgstr "performer is not on the staff"
+
+msgid "reason.person_is_not_a_candidate"
+msgstr "person is not a candidate"
+
+msgid "reason.person_is_not_on_the_staff"
+msgstr "person is not on the staff"
+
+msgid "reason.region_has_no_municipal_level"
+msgstr "region has no municipal level"
+
+msgid "reason.region_is_not_playable"
+msgstr "region is not playable in the MVP"
+
+msgid "reason.role_already_filled"
+msgstr "role already filled"
+
+msgid "reason.unknown_action"
+msgstr "unknown action"
+
+msgid "reason.unknown_donor"
+msgstr "unknown donor"
+
+msgid "reason.unknown_land"
+msgstr "unknown land"
+
+msgid "reason.unknown_person"
+msgstr "unknown person"
+
+msgid "reason.unknown_region"
+msgstr "unknown region"
+
+msgid "reason.unknown_role"
+msgstr "unknown role"
+
+msgid "reason.unknown_topic"
+msgstr "unknown topic"
+
+msgid "reason.value_out_of_range"
+msgstr "value out of range"
+
+msgid "region.central.name"
+msgstr "Centre"
+
+msgid "region.east.name"
+msgstr "East"
+
+msgid "region.metropolises.name"
+msgstr "Metropolises"
+
+msgid "region.north.name"
+msgstr "North"
+
+msgid "region.south.name"
+msgstr "South"
+
+msgid "region.west.name"
+msgstr "West"
+
+msgid "role.chair"
+msgstr "Party chair"
+
+msgid "role.general_secretary"
+msgstr "General secretary"
+
+msgid "role.state_chair_north"
+msgstr "State chair North"
+
+msgid "role.state_chair_south"
+msgstr "State chair South"
+
+msgid "role.treasurer"
+msgstr "Treasurer"
+
+msgid "scenario.new_party.name"
+msgstr "New party"
+
+msgid "topic.agriculture.name"
+msgstr "Agriculture"
+
+msgid "topic.combustion_ban.name"
+msgstr "Combustion engine ban"
+
+msgid "topic.housing_costs.name"
+msgstr "Housing costs"
+
+msgid "topic.taxes.name"
+msgstr "Taxes"
+
+msgid "topic.welfare.name"
+msgstr "Welfare state"
+
+msgid "topic.wind_power.name"
+msgstr "Wind power expansion"
+
+msgid "ui.actions"
+msgstr "Actions"
+
+msgid "ui.bundestag.last_result"
+msgstr "Last federal election"
+
+msgid "ui.bundestag.member"
+msgstr "In the Bundestag"
+
+msgid "ui.bundestag.national_polling"
+msgstr "National polling"
+
+msgid "ui.cost.action_points"
+msgstr "%d AP"
+
+msgid "ui.cost.activists"
+msgstr "%d activists"
+
+msgid "ui.end_turn"
+msgstr "End turn"
+
+msgid "ui.game_over"
+msgstr "Game over"
+
+msgid "ui.land.anchoring"
+msgstr "Anchoring of the region"
+
+msgid "ui.land.classic_reach"
+msgstr "Reach in classic media"
+
+msgid "ui.land.gap"
+msgstr "Representation gap"
+
+msgid "ui.land.landtag"
+msgstr "In state parliament"
+
+msgid "ui.land.last_municipal_result"
+msgstr "Last municipal election"
+
+msgid "ui.land.last_state_result"
+msgstr "Last state election"
+
+msgid "ui.land.media_climate"
+msgstr "Media climate"
+
+msgid "ui.land.not_playable"
+msgstr "This land is not directly playable in the MVP; it follows the party's national profile."
+
+msgid "ui.land.polling"
+msgstr "Polling"
+
+msgid "ui.land.rivals"
+msgstr "Established parties"
+
+msgid "ui.land.topic_value"
+msgstr "weight %d, preference %s"
+
+msgid "ui.land.topics"
+msgstr "Topics (weight, preference)"
+
+msgid "ui.land.turnout"
+msgstr "Expected turnout"
+
+msgid "ui.load"
+msgstr "Load"
+
+msgid "ui.map.federation"
+msgstr "Federation"
+
+msgid "ui.map.hover"
+msgstr "%s – polling %.1f %% · turnout %.1f %% · gap %.0f %%"
+
+msgid "ui.map.legend.climate"
+msgstr "Green: favourable coverage, red: hostile coverage."
+
+msgid "ui.map.legend.gap"
+msgstr "The more orange, the more urgent concerns lack an offer from established parties."
+
+msgid "ui.map.legend.polling"
+msgstr "The darker, the higher the party's polling (full at 10 %)."
+
+msgid "ui.map.legend.regions"
+msgstr "South and North are playable; the other regions are greyed out."
+
+msgid "ui.map.legend.turnout"
+msgstr "The bluer, the higher the expected turnout."
+
+msgid "ui.map.overlay.climate"
+msgstr "Media climate"
+
+msgid "ui.map.overlay.gap"
+msgstr "Representation gap"
+
+msgid "ui.map.overlay.polling"
+msgstr "Polling"
+
+msgid "ui.map.overlay.regions"
+msgstr "Regions"
+
+msgid "ui.map.overlay.turnout"
+msgstr "Turnout"
+
+msgid "ui.media.credibility"
+msgstr "Credibility"
+
+msgid "ui.media.hint"
+msgstr "Reach makes known, credibility convinces. Where owners bring their newsroom into line, reach rises and credibility falls."
+
+msgid "ui.media.independence"
+msgstr "Newsroom independence"
+
+msgid "ui.media.national_climate"
+msgstr "National media climate: %+.2f"
+
+msgid "ui.media.not_playable"
+msgstr "Media houses react to the party; direct actions follow in a later version."
+
+msgid "ui.media.reach"
+msgstr "Reach"
+
+msgid "ui.media.tone"
+msgstr "Tone towards the party"
+
+msgid "ui.new_game"
+msgstr "New game"
+
+msgid "ui.no"
+msgstr "no"
+
+msgid "ui.not_planned"
+msgstr "%s not possible: %s"
+
+msgid "ui.party.change_cost"
+msgstr "Changing course costs %.1f credibility"
+
+msgid "ui.party.contradiction_risk"
+msgstr "Contradiction risk"
+
+msgid "ui.party.credibility"
+msgstr "Credibility"
+
+msgid "ui.party.donor_status"
+msgstr "satisfaction %s, pays %s per quarter"
+
+msgid "ui.party.donor_withdrawn"
+msgstr "has withdrawn"
+
+msgid "ui.party.donors"
+msgstr "Donors"
+
+msgid "ui.party.ideology"
+msgstr "Ideology profile"
+
+msgid "ui.party.ideology_value"
+msgstr "economy %+.0f, society %+.0f"
+
+msgid "ui.party.indicators"
+msgstr "Indicators"
+
+msgid "ui.party.no_position"
+msgstr "none"
+
+msgid "ui.party.positions"
+msgstr "Positions"
+
+msgid "ui.party.positions_hint"
+msgstr "A first position is free; every later change of course costs credibility (see tooltip)."
+
+msgid "ui.party.radicalism"
+msgstr "Radicalism"
+
+msgid "ui.party.reach_platform"
+msgstr "Reach on platforms"
+
+msgid "ui.party.regional_messages"
+msgstr "Regional messages"
+
+msgid "ui.party.resilience"
+msgstr "Democratic resilience"
+
+msgid "ui.party.rival_status"
+msgstr "%s: %.1f %% nationally, willingness to cooperate %.0f"
+
+msgid "ui.party.rivals"
+msgstr "Established parties"
+
+msgid "ui.party.scrutiny"
+msgstr "Scrutiny"
+
+msgid "ui.party.unity"
+msgstr "Party unity"
+
+msgid "ui.party.vs_level"
+msgstr "Domestic intelligence"
+
+msgid "ui.planned"
+msgstr "Planned: %s"
+
+msgid "ui.planning.action_points"
+msgstr "Action points"
+
+msgid "ui.planning.activists"
+msgstr "Activists"
+
+msgid "ui.planning.budget"
+msgstr "Left this turn"
+
+msgid "ui.planning.money"
+msgstr "Money"
+
+msgid "ui.planning.no_orders"
+msgstr "Nothing planned yet."
+
+msgid "ui.planning.orders"
+msgstr "Planned orders"
+
+msgid "ui.planning.performer"
+msgstr "Carried out by"
+
+msgid "ui.planning.performer_hint"
+msgstr "Delegated actions cost one action point less but rely on the person's loyalty."
+
+msgid "ui.planning.remove"
+msgstr "Remove"
+
+msgid "ui.report.empty"
+msgstr "The report appears after the first turn."
+
+msgid "ui.save"
+msgstr "Save"
+
+msgid "ui.save.name"
+msgstr "Name of the save game"
+
+msgid "ui.selection.hint"
+msgstr "Click a land or an institution on the map."
+
+msgid "ui.staff.candidate"
+msgstr "Candidate"
+
+msgid "ui.staff.candidates"
+msgstr "Candidates"
+
+msgid "ui.staff.candidates_hint"
+msgstr "New candidates arrive every turn. Some have a hidden agenda – conspicuously strong values are a reason for suspicion, not proof."
+
+msgid "ui.staff.functions"
+msgstr "Party functions"
+
+msgid "ui.staff.person"
+msgstr "%s – loyalty %s, persuasion %s, network %s, competence %s"
+
+msgid "ui.staff.vacant"
+msgstr "vacant"
+
+msgid "ui.status.game_over"
+msgstr "The game is over."
+
+msgid "ui.status.load_failed"
+msgstr "The save game could not be loaded:"
+
+msgid "ui.status.loaded"
+msgstr "Loaded “%s”."
+
+msgid "ui.status.new_game"
+msgstr "New game started (seed %d)."
+
+msgid "ui.status.save_failed"
+msgstr "Saving failed: %s"
+
+msgid "ui.status.saved"
+msgstr "Saved as “%s”."
+
+msgid "ui.tab.media"
+msgstr "Media"
+
+msgid "ui.tab.party"
+msgstr "Party"
+
+msgid "ui.tab.planning"
+msgstr "Planning"
+
+msgid "ui.tab.report"
+msgstr "Report"
+
+msgid "ui.tab.selection"
+msgstr "Selection"
+
+msgid "ui.tab.staff"
+msgstr "Staff"
+
+msgid "ui.top_bar"
+msgstr "Q%d/%d · Phase %d · Money %s · Action points %d of %d · Members %d · Activists %d · Polling %.1f %% · Credibility %s · %s"
+
+msgid "ui.yes"
+msgstr "yes"
+
+msgid "vs_level.0"
+msgstr "not observed"
+
+msgid "vs_level.1"
+msgstr "case to be checked"
+
+msgid "vs_level.2"
+msgstr "suspected case"
+
+msgid "vs_level.3"
+msgstr "confirmed extremist"
