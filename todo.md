@@ -16,21 +16,32 @@ Stand: 2026-10-17
 - **Repo:** GitHub `SN0371/kipppunkt`, Branch `main`.
 
 ## Aktueller Stand
-- Design-Dokument, Rechenmodell: abgestimmt und committet.
-- Prototyp-Plan: Entwurf geschrieben, **wartet auf Freigabe** durch den Nutzer, noch nicht
-  committet.
-- Noch kein Code.
+- Design-Dokument, Rechenmodell, Prototyp-Plan: abgestimmt und committet.
+- **M0 Projektgerüst** erledigt:
+  - GUT 9.7.1 (Tag auf Branch `godot_4_7`) unter `addons/gut/`, läuft mit Godot 4.7.2
+  - `project.godot`, `.gitignore`, `.gitattributes`, `.gutconfig.json`
+  - Rauchtest `tests/unit/test_smoke.gd` (prüft Engine-Version 4.7)
+  - CI `.github/workflows/ci.yml`: Godot 4.7.2 mit gepinnter SHA-512-Prüfsumme, Import,
+    Tests, JUnit-Bericht als Artefakt
+  - Ordner aus `prototyp-plan.md` Abschnitt 4 entstehen mit ihren ersten Dateien
+    (keine leeren Platzhalter)
+
+**Lokal testen:**
+```
+godot --headless --import
+mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file=res://reports/junit.xml
+```
 
 ## Nächster Schritt
-- [ ] Freigabe des Prototyp-Plans einholen, dann committen und pushen
-- [ ] **M0 Projektgerüst** beginnen:
-  - [ ] Prüfen, ob GUT mit Godot 4.7.2 läuft (Branch `godot_4_7`?); sonst gdUnit4
-  - [ ] `project.godot` und Ordnerstruktur laut `prototyp-plan.md` Abschnitt 4
-  - [ ] Ein Beispieltest, der headless läuft
-  - [ ] GitHub-Actions-Workflow (Godot 4.7.2 Linux, Import, Tests)
+- [ ] **M1 Daten und Zustand** (`prototyp-plan.md` Abschnitte 3–5):
+  - [ ] JSON-Daten für den MVP: Parameter, Länder, Regionen, Themen, Parteien,
+        Medienhäuser, Geldgeber, Krisen, Szenario "Neugründung"
+  - [ ] Typisierte Definitionen und Lader mit Validierung (`src/sim/defs/`)
+  - [ ] Spielzustand mit `to_dict()`/`from_dict()` (`src/sim/state/`)
+  - [ ] Tests: Daten laden, Verweise prüfen, Speichern/Laden ergibt identischen Zustand
 
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
-- [ ] M0 Projektgerüst
+- [x] M0 Projektgerüst
 - [ ] M1 Daten und Zustand
 - [ ] M2 Kernschleife
 - [ ] M3 Bots und Balancing

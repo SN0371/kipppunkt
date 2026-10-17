@@ -1,0 +1,8 @@
+# Godot import cache and editor state
+.godot/
+
+# Export output
+/build/
+
+# Test and bot run output
+/reports/
