@@ -92,7 +92,7 @@ kipppunkt/
 │   ├── media.json                  Medienhäuser inkl. öffentlich-rechtlichem Rundfunk
 │   ├── donors.json                 Geldgeber
 │   ├── crises.json                 Krisen
-│   ├── actions/*.json              Aktionen
+│   ├── actions.json                Aktionen (Effekte als Operationen)
 │   ├── events/*.json               Ereignisse
 │   ├── names/*.json                Namenspools und Ausschlussliste
 │   ├── map/lands.json              Vereinfachte Länderpolygone (generiert, siehe 8)

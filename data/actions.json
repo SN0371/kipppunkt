@@ -1,0 +1,278 @@
+[
+	{
+		"id": "action.found_local_branch",
+		"name_key": "action.found_local_branch.name",
+		"target": "region",
+		"parameters": [],
+		"cost": { "action_points": 2, "money": 5, "activists": 20 },
+		"base_chance": 0.8,
+		"delegable": true,
+		"requires": { "municipal_level": true },
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "target.anchoring", "value": 4 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.club_presence",
+		"name_key": "action.club_presence.name",
+		"target": "region",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 0, "activists": 30 },
+		"base_chance": 0.8,
+		"delegable": true,
+		"requires": { "municipal_level": true },
+		"agenda_conflicts": [],
+		"effects": [
+			{ "op": "add", "stat": "target.anchoring", "value": 2 },
+			{ "op": "scale", "stat": "party.members", "value": 1.02 }
+		],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.regional_message",
+		"name_key": "action.regional_message.name",
+		"target": "region",
+		"parameters": ["topic", "value"],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "set_regional_message" }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.social_media_campaign",
+		"name_key": "action.social_media_campaign.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 10, "activists": 0 },
+		"base_chance": 0.8,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "party.reach_platform", "value": 6 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.outrage_wave",
+		"name_key": "action.outrage_wave.name",
+		"target": "topic",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 0.7,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [
+			{ "op": "add", "stat": "party.reach_platform", "value": 10 },
+			{ "op": "modifier", "target": "salience.{target}", "value": 0.3, "turns": 2 }
+		],
+		"failure_effects": [],
+		"side_effects": [
+			{ "op": "add", "stat": "party.radicalism", "value": 3 },
+			{ "op": "add", "stat": "party.credibility", "value": -2 }
+		]
+	},
+	{
+		"id": "action.win_influencer",
+		"name_key": "action.win_influencer.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 2, "money": 20, "activists": 0 },
+		"base_chance": 0.6,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [
+			{ "op": "add", "stat": "party.reach_platform", "value": 8 },
+			{ "op": "modifier", "target": "reach_platform_per_turn", "value": 2, "turns": 8 }
+		],
+		"failure_effects": [],
+		"side_effects": [{ "op": "add", "stat": "party.intransparency", "value": 5 }]
+	},
+	{
+		"id": "action.discredit_opponents",
+		"name_key": "action.discredit_opponents.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 0.6,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "lands.polling", "value": 0.3 }],
+		"failure_effects": [],
+		"side_effects": [
+			{ "op": "add", "stat": "party.radicalism", "value": 4 },
+			{ "op": "add", "stat": "resilience", "value": -0.5 }
+		]
+	},
+	{
+		"id": "action.press_conference",
+		"name_key": "action.press_conference.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 0.8,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "party.reach_classic_bonus", "value": 3 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.court_donor",
+		"name_key": "action.court_donor.name",
+		"target": "donor",
+		"parameters": [],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 0.7,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "target.satisfaction", "value": 10 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.accept_large_donation",
+		"name_key": "action.accept_large_donation.name",
+		"target": "donor",
+		"parameters": [],
+		"cost": { "action_points": 0, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": false,
+		"requires": { "min_target_satisfaction": 60 },
+		"agenda_conflicts": [],
+		"effects": [
+			{ "op": "donor_payment", "factor": 2 },
+			{ "op": "add", "stat": "target.satisfaction", "value": -15 }
+		],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.third_party_funding",
+		"name_key": "action.third_party_funding.name",
+		"target": "donor",
+		"parameters": [],
+		"cost": { "action_points": 2, "money": 0, "activists": 0 },
+		"base_chance": 0.9,
+		"delegable": true,
+		"requires": { "min_target_satisfaction": 50 },
+		"agenda_conflicts": [],
+		"effects": [
+			{ "op": "donor_payment", "factor": 3 },
+			{ "op": "add", "stat": "target.satisfaction", "value": -10 }
+		],
+		"failure_effects": [],
+		"side_effects": [
+			{ "op": "add", "stat": "party.intransparency", "value": 15 },
+			{ "op": "add", "stat": "party.scrutiny", "value": 3 }
+		]
+	},
+	{
+		"id": "action.set_position",
+		"name_key": "action.set_position.name",
+		"target": "topic",
+		"parameters": ["value"],
+		"cost": { "action_points": 1, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": false,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "set_position" }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.party_congress",
+		"name_key": "action.party_congress.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 3, "money": 30, "activists": 0 },
+		"base_chance": 0.9,
+		"delegable": true,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "add", "stat": "party.unity", "value": 10 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.vet_person",
+		"name_key": "action.vet_person.name",
+		"target": "person",
+		"parameters": [],
+		"cost": { "action_points": 2, "money": 10, "activists": 0 },
+		"base_chance": 0.7,
+		"delegable": false,
+		"requires": { "staff": true },
+		"agenda_conflicts": [],
+		"effects": [{ "op": "reveal_agenda" }],
+		"failure_effects": [],
+		"side_effects": [{ "op": "add", "stat": "party.unity", "value": -3 }]
+	},
+	{
+		"id": "action.purge",
+		"name_key": "action.purge.name",
+		"target": "none",
+		"parameters": [],
+		"cost": { "action_points": 3, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": false,
+		"requires": {},
+		"agenda_conflicts": [],
+		"effects": [{ "op": "purge", "loyalty_below": 40, "competence_loss": 5 }],
+		"failure_effects": [],
+		"side_effects": [{ "op": "add", "stat": "party.unity", "value": -10 }]
+	},
+	{
+		"id": "action.campaign",
+		"name_key": "action.campaign.name",
+		"target": "land",
+		"parameters": [],
+		"cost": { "action_points": 2, "money": 40, "activists": 50 },
+		"base_chance": 0.9,
+		"delegable": true,
+		"requires": { "campaign": true },
+		"agenda_conflicts": [],
+		"effects": [{ "op": "modifier", "target": "election_bonus.{target}", "value": 1.5, "turns": 1 }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.appoint",
+		"name_key": "action.appoint.name",
+		"target": "person",
+		"parameters": ["role"],
+		"cost": { "action_points": 0, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": false,
+		"requires": { "candidate": true },
+		"agenda_conflicts": [],
+		"effects": [{ "op": "appoint" }],
+		"failure_effects": [],
+		"side_effects": []
+	},
+	{
+		"id": "action.dismiss",
+		"name_key": "action.dismiss.name",
+		"target": "person",
+		"parameters": [],
+		"cost": { "action_points": 0, "money": 0, "activists": 0 },
+		"base_chance": 1.0,
+		"delegable": false,
+		"requires": { "staff": true },
+		"agenda_conflicts": [],
+		"effects": [{ "op": "dismiss" }],
+		"failure_effects": [],
+		"side_effects": [{ "op": "add", "stat": "party.unity", "value": -2 }]
+	}
+]

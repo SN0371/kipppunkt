@@ -35,11 +35,24 @@ Stand: 2026-10-17
   - `src/sim/state/`: `GameState` und Teilzustände mit `to_dict()`/`from_dict()`,
     `StateFactory.create(defs, scenario_id, seed)`, `SaveGame` (JSON, Format-Version 1)
   - Seed und Zufallsgenerator-Zustand werden als Text gespeichert (64 Bit passen nicht
-    exakt in JSON-Zahlen); Kommazahlen mit voller Genauigkeit
-  - `src/sim/systems/media_system.gd`: bisher nur `target_credibility()`
+    exakt in JSON-Zahlen)
+- **M2 Kernschleife** erledigt (145 Tests grün, Suite läuft in < 1 s):
+  - Alle Systeme aus dem Rechenmodell in `src/sim/systems/*_system.gd`, dazu
+    `SimMath`, `SimLog` (Protokoll im Zustand), Modifikatoren (`src/sim/modifiers/`)
+  - Aktionen als Daten (`data/actions.json`, Effekte als Operationen), Auflösung in
+    `src/sim/actions/action_resolver.gd` mit Kosten, Delegation, Loyalitätscheck
+  - `TurnRunner`: `start_turn()` → Aufträge → `finish_turn()`; Speichern dazwischen erlaubt
+  - Integrationstests (`tests/integration/`): ganze Partien, Invarianten, Determinismus,
+    Weiterspielen nach Laden
+  - Lücken im Rechenmodell entschieden und dokumentiert: `rechenmodell.md` Abschnitt 16
+  - **Godot-Einschränkung:** JSON-Kommazahlen kommen nicht immer bitgenau zurück (letzte
+    Binärstelle). Wiederholung über Seed + Aufträge ist exakt; geladene Spielstände sind
+    praktisch identisch. Tests vergleichen Spielstände mit `StateCompare` (Toleranz).
 - **Code-Konventionen im Projekt:** Runde heißt im Code `turn` (nicht `round`, Konflikt mit
   der eingebauten Funktion); System-Skripte heißen `*_system.gd`; IDs mit Präfix
-  (`land.by`, `topic.taxes`).
+  (`land.by`, `topic.taxes`). Test-Helfer in `tests/helpers/` (`SimFixture`, `StateCompare`).
+- **Debug-Skripte:** headless mit `godot --headless --path . --quit-after 10 -s <skript>`;
+  `--quit-after` beendet Godot auch nach einem Skriptfehler (macOS hat kein `timeout`).
 
 **Lokal testen:**
 ```
@@ -48,27 +61,27 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 ```
 
 ## Nächster Schritt
-- [ ] **M2 Kernschleife** (`prototyp-plan.md` Abschnitt 5, Formeln aus `rechenmodell.md`).
-      Jedes System mit Formeltests (feste Eingaben, erwartetes Ergebnis):
-  - [ ] `SimLog` (strukturiertes Protokoll) und `TurnRunner` mit Rundenablauf (Rechenmodell 2)
-  - [ ] Ressourcenfluss (6)
-  - [ ] Ideologie, Kurswechsel, Widerspruchsrisiko (5.1–5.3), Konkurrenzparteien (5.5)
-  - [ ] Medienhäuser (5.6)
-  - [ ] Umfragemodell (3)
-  - [ ] Geldgeber (5.4)
-  - [ ] Wahlen (7), Phasen und Spielende (12)
-  - [ ] Beobachtungsdruck und Verfassungsschutz (8), Presse (9)
-  - [ ] Personen: Erzeugung, Agenden, Loyalitätscheck (10)
-  - [ ] Krisen (11)
-  - [ ] Aktionen: Auftrag, Kosten, Erfolgschance, Effekte als Daten; Modifikator-System;
-        MVP-Aktionen aus Rechenmodell 4.2 als JSON
-  - [ ] Integrationstests: 100 Runden ohne Absturz, Determinismus (gleicher Seed = gleiche
-        Partie), Speichern mitten in der Partie und Weiterspielen ergibt dieselbe Partie
+- [ ] **M3 Bots und Balancing** (`prototyp-plan.md` Abschnitt 7, Korridore in
+      `rechenmodell.md` Abschnitt 14):
+  - [ ] 5 Strategie-Bots in `src/bots/`: geduldig, radikal, doppelzüngig, passiv, zufällig
+  - [ ] Headless-Lauf `src/tools/run_bots.gd` → CSV je Partie
+  - [ ] Korridorprüfung mit Bericht; kurzer Bot-Lauf in CI (zunächst nur Warnungen)
+  - [ ] Balancing-Durchgang, Parameteränderungen begründen
+- **Erste Befunde aus einem Probelauf (40 Partien je Strategie, Ende M2):**
+  - **Geld ist kein Engpass:** Eine Partei ohne Positionen steht in der Mitte und damit
+    nah genug an allen Geldgebern (Zufriedenheit ~75), alle zahlen. Passive Partei hat
+    nach 15 Runden > 1.000 T€, aktive am Ende 20.000–36.000 T€. **Modellfrage, mit Nutzer
+    klären:** Geldgeber sollten erst zahlen, wenn die Partei Positionen in ihrem Sinne hat.
+  - Passiv: 19/40 Bedeutungslosigkeit, 21/40 Zeitablauf (Umfrage pendelt um 1 %) –
+    Korridor verlangt Bedeutungslosigkeit in der Mehrheit.
+  - Einfache Teststrategie: 23/40 Bundestag (Median Runde 56), sonst Zeitablauf –
+    langsamer als der Korridor des geduldigen Bots (20–32 Runden).
+  - Verankerung erreicht schnell 100 in beiden Regionen.
 
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
 - [x] M0 Projektgerüst
 - [x] M1 Daten und Zustand
-- [ ] M2 Kernschleife
+- [x] M2 Kernschleife
 - [ ] M3 Bots und Balancing
 - [ ] M4 Karte und UI-Grundgerüst
 - [ ] M5 Inhalte und Lokalisierung

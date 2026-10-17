@@ -1,6 +1,6 @@
 # Rechenmodell der Kernschleife (MVP)
 
-Stand: 2026-10-17 · Version 0.1 (Entwurf) · Bezug: `game-design.md` Version 0.3
+Stand: 2026-10-17 · Version 0.2 (Umsetzungsentscheidungen aus M2 ergänzt) · Bezug: `game-design.md` Version 0.3
 
 > Dieses Dokument übersetzt die Systeme des Design-Dokuments in Zahlen und Formeln für den
 > MVP (Phasen I–III, Regionen Süden und Norden spielbar). Alle Konstanten heißen `P_…`,
@@ -381,7 +381,6 @@ beeinflussen. Aktionen wie Exklusivinterviews oder das Umwerben von Erben folgen
 | Verlegerfamilie Qualitätspresse | Qualitätszeitung | bundesweit | 15 | 80 |
 | Regionale Zeitungsgruppe Süd | Regionalpresse | Süden | 30 | 55 |
 | Regionale Zeitungsgruppe Nord | Regionalpresse | Norden | 30 | 55 |
-
 | Öffentlich-rechtlicher Rundfunk | Öffentlich-rechtlich | bundesweit | 35 | 85 (fest) |
 
 `Glaub_m` startet auf dem Zielwert, `Grundreichweite_m` = `Reach_m` − Zuspitzungsanteil.
@@ -658,3 +657,38 @@ Derzeit keine.
 
 Entschieden: Das Startjahr ist **fiktiv**; der Wahlkalender kommt aus dem Szenario. Der
 öffentlich-rechtliche Rundfunk ist als eigenes Haus enthalten (5.6).
+
+---
+
+## 16. Umsetzungsentscheidungen (M2)
+
+Wo das Modell Details offenließ, wurde bei der Umsetzung so entschieden. Alle Werte sind
+Startwerte für das Balancing (M3).
+
+| Thema | Entscheidung |
+|---|---|
+| Wahlkampfquartal | Das Quartal, in dem die Wahl stattfindet; gewählt wird am Ende der Runde |
+| Kommunalmandate (Phase I → II) | Ab 1 % Kommunalwahlergebnis in einem Land |
+| Kurswechsel | Kostet zusätzlich 2 Parteieinheit je Positionsstufe |
+| Regionale Botschaft ohne Bundesposition | Bezugswert 0; widersprüchliche Botschaften in zwei Regionen zählen also immer |
+| Presse: Widerspruch aufgedeckt | Regionale Botschaften werden gelöscht (sie sind öffentlich), `W` halbiert |
+| Presse: Finanzierung aufgedeckt | Intransparenz auf 0, keine Rückzahlung |
+| Intransparenz | Sinkt um 1 pro Runde |
+| Resilienz-Erholung | 2 % der Differenz zum Startwert des Szenarios pro Runde |
+| Krisen | Jede echte Krise hat ein Vorzeichen; Fehlalarme so häufig, dass 70 % der Vorzeichen eintreffen; höchstens eine Krise gleichzeitig |
+| Geldgeber: Einstufung | AG −20 je Stufe ab VS 1; Mittelstand −15 je Stufe ab VS 1; Familienunternehmen −15 je Stufe ab VS 2 (VS 2: −15, VS 3: −30) |
+| Geldgeber: Themenkonflikt | Partei und Geldgeber stehen auf entgegengesetzten Seiten (Vorzeichen) |
+| Geldgeber: Rückkehr | Nach der Wartezeit, sobald die Zufriedenheit wieder mindestens 50 erreicht |
+| Bedeutungslosigkeit | Wird erst ab Runde 8 gezählt, frühestes Ende also in Runde 15 |
+| Karrierist läuft über | Bei Vernetzung > 70: −0,5 Umfrage in der geführten Region, bei Bundesfunktion in allen Ländern |
+| Loyalitätsbruch bei Delegation | Ideologe: `Rad` +5; Journalist: `Material` +20; V-Mann: `B` +5; Karrierist verlässt die Partei, die Aktion entfällt |
+| Agenda-Konflikte | Ideologe: Abschwächen einer Position; V-Mann: Aktionen, die `B` erhöhen; Journalist: Aktionen, die Intransparenz erhöhen; zusätzlich je Aktion in den Daten |
+| Sichere Aktionen | Aktionen mit Grundchance 1 gelingen immer (keine Kappung auf 95 %) |
+| Influencer gewinnen | `RP` +8 sofort, danach +2 pro Runde für 8 Runden; Nebenwirkung Intransparenz +5 (Aufdeckung über die Finanzrecherche) |
+| Großspende | Doppelte Maximalzahlung, Zufriedenheit −15, setzt Zufriedenheit ≥ 60 voraus |
+| Unterstützung über Dritte | Dreifache Maximalzahlung, Zufriedenheit −10, Intransparenz +15, `B` +3, setzt Zufriedenheit ≥ 50 voraus |
+| Säuberung | Entfernt Personal mit Loyalität < 40; übriges Personal −5 Kompetenz |
+| Medienhäuser | Werden im Schritt "Meinung" nach der Umfrageberechnung fortgeschrieben |
+| Staatliche Teilfinanzierung | 45 Mio. abgegebene Stimmen bundesweit, je Land anteilig nach Bevölkerung **[Vereinfachung]** |
+| Landesvorsitz | Im MVP fest je eine Funktion für Süden und Norden |
+| Spielstände | Kommazahlen werden auf etwa 16 Stellen genau geladen (Einschränkung von Godots Zahlenumwandlung); Seed, Zufallsgenerator und Ganzzahlen exakt. Wiederholung über Seed und Aufträge ist exakt |

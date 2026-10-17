@@ -21,7 +21,7 @@ func test_round_trip_reproduces_state() -> void:
 	var state := _populated_state(42)
 	var loaded := _round_trip(state)
 	assert_not_null(loaded)
-	assert_eq_deep(loaded.to_dict(), state.to_dict())
+	assert_eq(StateCompare.differences(loaded.to_dict(), state.to_dict()), PackedStringArray())
 
 
 func test_random_numbers_continue_identically_after_loading() -> void:
@@ -38,11 +38,11 @@ func test_large_seed_survives_round_trip() -> void:
 	assert_eq(loaded.game_seed, 9007199254740993)
 
 
-func test_fractional_values_survive_round_trip() -> void:
+func test_fractional_values_survive_round_trip_within_float_precision() -> void:
 	var state := _populated_state(1)
 	state.party.credibility = 1.0 / 3.0
 	var loaded := _round_trip(state)
-	assert_eq(loaded.party.credibility, 1.0 / 3.0)
+	assert_almost_eq(loaded.party.credibility, 1.0 / 3.0, 1e-12)
 
 
 func test_save_and_load_file() -> void:
@@ -51,7 +51,7 @@ func test_save_and_load_file() -> void:
 	var reader := JsonReader.new()
 	var loaded := SaveGame.load_from_file(SAVE_PATH, _defs, reader)
 	assert_eq(reader.errors, PackedStringArray())
-	assert_eq_deep(loaded.to_dict(), state.to_dict())
+	assert_eq(StateCompare.differences(loaded.to_dict(), state.to_dict()), PackedStringArray())
 
 
 func test_out_of_range_value_is_rejected() -> void:

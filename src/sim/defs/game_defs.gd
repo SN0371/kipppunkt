@@ -16,6 +16,7 @@ const LIST_FILES: Dictionary = {
 	"media": "media.json",
 	"donors": "donors.json",
 	"crises": "crises.json",
+	"actions": "actions.json",
 }
 const PARAMS_FILE := "params.json"
 const SCENARIO_DIR := "scenarios"
@@ -31,6 +32,7 @@ var rivals: Dictionary[String, RivalPartyDef] = {}
 var media: Dictionary[String, MediaDef] = {}
 var donors: Dictionary[String, DonorDef] = {}
 var crises: Dictionary[String, CrisisDef] = {}
+var actions: Dictionary[String, ActionDef] = {}
 var scenarios: Dictionary[String, ScenarioDef] = {}
 
 
@@ -91,6 +93,8 @@ static func from_raw(raw: Dictionary, reader: JsonReader = null) -> GameDefs:
 		_add_unique(defs.donors, DonorDef.from_dict(item, reader), "donors", reader)
 	for item in _items(raw, "crises", reader):
 		_add_unique(defs.crises, CrisisDef.from_dict(item, reader), "crises", reader)
+	for item in _items(raw, "actions", reader):
+		_add_unique(defs.actions, ActionDef.from_dict(item, reader), "actions", reader)
 	for item in _items(raw, "scenarios", reader):
 		_add_unique(defs.scenarios, ScenarioDef.from_dict(item, reader), "scenarios", reader)
 	defs._validate_references(reader)

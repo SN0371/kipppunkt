@@ -9,8 +9,9 @@ extends RefCounted
 const FORMAT_VERSION := 1
 
 
-## Serializes a game state to JSON. Floats are written with full precision so that
-## loading reproduces the state exactly.
+## Serializes a game state to JSON. Floats are written with full precision; Godot's float
+## parsing may still differ in the last binary digit (about 1e-16 relative) when loading.
+## Integers, strings, the seed and the generator state round-trip exactly.
 static func to_json(state: GameState) -> String:
 	var data := {"format_version": FORMAT_VERSION, "state": state.to_dict()}
 	return JSON.stringify(data, "\t", true, true)
