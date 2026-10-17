@@ -5,6 +5,11 @@ extends RefCounted
 ## Everything that changes during a game lives here, including the random number
 ## generator, so a saved state continues exactly as the original would have.
 
+## Possible game outcomes; empty while the game is running (rechenmodell.md section 12).
+const OUTCOMES: PackedStringArray = ["", "won", "bankrupt", "irrelevant", "split", "timeout"]
+## Number of national polling values kept for trend checks.
+const POLLING_HISTORY_LENGTH := 4
+
 ## Seed of the game; determines all random rolls together with the player's orders.
 var game_seed: int = 0
 ## The only source of randomness in the simulation (prototyp-plan.md section 2).
@@ -14,10 +19,28 @@ var scenario_id: String = ""
 var turn: int = 1
 ## Current phase (game-design.md section 6), starting at 1.
 var phase: int = 1
+## Result of the game; empty while it is running.
+var outcome: String = ""
+## True between start_turn() and finish_turn(): the turn waits for the player's orders.
+var awaiting_orders: bool = false
 ## Democratic resilience (R), 0..100.
 var resilience: float = 0.0
+## National media climate towards the party (MK_Bund), -1..+1, from the last polling update.
+var media_climate: float = 0.0
+## Last national polling values, oldest first.
+var national_polling_history: Array[float] = []
+## Consecutive turns with negative money (bankruptcy check).
+var negative_money_turns: int = 0
+## Consecutive turns with national polling below 1 % (irrelevance check).
+var low_polling_turns: int = 0
 ## Turn in which the last crisis ended; crises need a cooldown (rechenmodell.md 11).
 var last_crisis_end_turn: int = 0
+## Announced crisis (omen); empty if none is announced.
+var pending_crisis_id: String = ""
+## Turns until the announced crisis would start.
+var pending_crisis_turns: int = 0
+## False for a false alarm: the announced crisis will not come.
+var pending_crisis_real: bool = false
 ## Counter for unique person ids.
 var next_person_id: int = 1
 var party: PartyState = PartyState.new()
@@ -27,6 +50,19 @@ var media: Dictionary[String, MediaState] = {}
 var donors: Dictionary[String, DonorState] = {}
 var persons: Array[PersonState] = []
 var crises: Array[CrisisState] = []
+var modifiers: Array[ModifierState] = []
+## Protocol entries {"turn", "kind", "data"}, see SimLog.
+var log_entries: Array[Dictionary] = []
+
+
+## Returns true once the game has an outcome.
+func is_over() -> bool:
+	return not outcome.is_empty()
+
+
+## Returns the latest national polling value, or 0 before the first polling update.
+func latest_national_polling() -> float:
+	return national_polling_history.back() if not national_polling_history.is_empty() else 0.0
 
 
 ## Serializes the state to plain JSON-compatible data.
@@ -38,8 +74,17 @@ func to_dict() -> Dictionary:
 		"scenario_id": scenario_id,
 		"turn": turn,
 		"phase": phase,
+		"outcome": outcome,
+		"awaiting_orders": awaiting_orders,
 		"resilience": resilience,
+		"media_climate": media_climate,
+		"national_polling_history": national_polling_history.duplicate(),
+		"negative_money_turns": negative_money_turns,
+		"low_polling_turns": low_polling_turns,
 		"last_crisis_end_turn": last_crisis_end_turn,
+		"pending_crisis_id": pending_crisis_id,
+		"pending_crisis_turns": pending_crisis_turns,
+		"pending_crisis_real": pending_crisis_real,
 		"next_person_id": next_person_id,
 		"party": party.to_dict(),
 		"lands": _map_to_dict(lands),
@@ -48,6 +93,8 @@ func to_dict() -> Dictionary:
 		"donors": _map_to_dict(donors),
 		"persons": persons.map(func(p: PersonState) -> Dictionary: return p.to_dict()),
 		"crises": crises.map(func(c: CrisisState) -> Dictionary: return c.to_dict()),
+		"modifiers": modifiers.map(func(m: ModifierState) -> Dictionary: return m.to_dict()),
+		"log_entries": log_entries.duplicate(true),
 	}
 
 
@@ -62,36 +109,51 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> GameState:
 	state.scenario_id = reader.read_string(d, "scenario_id", ctx)
 	state.turn = reader.read_int(d, "turn", ctx, 1)
 	state.phase = reader.read_int(d, "phase", ctx, 1, 6)
+	state.outcome = reader.read_enum(d, "outcome", ctx, OUTCOMES)
+	state.awaiting_orders = reader.read_bool(d, "awaiting_orders", ctx)
 	state.resilience = reader.read_float(d, "resilience", ctx, 0.0, 100.0)
+	state.media_climate = reader.read_float(d, "media_climate", ctx, -1.0, 1.0)
+	var history := reader.read_array(d, "national_polling_history", ctx)
+	for i in history.size():
+		state.national_polling_history.append(
+			reader.check_float(history[i], "%s.national_polling_history[%d]" % [ctx, i], 0.0, 100.0)
+		)
+	state.negative_money_turns = reader.read_int(d, "negative_money_turns", ctx, 0)
+	state.low_polling_turns = reader.read_int(d, "low_polling_turns", ctx, 0)
 	state.last_crisis_end_turn = reader.read_int(d, "last_crisis_end_turn", ctx)
+	state.pending_crisis_id = reader.read_string(d, "pending_crisis_id", ctx)
+	state.pending_crisis_turns = reader.read_int(d, "pending_crisis_turns", ctx, 0)
+	state.pending_crisis_real = reader.read_bool(d, "pending_crisis_real", ctx)
 	state.next_person_id = reader.read_int(d, "next_person_id", ctx, 1)
 	state.party = PartyState.from_dict(reader.read_dict(d, "party", ctx), reader)
 	var lands_raw := reader.read_dict(d, "lands", ctx)
 	for id: String in lands_raw:
-		state.lands[id] = LandState.from_dict(_entry(lands_raw, id, reader, "state.lands"), reader, "state.lands." + id)
+		var land_ctx := "state.lands." + id
+		state.lands[id] = LandState.from_dict(_entry(lands_raw, id, reader, land_ctx), reader, land_ctx)
 	var regions_raw := reader.read_dict(d, "regions", ctx)
 	for id: String in regions_raw:
-		state.regions[id] = RegionState.from_dict(_entry(regions_raw, id, reader, "state.regions"), reader, "state.regions." + id)
+		var region_ctx := "state.regions." + id
+		state.regions[id] = RegionState.from_dict(_entry(regions_raw, id, reader, region_ctx), reader, region_ctx)
 	var media_raw := reader.read_dict(d, "media", ctx)
 	for id: String in media_raw:
-		state.media[id] = MediaState.from_dict(_entry(media_raw, id, reader, "state.media"), reader, "state.media." + id)
+		var media_ctx := "state.media." + id
+		state.media[id] = MediaState.from_dict(_entry(media_raw, id, reader, media_ctx), reader, media_ctx)
 	var donors_raw := reader.read_dict(d, "donors", ctx)
 	for id: String in donors_raw:
-		state.donors[id] = DonorState.from_dict(_entry(donors_raw, id, reader, "state.donors"), reader, "state.donors." + id)
-	var persons_raw := reader.read_array(d, "persons", ctx)
-	for i in persons_raw.size():
-		var person_ctx := "state.persons[%d]" % i
-		if typeof(persons_raw[i]) != TYPE_DICTIONARY:
-			reader.error(person_ctx, "must be an object")
-			continue
-		state.persons.append(PersonState.from_dict(persons_raw[i], reader, person_ctx))
-	var crises_raw := reader.read_array(d, "crises", ctx)
-	for i in crises_raw.size():
-		var crisis_ctx := "state.crises[%d]" % i
-		if typeof(crises_raw[i]) != TYPE_DICTIONARY:
-			reader.error(crisis_ctx, "must be an object")
-			continue
-		state.crises.append(CrisisState.from_dict(crises_raw[i], reader, crisis_ctx))
+		var donor_ctx := "state.donors." + id
+		state.donors[id] = DonorState.from_dict(_entry(donors_raw, id, reader, donor_ctx), reader, donor_ctx)
+	for item in _objects(d, "persons", reader):
+		state.persons.append(PersonState.from_dict(item["value"], reader, item["ctx"]))
+	for item in _objects(d, "crises", reader):
+		state.crises.append(CrisisState.from_dict(item["value"], reader, item["ctx"]))
+	for item in _objects(d, "modifiers", reader):
+		state.modifiers.append(ModifierState.from_dict(item["value"], reader, item["ctx"]))
+	for item in _objects(d, "log_entries", reader):
+		var entry: Dictionary = item["value"]
+		reader.read_int(entry, "turn", item["ctx"], 1)
+		reader.read_string(entry, "kind", item["ctx"])
+		reader.read_dict(entry, "data", item["ctx"])
+		state.log_entries.append(entry)
 	return state
 
 
@@ -113,6 +175,8 @@ func validate_against(defs: GameDefs, reader: JsonReader) -> void:
 	for crisis in crises:
 		if not defs.crises.has(crisis.crisis_id):
 			reader.error("state.crises", "unknown crisis '%s'" % crisis.crisis_id)
+	if not pending_crisis_id.is_empty() and not defs.crises.has(pending_crisis_id):
+		reader.error("state", "unknown pending crisis '%s'" % pending_crisis_id)
 
 
 static func _map_to_dict(map: Dictionary) -> Dictionary:
@@ -124,7 +188,19 @@ static func _map_to_dict(map: Dictionary) -> Dictionary:
 
 static func _entry(raw: Dictionary, id: String, reader: JsonReader, ctx: String) -> Dictionary:
 	if typeof(raw[id]) != TYPE_DICTIONARY:
-		reader.error("%s.%s" % [ctx, id], "must be an object")
+		reader.error(ctx, "must be an object")
 		return {}
 	return raw[id]
 
+
+## Returns the objects of an array field as {"value", "ctx"} pairs, recording errors for non-objects.
+static func _objects(d: Dictionary, key: String, reader: JsonReader) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var items := reader.read_array(d, key, "state")
+	for i in items.size():
+		var ctx := "state.%s[%d]" % [key, i]
+		if typeof(items[i]) != TYPE_DICTIONARY:
+			reader.error(ctx, "must be an object")
+		else:
+			result.append({"value": items[i], "ctx": ctx})
+	return result

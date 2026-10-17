@@ -29,6 +29,7 @@ static func create(defs: GameDefs, scenario_id: String, game_seed: int) -> GameS
 		donor.satisfaction = scenario.donor_satisfaction_default
 		donor.max_payment = defs.donors[donor_id].max_payment
 		state.donors[donor_id] = donor
+	state.persons.append(PersonSystem.create_chair(state))
 	return state
 
 
@@ -53,12 +54,5 @@ static func _create_media(def: MediaDef, scenario: ScenarioDef, rng: RandomNumbe
 	house.independence = def.independence
 	house.credibility = MediaSystem.target_credibility(def.independence)
 	if def.owner == "family":
-		house.owner_ideology = _random_point_in_disc(scenario.media_owner_ideology_radius, rng)
+		house.owner_ideology = SimMath.random_point_in_disc(scenario.media_owner_ideology_radius, rng)
 	return house
-
-
-## Returns a point uniformly distributed in a disc around the origin.
-static func _random_point_in_disc(radius: float, rng: RandomNumberGenerator) -> Vector2:
-	var angle := rng.randf() * TAU
-	var distance := radius * sqrt(rng.randf())
-	return Vector2.from_angle(angle) * distance

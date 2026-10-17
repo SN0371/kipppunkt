@@ -10,6 +10,10 @@ var in_landtag: bool = false
 var last_state_result: float = 0.0
 ## Result of the last municipal election in percent.
 var last_municipal_result: float = 0.0
+## Reach of the party in classic media (RK_l), computed by the last polling update.
+var classic_reach: float = 0.0
+## Media climate towards the party (MK_l), -1..+1, computed by the last polling update.
+var media_climate: float = 0.0
 
 
 ## Serializes the land state to plain JSON-compatible data.
@@ -19,6 +23,8 @@ func to_dict() -> Dictionary:
 		"in_landtag": in_landtag,
 		"last_state_result": last_state_result,
 		"last_municipal_result": last_municipal_result,
+		"classic_reach": classic_reach,
+		"media_climate": media_climate,
 	}
 
 
@@ -29,4 +35,6 @@ static func from_dict(d: Dictionary, reader: JsonReader, ctx: String) -> LandSta
 	land.in_landtag = reader.read_bool(d, "in_landtag", ctx)
 	land.last_state_result = reader.read_float(d, "last_state_result", ctx, 0.0, 100.0)
 	land.last_municipal_result = reader.read_float(d, "last_municipal_result", ctx, 0.0, 100.0)
+	land.classic_reach = reader.read_float(d, "classic_reach", ctx, 0.0, 100.0)
+	land.media_climate = reader.read_float(d, "media_climate", ctx, -1.0, 1.0)
 	return land

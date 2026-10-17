@@ -37,6 +37,12 @@ var regional_messages: Dictionary[String, Dictionary] = {}
 ## Result of the last federal election in percent.
 var last_federal_result: float = 0.0
 var in_bundestag: bool = false
+## Consecutive turns with scrutiny above the threshold of the next surveillance level.
+var vs_up_turns: int = 0
+## Consecutive turns with scrutiny far below the threshold of the current surveillance level.
+var vs_down_turns: int = 0
+## True if an action of the current turn raised radicalism; radicalism then does not decay.
+var radical_action_this_turn: bool = false
 
 
 ## Serializes the party to plain JSON-compatible data.
@@ -63,6 +69,9 @@ func to_dict() -> Dictionary:
 		"regional_messages": messages,
 		"last_federal_result": last_federal_result,
 		"in_bundestag": in_bundestag,
+		"vs_up_turns": vs_up_turns,
+		"vs_down_turns": vs_down_turns,
+		"radical_action_this_turn": radical_action_this_turn,
 	}
 
 
@@ -92,4 +101,7 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> PartyState:
 		)
 	party.last_federal_result = reader.read_float(d, "last_federal_result", ctx, 0.0, 100.0)
 	party.in_bundestag = reader.read_bool(d, "in_bundestag", ctx)
+	party.vs_up_turns = reader.read_int(d, "vs_up_turns", ctx, 0)
+	party.vs_down_turns = reader.read_int(d, "vs_down_turns", ctx, 0)
+	party.radical_action_this_turn = reader.read_bool(d, "radical_action_this_turn", ctx)
 	return party
