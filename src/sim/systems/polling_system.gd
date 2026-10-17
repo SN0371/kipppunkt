@@ -45,7 +45,6 @@ static func topic_fit(
 	defs: GameDefs, land: LandDef, party: PartyState, salience_by_topic: Dictionary[String, float],
 	topics: PackedStringArray = PackedStringArray()
 ) -> float:
-	var regional: Dictionary = party.regional_messages.get(land.region, {})
 	var numerator := 0.0
 	var denominator := 0.0
 	for topic_id: String in defs.topics:
@@ -53,11 +52,18 @@ static func topic_fit(
 			continue
 		var weight := salience_by_topic[topic_id] * land.topic_weights[topic_id]
 		denominator += weight
-		var position: Variant = regional.get(topic_id, party.positions.get(topic_id))
+		var position: Variant = effective_position(party, land, topic_id)
 		if position != null:
 			var agreement := 1.0 - absi(int(position) - land.topic_preferences[topic_id]) / 2.0
 			numerator += weight * agreement
 	return numerator / denominator if denominator > 0.0 else 0.0
+
+
+## Returns the position voters in a land hear on a topic (p*_k): the regional message of
+## the land's region if there is one, otherwise the federal position, or null without either.
+static func effective_position(party: PartyState, land: LandDef, topic_id: String) -> Variant:
+	var regional: Dictionary = party.regional_messages.get(land.region, {})
+	return regional.get(topic_id, party.positions.get(topic_id))
 
 
 ## Returns the share of messages that arrive in a land (f_Reach), REACH_FLOOR..1.
@@ -101,8 +107,10 @@ static func target(state: GameState, defs: GameDefs, land_id: String, ctx: Conte
 		+ leadership \
 		+ crisis_bonus(state, defs, land, ctx.salience)
 	var competition := RivalSystem.pressure(defs, land_id, ctx.ideology)
+	# Mobilized non-voters are not contested by the established parties: no competition factor.
 	var value := params.value("polling_base") \
 		+ support * (1.0 - competition) * (1.0 + params.value("media_climate_effect") * land_state.media_climate) \
+		+ RepresentationSystem.mobilization(defs, land, party, ctx.salience) \
 		- params.value("stigma_per_level") * party.vs_level * state.resilience / 100.0
 	if leaders["ideologue"] and state.resilience > POLARIZATION_RESILIENCE:
 		value -= params.value("polarization_penalty")
@@ -136,10 +144,16 @@ static func step(state: GameState, defs: GameDefs) -> void:
 	var ctx := make_context(state, defs)
 	var national_climate := 0.0
 	for land_id: String in defs.lands:
+		var land := defs.lands[land_id]
 		var land_state := state.lands[land_id]
 		land_state.classic_reach = MediaSystem.classic_reach(state, defs, land_id, ctx.attention)
 		land_state.media_climate = MediaSystem.climate(state, defs, land_id, ctx.tones)
-		national_climate += defs.lands[land_id].population_share * land_state.media_climate
+		national_climate += land.population_share * land_state.media_climate
+		land_state.representation_gap = RepresentationSystem.gap(defs, land, ctx.salience)
+		land_state.turnout = RepresentationSystem.turnout(
+			defs, land_state.representation_gap,
+			RepresentationSystem.mobilization(defs, land, state.party, ctx.salience)
+		)
 	state.media_climate = clampf(national_climate, -1.0, 1.0)
 	for land_id: String in defs.lands:
 		var loyalty := defs.lands[land_id].party_loyalty / 100.0

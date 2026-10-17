@@ -38,19 +38,22 @@ func test_action_points_are_capped() -> void:
 
 func test_state_funding_for_votes() -> void:
 	_state.lands["land.by"].last_state_result = 6.0
+	_state.lands["land.by"].turnout = 70.0
 	_state.lands["land.sh"].last_state_result = 0.9
-	# Only Bavaria qualifies: 0.158 * 45 000 000 * 0.06
-	assert_almost_eq(EconomySystem.funded_votes(_state, _defs), 426600.0, 0.5)
+	# Only Bavaria qualifies: 0.158 * 61 000 000 * 0.70 * 0.06
+	assert_almost_eq(EconomySystem.funded_votes(_state, _defs), 404796.0, 0.5)
 
 
 func test_state_funding_is_capped_by_own_income() -> void:
 	_state.party.money = 0.0
 	_state.party.last_federal_result = 5.0
+	for land: LandState in _state.lands.values():
+		land.turnout = 75.0
 	EconomySystem.income(_state, _defs)
-	# Entitlement 0.0002 * 2 250 000 = 450, capped at the fees 300 * 0.03 = 9.
+	# Entitlement 0.0002 * 61 000 000 * 0.75 * 0.05 = 457.5, capped at the fees 300 * 0.03 = 9.
 	var entry: Dictionary = SimLog.find(_state, "income")[0]["data"]
 	assert_almost_eq(entry["state_funding"], 9.0, 0.0001)
-	assert_almost_eq(entry["state_funding_capped"], 441.0, 0.0001)
+	assert_almost_eq(entry["state_funding_capped"], 448.5, 0.0001)
 	assert_almost_eq(_state.party.money, 9.0 + 9.0 - 8.64, 0.0001)
 
 

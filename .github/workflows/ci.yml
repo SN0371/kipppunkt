@@ -56,10 +56,10 @@ jobs:
           path: reports/junit.xml
           if-no-files-found: warn
 
-      # Smoke run of the strategy bots. Corridor misses only warn until balancing is done
-      # (prototyp-plan.md section 10); remove --warn-only to make them fail the build.
-      - name: Run strategy bots
-        run: godot --headless -s src/tools/run_bots.gd -- --runs=20 --warn-only
+      # Strategy bots with fixed seeds: the result is deterministic, so a corridor miss means
+      # a change to code or parameters broke the balancing (prototyp-plan.md section 10).
+      - name: Check balancing corridors
+        run: godot --headless -s src/tools/run_bots.gd -- --runs=100
 
       - name: Upload bot results
         if: always()

@@ -30,5 +30,8 @@
 	"donor_topic_weight": { "symbol": "P_Gthema", "value": 25.0 },
 	"donor_ideology_weight": { "symbol": "P_Gideo", "value": 15.0 },
 	"member_small_party": { "symbol": "P_Mklein", "value": 1000.0 },
-	"members_per_polling_point": { "symbol": "P_Mpro", "value": 1000.0 }
+	"members_per_polling_point": { "symbol": "P_Mpro", "value": 1000.0 },
+	"mobilization_weight": { "symbol": "P_Mob", "value": 8.0 },
+	"turnout_base": { "symbol": "P_Wbasis", "value": 78.0 },
+	"turnout_gap_effect": { "symbol": "P_Lücke", "value": 30.0 }
 }

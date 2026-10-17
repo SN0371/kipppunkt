@@ -60,29 +60,44 @@ godot --headless --import
 mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file=res://reports/junit.xml
 ```
 
-## Nächster Schritt
-- [ ] **M3 Bots und Balancing** – Werkzeuge fertig, Balancing läuft:
-  - [x] 5 Strategie-Bots in `src/bots/` (eigener Zufallsgenerator, ändern den Spielzufall nicht)
-  - [x] Runner `src/tools/run_bots.gd` (CSV nach `reports/bots/`, `--param=name=wert` für
-        Experimente), messbare Korridore in `src/bots/corridors.gd`, CI-Lauf mit 20 Partien
-  - [x] Korridore auf Wahltermine umgestellt (Bundestagswahlen nur in Runde 8, 24, 40, 56, 72)
-  - [x] Formeltests mit festem Parametersatz (`SimFixture.TEST_PARAMS`), Balancing ändert
-        nur `data/params.json`; jede Änderung ins Protokoll `rechenmodell.md` Abschnitt 17
-  - [x] Passiv und Doppelzüngig im Korridor (`P_Basis` 0,5, `P_W` 1,4)
-  - [ ] **Radikaler Weg ist zu schwach** (0 % Bundestag bis Runde 24, nur 2 % Siege):
-        Radikalität bringt im Umfragemodell keinen Vorteil, nur Kosten (Stigma,
-        Medienklima, Glaubwürdigkeit, Geldgeber). Modellvorschlag liegt beim Nutzer.
-  - [ ] **Geld ist kein Engpass** (staatliche Teilfinanzierung, 2 % Mitgliederwachstum
-        auch ohne Aktivität, zu billige Kosten). Modellvorschlag liegt beim Nutzer.
-  - [ ] Danach: Korridorprüfung in CI scharf schalten (`--warn-only` entfernen)
+- **M3 Bots und Balancing** erledigt (169 Tests grün, alle Korridore erfüllt):
+  - 5 Strategie-Bots in `src/bots/` (eigener Zufallsgenerator, ändern den Spielzufall nicht)
+  - Runner `src/tools/run_bots.gd` (CSV nach `reports/bots/`, `--param=name=wert` für
+    Experimente), messbare Korridore in `src/bots/corridors.gd`
+  - CI prüft die Korridore hart (100 Partien je Bot, feste Seeds, deterministisch)
+  - Formeltests mit festem Parametersatz (`SimFixture.TEST_PARAMS`); Balancing ändert nur
+    `data/params.json`, jede Änderung ins Protokoll `rechenmodell.md` Abschnitt 17
+  - Modelländerungen (mit Nutzer entschieden): Geldgeber zahlen nur für passende
+    Positionen (5.4); Mitglieder: Startschub, danach Zielwert nach Umfrage (6); relative
+    Obergrenze der Parteienfinanzierung (6); Repräsentationslücke mit Wahlbeteiligung und
+    Mobilisierung (3.8) – Radikalisierbarkeit aus unversorgten Anliegen, nicht aus
+    Regionsmerkmalen
+  - Stand (100 Partien je Bot): Geduldig 100 % Bundestag bis Runde 40; Radikal 75 % bis
+    Runde 24, 90 % vorher Verdachtsfall; Doppelzüngig 64 % aufgedeckt nach 6–10 Runden;
+    Passiv 100 % Bedeutungslosigkeit; Zufall 5 % Siege
 
-**Bot-Lauf:** `godot --headless --path . -s src/tools/run_bots.gd -- --runs=200 --warn-only`
+**Bot-Lauf:** `godot --headless --path . -s src/tools/run_bots.gd -- --runs=200`
+
+## Nächster Schritt
+- [ ] **M4 Karte und UI-Grundgerüst** (`prototyp-plan.md` Abschnitte 8 und 9):
+  - [ ] Karte aus Natural Earth (Verwaltungsgrenzen 1:10 Mio.), einmaliges Python-Skript in
+        `tools/map/` → `data/map/lands.json`
+  - [ ] Kartenansicht mit Überlagerungen, Zoom auf Süden und Norden
+  - [ ] Ansichten: Institutionspanel, Rundenplanung, Quartalsbericht, Partei, Personal,
+        Medien, Speichern/Laden (Platzhaltergrafik, alle Texte über `tr()`)
+  - [ ] Eine Partie von Hand spielbar
+
+## Beobachtungen für später (M6 Spieltest)
+- **Das MVP ist eher zu leicht:** Geduldig und Radikal gewinnen fast immer, selbst der
+  Zufallsbot 5 %. Die Korridore haben keine Obergrenze für Erfolg. Im Spieltest prüfen,
+  ob der Weg zum Bundestag spannend genug ist; ggf. Korridore um Obergrenzen ergänzen.
+- Geld am Ende noch reichlich (Median 4.000–8.000 T€), aber erstmals in sinnvoller Größe.
 
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
 - [x] M0 Projektgerüst
 - [x] M1 Daten und Zustand
 - [x] M2 Kernschleife
-- [ ] M3 Bots und Balancing
+- [x] M3 Bots und Balancing
 - [ ] M4 Karte und UI-Grundgerüst
 - [ ] M5 Inhalte und Lokalisierung
 - [ ] M6 Spieltest

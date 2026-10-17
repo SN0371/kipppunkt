@@ -30,6 +30,11 @@ static func create(defs: GameDefs, scenario_id: String, game_seed: int) -> GameS
 		donor.max_payment = defs.donors[donor_id].max_payment
 		state.donors[donor_id] = donor
 	state.persons.append(PersonSystem.create_chair(state))
+	var salience := PollingSystem.salience(state, defs)
+	for land_id: String in defs.lands:
+		var land := state.lands[land_id]
+		land.representation_gap = RepresentationSystem.gap(defs, defs.lands[land_id], salience)
+		land.turnout = RepresentationSystem.turnout(defs, land.representation_gap, 0.0)
 	return state
 
 

@@ -17,8 +17,8 @@ const EXIT_RATE := 0.03
 const EXIT_UNITY_THRESHOLD := 40.0
 ## Total anchoring at which the fixed costs have doubled.
 const ANCHORING_COST_DIVISOR := 50.0
-## [Vereinfachung] Votes cast in a federal election; land shares follow the population.
-const VOTES_CAST := 45000000.0
+## [Vereinfachung] Eligible voters in the federation; land shares follow the population.
+const ELIGIBLE_VOTERS := 61000000.0
 ## Minimum results for state funding (rechenmodell.md section 6).
 const STATE_FUNDING_MIN_STATE_RESULT := 1.0
 const STATE_FUNDING_MIN_FEDERAL_RESULT := 0.5
@@ -37,12 +37,15 @@ const RESILIENCE_RECOVERY_RATE := 0.02
 ## Returns the votes the party won in the last elections that qualify for state funding.
 static func funded_votes(state: GameState, defs: GameDefs) -> float:
 	var votes := 0.0
+	var federal_votes_cast := 0.0
 	for land_id: String in defs.lands:
-		var result := state.lands[land_id].last_state_result
-		if result >= STATE_FUNDING_MIN_STATE_RESULT:
-			votes += defs.lands[land_id].population_share * VOTES_CAST * result / 100.0
+		var land := state.lands[land_id]
+		var votes_cast := defs.lands[land_id].population_share * ELIGIBLE_VOTERS * land.turnout / 100.0
+		federal_votes_cast += votes_cast
+		if land.last_state_result >= STATE_FUNDING_MIN_STATE_RESULT:
+			votes += votes_cast * land.last_state_result / 100.0
 	if state.party.last_federal_result >= STATE_FUNDING_MIN_FEDERAL_RESULT:
-		votes += VOTES_CAST * state.party.last_federal_result / 100.0
+		votes += federal_votes_cast * state.party.last_federal_result / 100.0
 	return votes
 
 

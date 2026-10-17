@@ -63,7 +63,7 @@ static func _municipal(state: GameState, defs: GameDefs, land_id: String) -> voi
 		var region := state.regions[region_id]
 		region.anchoring = SimMath.clamp100(region.anchoring + defs.params.value("municipal_anchoring_gain") * value)
 	state.party.members = roundi(state.party.members * (1.0 + MUNICIPAL_MEMBER_BONUS))
-	SimLog.add(state, "election", {"type": "municipal", "land": land_id, "result": value})
+	SimLog.add(state, "election", {"type": "municipal", "land": land_id, "result": value, "turnout": land.turnout})
 
 
 static func _state_election(state: GameState, defs: GameDefs, land_id: String) -> void:
@@ -74,13 +74,20 @@ static func _state_election(state: GameState, defs: GameDefs, land_id: String) -
 	land.in_landtag = value >= HURDLE
 	if entered:
 		state.party.reach_classic_bonus = SimMath.clamp100(state.party.reach_classic_bonus + LANDTAG_CLASSIC_BONUS)
-	SimLog.add(state, "election", {"type": "state", "land": land_id, "result": value, "seats": land.in_landtag})
+	SimLog.add(state, "election", {
+		"type": "state", "land": land_id, "result": value, "seats": land.in_landtag, "turnout": land.turnout,
+	})
 
 
 static func _federal(state: GameState, defs: GameDefs) -> void:
 	var total := 0.0
+	var turnout := 0.0
 	for land_id: String in defs.lands:
-		total += defs.lands[land_id].population_share * result(state, defs, land_id)
+		var share := defs.lands[land_id].population_share
+		total += share * result(state, defs, land_id)
+		turnout += share * state.lands[land_id].turnout
 	state.party.last_federal_result = total
 	state.party.in_bundestag = total >= HURDLE
-	SimLog.add(state, "election", {"type": "federal", "result": total, "seats": state.party.in_bundestag})
+	SimLog.add(state, "election", {
+		"type": "federal", "result": total, "seats": state.party.in_bundestag, "turnout": turnout,
+	})

@@ -632,6 +632,11 @@ Der Sieg wird bewusst nicht als Triumph inszeniert, sondern endet in der Nachbes
   - Polen 2015–23: Konflikt um Verfassungsgericht und Justizreform, spätere Umkehr
   - Deutschland: Diskussionen um Parlamentsnormen, Richterwahl und die Verankerung des
     BVerfG im Grundgesetz 2024
+- **Wahlbeteiligung und Repräsentationslücke:** Die Nachbesprechung zeigt, dass die Partei
+  dort am stärksten wurde, wo vorher die Wahlbeteiligung niedrig war, weil drängende
+  Probleme von den etablierten Parteien nicht hinreichend adressiert wurden
+  (`rechenmodell.md` 3.8). Der Grund liegt in unversorgten Anliegen, nicht in den Menschen
+  einer Region.
 - **Institutionen-Lexikon im Spiel:** Jede Institution und Norm hat einen kurzen,
   verständlichen Erklärtext, erreichbar aus dem Panel.
 - **Kennzeichnung von Vereinfachungen:** Wo das Spiel vom echten Recht abweicht, steht dies

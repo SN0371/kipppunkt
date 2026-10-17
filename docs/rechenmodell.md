@@ -155,6 +155,7 @@ Zuspruch_l = P_T     · T_l · f_Reach · f_C              Themen
 
 Ziel_l = P_Basis
        + Zuspruch_l · (1 − Konk_l) · (1 + P_MK · MK_l)  Konkurrenzdruck (3.3), Medienklima (5.6)
+       + Mobilisierung_l                                Repräsentationslücke (3.8), ohne Konkurrenzdruck
        − P_Stigma · VS · (R / 100)                      Stigma durch Einstufung
        + Σ mod
 
@@ -185,6 +186,33 @@ U_Bund = Σ_l Pop_l · U_l
 Im MVP nicht direkt bespielbar: `V_r` bleibt dort 0, alle anderen Terme (Themen,
 Reichweite, Personal, Stigma) wirken normal. Damit folgen sie dem bundesweiten Profil der
 Partei.
+
+### 3.8 Repräsentationslücke, Wahlbeteiligung und Mobilisierung
+Die etablierten Parteien sind gemäßigt. Wer ein drängendes Anliegen stark empfindet
+(Präferenz ±2), findet bei ihnen kein passendes Angebot. Je mehr solcher unversorgten
+Anliegen ein Land hat, desto mehr Menschen bleiben zu Hause. Eine Partei, die genau diese
+Anliegen klar beantwortet, holt sie zurück; radikale Methoden verstärken das, in jede
+ideologische Richtung.
+
+```
+Lücke_l         = Σ_k s_k · w_l,k · [|q_l,k| = 2]  /  Σ_k s_k · w_l,k                  (0 … 1)
+Antwort_l,k     = max(0, p*_k · q_l,k) / 4        nur für |q_l,k| = 2; starke Antwort 1, gemäßigte 0,5
+Mobilisierung_l = P_Mob · Σ_k s_k · w_l,k · [|q_l,k| = 2] · Antwort_l,k / Σ_k s_k · w_l,k
+                        · (0,5 + Rad / 100)
+Beteiligung_l   = P_Wbasis − P_Lücke · Lücke_l + Mobilisierung_l                           (in %)
+```
+
+- Die Lücke hängt an **Themen und Salienz**, nicht an Eigenschaften der Menschen in einer
+  Region. Welche Länder betroffen sind, ergibt sich aus den Daten.
+- **Krisen vergrößern die Lücke**, weil sie die Salienz erhöhen.
+- Ohne passende Positionen bringt Radikalität keine Mobilisierung.
+- Mobilisierte Nichtwähler werden von den etablierten Parteien nicht umworben: kein
+  Konkurrenzdruck.
+- Die Wahlbeteiligung wird bei jeder Wahl protokolliert und bestimmt die abgegebenen
+  Stimmen für die Parteienfinanzierung (61 Mio. Wahlberechtigte, je Land nach Bevölkerung).
+- **Lernpunkt:** Radikale werden dort stark, wo vorher die Wahlbeteiligung niedrig war,
+  weil drängende Probleme nicht hinreichend adressiert wurden. Gegenkraft wäre, die Lücke
+  zu schließen (später: Reaktionen der Konkurrenzparteien, Verteidigungsmodus).
 
 ---
 
@@ -652,6 +680,9 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_Gbasis` | 35 | Zufriedenheit eines Geldgebers mit einer Partei ohne Positionen |
 | `P_Gthema` | 25 | Zufriedenheit je voll übereinstimmendem Thema |
 | `P_Gideo` | 15 | Einfluss der ideologischen Nähe auf die Zufriedenheit |
+| `P_Mob` | 8 | Max. Prozentpunkte durch Mobilisierung bei voller Lücke, voller Antwort und Radikalität 50 |
+| `P_Wbasis` | 78 | Wahlbeteiligung ohne Repräsentationslücke in % |
+| `P_Lücke` | 30 | Beteiligungsverlust in Prozentpunkten bei voller Lücke |
 
 **Startwerte Szenario "Neugründung":** `G` 50, `M` 300, `U_l` 0,5 %, `C` 50, `R` 75,
 `Rad` 10, `B` 0, `VS` 0, `E` 70, `RP` 5, `RK_Bonus` 0, `V_r` 2 (Süden, Norden), 0 sonst,
@@ -718,7 +749,7 @@ Startwerte für das Balancing (M3).
 | Unterstützung über Dritte | Dreifache Maximalzahlung, Zufriedenheit −10, Intransparenz +15, `B` +3, setzt Zufriedenheit ≥ 50 voraus |
 | Säuberung | Entfernt Personal mit Loyalität < 40; übriges Personal −5 Kompetenz |
 | Medienhäuser | Werden im Schritt "Meinung" nach der Umfrageberechnung fortgeschrieben |
-| Staatliche Teilfinanzierung | 45 Mio. abgegebene Stimmen bundesweit, je Land anteilig nach Bevölkerung **[Vereinfachung]** |
+| Staatliche Teilfinanzierung | 61 Mio. Wahlberechtigte, je Land nach Bevölkerung, mal Wahlbeteiligung (3.8) **[Vereinfachung]** |
 | Landesvorsitz | Im MVP fest je eine Funktion für Süden und Norden |
 | Spielstände | Kommazahlen werden auf etwa 16 Stellen genau geladen (Einschränkung von Godots Zahlenumwandlung); Seed, Zufallsgenerator und Ganzzahlen exakt. Wiederholung über Seed und Aufträge ist exakt |
 
@@ -736,3 +767,4 @@ Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Wert
 | 2026-10-17 | `P_W` | 2,0 → 1,4 | Widersprüche flogen zu früh auf (Median 6 Runden nach der ersten Botschaft, nur 50 % im Korridor) | Median 7 Runden, 63 % im Korridor |
 | 2026-10-17 | Mitgliederformel (Modelländerung, mit Nutzer entschieden) | 2 % Grundwachstum → Startschub bis 1.000 Mitglieder, danach Zielwert nach Umfrage | Mitglieder wuchsen auch ohne Aktivität um 2 % pro Quartal; passive Partei hatte am Ende > 3.000 Mitglieder und > 12.000 T€ | Passiv: ~565 Mitglieder, ~600 T€; Geduldig ~4.600 Mitglieder; Korridore unverändert |
 | 2026-10-17 | Relative Obergrenze der Parteienfinanzierung (Modelländerung, mit Nutzer entschieden) | unbegrenzt → höchstens Beiträge + Spenden des Quartals | Staatliche Teilfinanzierung machte Geld bedeutungslos | Geld am Ende (Median): Geduldig 15.900 → 4.000 T€, Radikal 37.400 → 8.000 T€, Passiv ~220 T€; keine Bankrotte, Korridore unverändert |
+| 2026-10-17 | Repräsentationslücke und Mobilisierung (Modelländerung, mit Nutzer entschieden), `P_Mob` 8 | – | Radikalität brachte im Umfragemodell keinen Vorteil, der radikale Weg war nicht schneller (3 % Siege, 0 % bis Runde 24) | Radikal 72 % bis Runde 24, 87 % vorher Verdachtsfall; Zufall 7 % Siege; alle Korridore erfüllt. `P_Mob` 12 machte das Spiel zu leicht (Zufall 18 % Siege) |

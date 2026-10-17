@@ -238,8 +238,8 @@ Bei jedem Push und Pull Request:
 2. Projekt einmal importieren (`godot --headless --import`), damit Klassen registriert sind.
 3. Datenvalidierung: läuft als Test (`test_shipped_data_loads_without_errors`) im Testschritt mit, kein eigenes Skript.
 4. Tests mit GUT, Ergebnis als JUnit-XML.
-5. Kurzer Bot-Lauf (z. B. 20 Partien je Bot) als Rauchtest. Die Korridorprüfung meldet
-   zunächst nur Warnungen; sie wird zum harten Kriterium, sobald das Balancing steht.
+5. Bot-Lauf mit 100 Partien je Bot und festen Seeds. Die Korridorprüfung ist ein hartes
+   Kriterium: Verfehlt ein Bot seinen Korridor, hat eine Änderung das Balancing gebrochen.
 
 ---
 

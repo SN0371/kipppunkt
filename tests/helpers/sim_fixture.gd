@@ -41,6 +41,9 @@ const TEST_PARAMS: Dictionary = {
 	"donor_ideology_weight": 15.0,
 	"member_small_party": 1000.0,
 	"members_per_polling_point": 1000.0,
+	"mobilization_weight": 6.0,
+	"turnout_base": 78.0,
+	"turnout_gap_effect": 30.0,
 }
 
 static var _defs: GameDefs
