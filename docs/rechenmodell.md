@@ -607,7 +607,7 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 
 | Parameter | Wert | Wirkung |
 |---|---|---|
-| `P_Basis` | 1,0 | Grundpotenzial in % |
+| `P_Basis` | 0,5 | Grundpotenzial in % (Balancing, siehe 17) |
 | `P_T` | 14 | Max. Prozentpunkte durch Themenpassung |
 | `P_V` | 6 | Max. Prozentpunkte durch Verankerung |
 | `P_Pers` | 2 | Max. Prozentpunkte durch Spitzenpersonal |
@@ -618,7 +618,7 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_Umax` | 45 | Obergrenze Umfrage |
 | `P_σWahl` | 0,8 | Rauschen am Wahltag |
 | `P_Wechsel` | 3 | Glaubwürdigkeitskosten Kurswechsel |
-| `P_W` | 2 | Anstieg Widerspruchsrisiko |
+| `P_W` | 1,4 | Anstieg Widerspruchsrisiko (Balancing, siehe 17) |
 | `P_Wzerfall` | 1 | Abklingen Widerspruchsrisiko |
 | `P_Beitrag` | 0,03 | Tsd. € pro Mitglied und Quartal |
 | `P_Staat` | 0,0002 | Tsd. € pro Stimme und Quartal |
@@ -706,3 +706,16 @@ Startwerte für das Balancing (M3).
 | Staatliche Teilfinanzierung | 45 Mio. abgegebene Stimmen bundesweit, je Land anteilig nach Bevölkerung **[Vereinfachung]** |
 | Landesvorsitz | Im MVP fest je eine Funktion für Süden und Norden |
 | Spielstände | Kommazahlen werden auf etwa 16 Stellen genau geladen (Einschränkung von Godots Zahlenumwandlung); Seed, Zufallsgenerator und Ganzzahlen exakt. Wiederholung über Seed und Aufträge ist exakt |
+
+---
+
+## 17. Balancing-Protokoll
+
+Jede Parameteränderung wird hier mit Grund und Wirkung festgehalten. Grundlage sind Läufe
+mit 200 Partien je Bot (`src/tools/run_bots.gd`). Formeltests nutzen einen festen
+Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Werten ab.
+
+| Datum | Parameter | Alt → Neu | Grund | Wirkung |
+|---|---|---|---|---|
+| 2026-10-17 | `P_Basis` | 1,0 → 0,5 | Eine passive Partei blieb dauerhaft über 1 % und endete nur in 39 % der Partien in Bedeutungslosigkeit | Passiv: 99 % Bedeutungslosigkeit; Geduldig weiter 83 % im Korridor |
+| 2026-10-17 | `P_W` | 2,0 → 1,4 | Widersprüche flogen zu früh auf (Median 6 Runden nach der ersten Botschaft, nur 50 % im Korridor) | Median 7 Runden, 63 % im Korridor |

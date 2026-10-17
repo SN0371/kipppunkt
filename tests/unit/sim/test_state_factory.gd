@@ -7,8 +7,7 @@ var _defs: GameDefs
 
 
 func before_all() -> void:
-	_defs = GameDefs.load_from_dir("res://data")
-	assert_true(_defs.is_valid(), "Data must be valid")
+	_defs = SimFixture.defs()
 
 
 func test_party_starts_with_scenario_values() -> void:

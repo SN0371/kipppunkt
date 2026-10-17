@@ -28,9 +28,11 @@ func test_rivals_are_spread_evenly_around_the_centre() -> void:
 		assert_almost_eq(rival.ideology.length(), 35.0, 0.5, "%s radius" % rival.id)
 
 
-func test_parameters_are_readable() -> void:
+func test_parameters_match_the_data_file() -> void:
 	var defs := GameDefs.load_from_dir(DATA_DIR)
-	assert_eq(defs.params.value("topic_weight"), 14.0)
+	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DATA_DIR.path_join("params.json")))
+	for name: String in raw:
+		assert_eq(defs.params.value(name), float(raw[name]["value"]), name)
 
 
 func test_missing_topic_in_land_is_reported() -> void:

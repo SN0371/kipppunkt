@@ -1,5 +1,5 @@
 {
-	"polling_base": { "symbol": "P_Basis", "value": 1.0 },
+	"polling_base": { "symbol": "P_Basis", "value": 0.5 },
 	"topic_weight": { "symbol": "P_T", "value": 14.0 },
 	"anchoring_weight": { "symbol": "P_V", "value": 6.0 },
 	"leadership_weight": { "symbol": "P_Pers", "value": 2.0 },
@@ -10,7 +10,7 @@
 	"polling_max": { "symbol": "P_Umax", "value": 45.0 },
 	"election_noise": { "symbol": "P_σWahl", "value": 0.8 },
 	"position_change_cost": { "symbol": "P_Wechsel", "value": 3.0 },
-	"contradiction_growth": { "symbol": "P_W", "value": 2.0 },
+	"contradiction_growth": { "symbol": "P_W", "value": 1.4 },
 	"contradiction_decay": { "symbol": "P_Wzerfall", "value": 1.0 },
 	"member_fee": { "symbol": "P_Beitrag", "value": 0.03 },
 	"state_funding_per_vote": { "symbol": "P_Staat", "value": 0.0002 },
