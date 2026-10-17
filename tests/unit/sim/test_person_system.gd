@@ -76,9 +76,55 @@ func test_pool_refresh_keeps_staff_and_replaces_candidates() -> void:
 	assert_eq(_state.persons.size(), 3)
 
 
+func test_ideologue_radicalizes_and_divides() -> void:
+	var ideologue := _staff("general_secretary", "ideologue")
+	_state.party.radicalism = 10.0
+	_state.party.unity = 70.0
+	PersonSystem.turn_effects(_state, SimFixture.defs())
+	assert_eq(_state.party.radicalism, 11.0)
+	assert_eq(_state.party.unity, 69.0)
+	assert_not_null(PersonSystem.by_id(_state, ideologue.id))
+
+
+func test_journalist_collects_material() -> void:
+	var journalist := _staff("treasurer", "journalist")
+	journalist.network = 60.0
+	PersonSystem.turn_effects(_state, SimFixture.defs())
+	assert_eq(journalist.material, 6.0)
+
+
+func test_disloyal_careerist_leaves_when_polling_falls() -> void:
+	var careerist := _staff("state_chair_south", "careerist")
+	careerist.loyalty = 0.0
+	careerist.network = 90.0
+	_state.lands["land.by"].polling = 3.0
+	_state.lands["land.ni"].polling = 3.0
+	_state.national_polling_history.assign([3.0, 2.0, 1.0])
+	PersonSystem.turn_effects(_state, SimFixture.defs())
+	assert_null(PersonSystem.by_id(_state, careerist.id))
+	assert_eq(_state.lands["land.by"].polling, 2.5, "Defection costs votes in the region")
+	assert_eq(_state.lands["land.ni"].polling, 3.0, "Other regions are unaffected")
+
+
+func test_careerist_stays_while_polling_rises() -> void:
+	var careerist := _staff("treasurer", "careerist")
+	careerist.loyalty = 0.0
+	_state.national_polling_history.assign([1.0, 2.0, 3.0])
+	PersonSystem.turn_effects(_state, SimFixture.defs())
+	assert_not_null(PersonSystem.by_id(_state, careerist.id))
+
+
 func test_fully_loyal_person_always_passes() -> void:
 	var person := PersonSystem.generate(_state)
 	person.loyalty = 100.0
 	_state.party.unity = 100.0
 	for i in 100:
 		assert_true(PersonSystem.loyalty_check(_state, person))
+
+
+func _staff(role: String, agenda: String) -> PersonState:
+	var person := PersonSystem.generate(_state)
+	person.role = role
+	person.agenda = agenda
+	_state.persons.append(person)
+	return person

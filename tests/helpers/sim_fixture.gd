@@ -19,3 +19,11 @@ static func defs() -> GameDefs:
 ## Returns a fresh start state of the default scenario.
 static func new_state(game_seed: int = 1) -> GameState:
 	return StateFactory.create(defs(), SCENARIO, game_seed)
+
+
+## Returns freshly loaded definitions with overridden parameters, leaving the shared ones untouched.
+static func defs_with(overrides: Dictionary) -> GameDefs:
+	var fresh := GameDefs.load_from_dir(DATA_DIR)
+	for name: String in overrides:
+		fresh.params.override(name, overrides[name])
+	return fresh

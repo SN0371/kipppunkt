@@ -42,3 +42,10 @@ static func from_dict(raw: Dictionary, reader: JsonReader) -> ParamSet:
 func value(name: String) -> float:
 	assert(_values.has(name), "Unknown parameter: %s" % name)
 	return _values.get(name, 0.0)
+
+
+## Overrides the value of a known parameter. Meant for balancing tools and tests;
+## the game itself never changes parameters.
+func override(name: String, new_value: float) -> void:
+	assert(_values.has(name), "Unknown parameter: %s" % name)
+	_values[name] = new_value

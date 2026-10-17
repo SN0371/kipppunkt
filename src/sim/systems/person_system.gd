@@ -33,6 +33,14 @@ const REGION_CHAIRS: Dictionary = {
 ## New candidates per turn: base plus total anchoring divided by this value (rechenmodell.md 10.1).
 const POOL_BASE := 2
 const POOL_ANCHORING_DIVISOR := 25.0
+## Ideologues push radicalism up and unity down every turn.
+const IDEOLOGUE_RADICALISM_PER_TURN := 1.0
+const IDEOLOGUE_UNITY_PER_TURN := 1.0
+## Undercover journalists collect network / 10 material per turn.
+const JOURNALIST_MATERIAL_DIVISOR := 10.0
+## A well-connected careerist takes voters along when defecting.
+const CAREERIST_DEFECTION_NETWORK := 70.0
+const CAREERIST_DEFECTION_POLLING_LOSS := 0.5
 
 
 ## Generates a new person with rolled attributes and a possibly hidden agenda.
@@ -136,6 +144,45 @@ static func refresh_pool(state: GameState) -> void:
 static func loyalty_check(state: GameState, person: PersonState) -> bool:
 	var probability := person.loyalty / 100.0 * (0.5 + state.party.unity / 200.0)
 	return state.rng.randf() < probability
+
+
+## Applies the ongoing effects of hidden agendas on the staff (rechenmodell.md 10.2).
+## Called once per turn after the actions.
+static func turn_effects(state: GameState, defs: GameDefs) -> void:
+	var party := state.party
+	var falling := _national_polling_fell_twice(state)
+	for person in staff(state):
+		match person.agenda:
+			"ideologue":
+				party.radicalism = SimMath.clamp100(party.radicalism + IDEOLOGUE_RADICALISM_PER_TURN)
+				party.unity = SimMath.clamp100(party.unity - IDEOLOGUE_UNITY_PER_TURN)
+			"journalist":
+				person.material += person.network / JOURNALIST_MATERIAL_DIVISOR
+			"careerist":
+				if falling and not loyalty_check(state, person):
+					_careerist_leaves(state, defs, person)
+
+
+static func _national_polling_fell_twice(state: GameState) -> bool:
+	var history := state.national_polling_history
+	return history.size() >= 3 and history[-1] < history[-2] and history[-2] < history[-3]
+
+
+## Removes a careerist who jumps ship. A well-connected one costs polling in the region
+## the person led, or everywhere for a national function.
+static func _careerist_leaves(state: GameState, defs: GameDefs, person: PersonState) -> void:
+	state.persons.erase(person)
+	var defects := person.network > CAREERIST_DEFECTION_NETWORK
+	if defects:
+		var region_id := ""
+		for id: String in REGION_CHAIRS:
+			if REGION_CHAIRS[id] == person.role:
+				region_id = id
+		for land_id: String in defs.lands:
+			if region_id.is_empty() or defs.lands[land_id].region == region_id:
+				var land := state.lands[land_id]
+				land.polling = maxf(0.0, land.polling - CAREERIST_DEFECTION_POLLING_LOSS)
+	SimLog.add(state, "person_left", {"person": person.id, "role": person.role, "agenda": "careerist", "defected": defects})
 
 
 static func _roll_attribute(rng: RandomNumberGenerator) -> float:
