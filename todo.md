@@ -68,13 +68,15 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   - [ ] Korridorprüfung mit Bericht; kurzer Bot-Lauf in CI (zunächst nur Warnungen)
   - [ ] Balancing-Durchgang, Parameteränderungen begründen
 - **Erste Befunde aus einem Probelauf (40 Partien je Strategie, Ende M2):**
-  - **Geld ist kein Engpass:** Eine Partei ohne Positionen steht in der Mitte und damit
-    nah genug an allen Geldgebern (Zufriedenheit ~75), alle zahlen. Passive Partei hat
-    nach 15 Runden > 1.000 T€, aktive am Ende 20.000–36.000 T€. **Modellfrage, mit Nutzer
-    klären:** Geldgeber sollten erst zahlen, wenn die Partei Positionen in ihrem Sinne hat.
+  - **Geld ist kein Engpass:** Geldgeber zahlen inzwischen nur für passende Positionen
+    (`rechenmodell.md` 5.4, mit Nutzer entschieden). Hauptquelle ist jetzt die staatliche
+    Teilfinanzierung: Schon ~0,6 % bei der Bundestagswahl bringen ~54 T€/Quartal bei
+    Fixkosten von ~9 T€. Der Betrag ist realistisch, Kosten und Aktionen sind zu billig.
+    Passive Partei hat nach 15 Runden ~550–770 T€. **Im Balancing lösen** (z. B. Fixkosten,
+    Aktionskosten, Personal kostet Geld).
   - Passiv: 19/40 Bedeutungslosigkeit, 21/40 Zeitablauf (Umfrage pendelt um 1 %) –
     Korridor verlangt Bedeutungslosigkeit in der Mehrheit.
-  - Einfache Teststrategie: 23/40 Bundestag (Median Runde 56), sonst Zeitablauf –
+  - Einfache Teststrategie: 24/40 Bundestag (Median Runde 56), sonst Zeitablauf –
     langsamer als der Korridor des geduldigen Bots (20–32 Runden).
   - Verankerung erreicht schnell 100 in beiden Regionen.
 

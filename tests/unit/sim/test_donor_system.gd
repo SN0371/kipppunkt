@@ -19,19 +19,39 @@ func test_surveillance_penalty_by_kind() -> void:
 	assert_eq(DonorSystem.surveillance_penalty("midsize", 1), 15.0)
 
 
-func test_topic_conflicts_count_opposite_sides() -> void:
+func test_topic_support_rewards_matching_and_punishes_opposite_positions() -> void:
 	var supplier := _defs.donors["donor.auto_supplier"]
-	_state.party.positions["topic.taxes"] = -1
-	assert_eq(DonorSystem.topic_conflicts(supplier, _state.party), 1)
-	_state.party.positions["topic.combustion_ban"] = 1
-	assert_eq(DonorSystem.topic_conflicts(supplier, _state.party), 2)
-	_state.party.positions["topic.taxes"] = 0
-	assert_eq(DonorSystem.topic_conflicts(supplier, _state.party), 1, "A neutral position is no conflict")
+	assert_eq(DonorSystem.topic_support(supplier, _state.party), 0.0, "No positions, no support")
+	_state.party.positions["topic.taxes"] = 2
+	_state.party.positions["topic.combustion_ban"] = -2
+	assert_eq(DonorSystem.topic_support(supplier, _state.party), 2.0, "Full agreement on both topics")
+	_state.party.positions["topic.combustion_ban"] = 2
+	assert_eq(DonorSystem.topic_support(supplier, _state.party), 0.0, "+1 and -1 cancel out")
+	_state.party.positions["topic.wind_power"] = 2
+	assert_eq(DonorSystem.topic_support(supplier, _state.party), 0.0, "Other topics do not count")
 
 
-func test_matching_ideology_gives_full_satisfaction() -> void:
+func test_party_without_positions_leaves_donors_neutral() -> void:
+	var target := DonorSystem.target_satisfaction(_state, _defs, "donor.auto_supplier", Vector2.ZERO)
+	assert_eq(target, 35.0, "Below the payment threshold, above the withdrawal threshold")
+	assert_lt(target, DonorSystem.PAYMENT_THRESHOLD)
+	assert_gt(target, DonorSystem.WITHDRAWAL_THRESHOLD)
+
+
+func test_matching_positions_and_ideology_give_full_satisfaction() -> void:
+	_state.party.positions["topic.taxes"] = 2
+	_state.party.positions["topic.combustion_ban"] = -2
+	# 35 + 25 * 2 + 15 * (1 - 0)
 	var target := DonorSystem.target_satisfaction(_state, _defs, "donor.auto_supplier", Vector2(40, 20))
 	assert_almost_eq(target, 100.0, 0.0001)
+
+
+func test_opposite_positions_drive_donors_away() -> void:
+	_state.party.positions["topic.taxes"] = -2
+	_state.party.positions["topic.combustion_ban"] = 2
+	# 35 - 25 * 2 + 15 * (1 - 2 * 1)
+	var target := DonorSystem.target_satisfaction(_state, _defs, "donor.auto_supplier", Vector2(-100, -100))
+	assert_almost_eq(target, -30.0, 0.0001)
 
 
 func test_payment_scales_with_satisfaction_and_credibility() -> void:
@@ -60,6 +80,7 @@ func test_unhappy_donor_withdraws_and_returns_with_half_payment() -> void:
 	DonorSystem.step(_state, _defs, Vector2(100, 100))
 	assert_false(donor.active, "Withdrew after two turns below 30")
 	_state.party.vs_level = 0
+	_state.party.positions["topic.wind_power"] = 2
 	for i in DonorSystem.RETURN_DELAY_TURNS + 10:
 		_state.turn += 1
 		DonorSystem.step(_state, _defs, Vector2(0, -30))

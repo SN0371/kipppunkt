@@ -3,10 +3,8 @@ extends RefCounted
 ## Donors: satisfaction, payments, withdrawal and return (rechenmodell.md section 5.4).
 
 const SATISFACTION_RATE := 0.3
-## Ideology distance at which a donor's satisfaction from ideology reaches 0.
-const DISTANCE_SCALE := 200.0
-## Satisfaction lost per topic on which party and donor stand on opposite sides.
-const TOPIC_CONFLICT_PENALTY := 15.0
+## Ideology distance at which the ideology term turns fully negative.
+const IDEOLOGY_RANGE := 100.0
 ## Satisfaction from which a donor starts paying, and the range up to full payment.
 const PAYMENT_THRESHOLD := 40.0
 const PAYMENT_RANGE := 60.0
@@ -33,22 +31,28 @@ static func surveillance_penalty(kind: String, vs_level: int) -> float:
 	return float(rule[1]) * (vs_level - first_level + 1)
 
 
-## Returns the number of topics on which party and donor take opposite sides.
-static func topic_conflicts(def: DonorDef, party: PartyState) -> int:
-	var count := 0
+## Returns the summed agreement of the party's federal positions with a donor's topics,
+## each -1..+1 like the topic fit of the polling model. Topics without a position count 0.
+static func topic_support(def: DonorDef, party: PartyState) -> float:
+	var total := 0.0
 	for topic_id: String in def.topic_preferences:
-		if party.positions.get(topic_id, 0) * def.topic_preferences[topic_id] < 0:
-			count += 1
-	return count
+		if party.positions.has(topic_id):
+			total += 1.0 - absi(party.positions[topic_id] - def.topic_preferences[topic_id]) / 2.0
+	return total
 
 
-## Returns the satisfaction a donor converges to (Ziel_Z_u).
+## Returns the satisfaction a donor converges to (Ziel_Z_u, rechenmodell.md 5.4).
+## A party without positions stays neutral: the donor neither pays nor withdraws.
+## Donors pay for positions in their interest, not for closeness to the centre.
 static func target_satisfaction(state: GameState, defs: GameDefs, donor_id: String, ideology: Vector2) -> float:
 	var def := defs.donors[donor_id]
-	var distance := minf(1.0, ideology.distance_to(def.ideology) / DISTANCE_SCALE)
-	var value := 100.0 * (1.0 - distance) \
-		- TOPIC_CONFLICT_PENALTY * topic_conflicts(def, state.party) \
+	var params := defs.params
+	var value := params.value("donor_base") \
+		+ params.value("donor_topic_weight") * topic_support(def, state.party) \
 		- surveillance_penalty(def.kind, state.party.vs_level)
+	if not state.party.positions.is_empty():
+		var distance := minf(1.0, ideology.distance_to(def.ideology) / IDEOLOGY_RANGE)
+		value += params.value("donor_ideology_weight") * (1.0 - 2.0 * distance)
 	return ModifierSystem.apply(state, "donor_target." + donor_id, value)
 
 

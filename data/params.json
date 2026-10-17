@@ -25,5 +25,8 @@
 	"rival_pressure": { "symbol": "P_Konk", "value": 1.0 },
 	"media_climate_effect": { "symbol": "P_MK", "value": 0.2 },
 	"media_climate_credibility_shift": { "symbol": "P_MKC", "value": 20.0 },
-	"media_sensationalism_reach": { "symbol": "P_Zuspitz", "value": 15.0 }
+	"media_sensationalism_reach": { "symbol": "P_Zuspitz", "value": 15.0 },
+	"donor_base": { "symbol": "P_Gbasis", "value": 35.0 },
+	"donor_topic_weight": { "symbol": "P_Gthema", "value": 25.0 },
+	"donor_ideology_weight": { "symbol": "P_Gideo", "value": 15.0 }
 }

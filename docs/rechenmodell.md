@@ -1,6 +1,6 @@
 # Rechenmodell der Kernschleife (MVP)
 
-Stand: 2026-10-17 · Version 0.2 (Umsetzungsentscheidungen aus M2 ergänzt) · Bezug: `game-design.md` Version 0.3
+Stand: 2026-10-17 · Version 0.3 (Geldgeber zahlen nur für passende Positionen) · Bezug: `game-design.md` Version 0.3
 
 > Dieses Dokument übersetzt die Systeme des Design-Dokuments in Zahlen und Formeln für den
 > MVP (Phasen I–III, Regionen Süden und Norden spielbar). Alle Konstanten heißen `P_…`,
@@ -277,12 +277,21 @@ W(t+1) = W(t) + P_W · Σ_(k,r) |p_k,r − p_k| · s_k   −  P_Wzerfall
 Aufdeckung siehe Presse (Abschnitt 9).
 
 ### 5.4 Geldgeber
+Geldgeber zahlen für Positionen in ihrem Sinne, nicht für bloße Nähe zur Mitte. Eine Partei
+ohne Positionen bleibt für sie neutral: Sie zahlen nicht, ziehen sich aber auch nicht zurück.
+
 ```
-Abstand_u = min(1, |I − I_u| / 200)                   (0 … 1, euklidisch über beide Achsen)
-Ziel_Z_u  = 100 · (1 − Abstand_u) − 15 · (Themen-Konflikte mit u) − Abzug_VS(u, VS) + Σ mod
+a_k       = 1 − |p_k − Präferenz_u,k| / 2            je Thema des Geldgebers mit Position der Partei (−1 … +1)
+Ideo_u    = 1 − 2 · min(1, |I − I_u| / 100)          (−1 … +1), nur wenn die Partei Positionen hat, sonst 0
+Ziel_Z_u  = P_Gbasis + P_Gthema · Σ_k a_k + P_Gideo · Ideo_u − Abzug_VS(u, VS) + Σ mod
 Z_u(t+1)  = Z_u(t) + 0,3 · (Ziel_Z_u − Z_u(t))
 Zahlung_u = Zmax_u · max(0, (Z_u − 40) / 60) · f_C
 ```
+
+- Ohne Positionen: `Ziel_Z_u` = 35, also unter der Zahlungsschwelle 40 und über der
+  Rückzugsschwelle 30.
+- Gegenpositionen senken die Zufriedenheit bis unter 30: Der Geldgeber zieht sich zurück.
+  Wer Geld will, muss sich festlegen (Ideologie-Pfad, Abschnitt 8 im Design-Dokument).
 
 - **Abgang:** Liegt `Z_u` zwei Runden in Folge unter 30, zieht sich der Geldgeber zurück
   (Ereignis). Rückkehr frühestens nach 8 Runden, mit halbiertem `Zmax_u`.
@@ -625,6 +634,9 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_MK` | 0,2 | Wirkung des Medienklimas auf den Zuspruch (±20 %) |
 | `P_MKC` | 20 | Verschiebung des Glaubwürdigkeits-Ruhewerts durch das Medienklima |
 | `P_Zuspitz` | 15 | Zusätzliche Reichweite eines vollständig vereinnahmten Hauses |
+| `P_Gbasis` | 35 | Zufriedenheit eines Geldgebers mit einer Partei ohne Positionen |
+| `P_Gthema` | 25 | Zufriedenheit je voll übereinstimmendem Thema |
+| `P_Gideo` | 15 | Einfluss der ideologischen Nähe auf die Zufriedenheit |
 
 **Startwerte Szenario "Neugründung":** `G` 50, `M` 300, `U_l` 0,5 %, `C` 50, `R` 75,
 `Rad` 10, `B` 0, `VS` 0, `E` 70, `RP` 5, `RK_Bonus` 0, `V_r` 2 (Süden, Norden), 0 sonst,
@@ -677,7 +689,6 @@ Startwerte für das Balancing (M3).
 | Resilienz-Erholung | 2 % der Differenz zum Startwert des Szenarios pro Runde |
 | Krisen | Jede echte Krise hat ein Vorzeichen; Fehlalarme so häufig, dass 70 % der Vorzeichen eintreffen; höchstens eine Krise gleichzeitig |
 | Geldgeber: Einstufung | AG −20 je Stufe ab VS 1; Mittelstand −15 je Stufe ab VS 1; Familienunternehmen −15 je Stufe ab VS 2 (VS 2: −15, VS 3: −30) |
-| Geldgeber: Themenkonflikt | Partei und Geldgeber stehen auf entgegengesetzten Seiten (Vorzeichen) |
 | Geldgeber: Rückkehr | Nach der Wartezeit, sobald die Zufriedenheit wieder mindestens 50 erreicht |
 | Bedeutungslosigkeit | Wird erst ab Runde 8 gezählt, frühestes Ende also in Runde 15 |
 | Karrierist läuft über | Bei Vernetzung > 70: −0,5 Umfrage in der geführten Region, bei Bundesfunktion in allen Ländern |
