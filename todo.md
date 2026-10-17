@@ -61,24 +61,22 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 ```
 
 ## Nächster Schritt
-- [ ] **M3 Bots und Balancing** (`prototyp-plan.md` Abschnitt 7, Korridore in
-      `rechenmodell.md` Abschnitt 14):
-  - [ ] 5 Strategie-Bots in `src/bots/`: geduldig, radikal, doppelzüngig, passiv, zufällig
-  - [ ] Headless-Lauf `src/tools/run_bots.gd` → CSV je Partie
-  - [ ] Korridorprüfung mit Bericht; kurzer Bot-Lauf in CI (zunächst nur Warnungen)
-  - [ ] Balancing-Durchgang, Parameteränderungen begründen
-- **Erste Befunde aus einem Probelauf (40 Partien je Strategie, Ende M2):**
-  - **Geld ist kein Engpass:** Geldgeber zahlen inzwischen nur für passende Positionen
-    (`rechenmodell.md` 5.4, mit Nutzer entschieden). Hauptquelle ist jetzt die staatliche
-    Teilfinanzierung: Schon ~0,6 % bei der Bundestagswahl bringen ~54 T€/Quartal bei
-    Fixkosten von ~9 T€. Der Betrag ist realistisch, Kosten und Aktionen sind zu billig.
-    Passive Partei hat nach 15 Runden ~550–770 T€. **Im Balancing lösen** (z. B. Fixkosten,
-    Aktionskosten, Personal kostet Geld).
-  - Passiv: 19/40 Bedeutungslosigkeit, 21/40 Zeitablauf (Umfrage pendelt um 1 %) –
-    Korridor verlangt Bedeutungslosigkeit in der Mehrheit.
-  - Einfache Teststrategie: 24/40 Bundestag (Median Runde 56), sonst Zeitablauf –
-    langsamer als der Korridor des geduldigen Bots (20–32 Runden).
-  - Verankerung erreicht schnell 100 in beiden Regionen.
+- [ ] **M3 Bots und Balancing** – Werkzeuge fertig, Balancing läuft:
+  - [x] 5 Strategie-Bots in `src/bots/` (eigener Zufallsgenerator, ändern den Spielzufall nicht)
+  - [x] Runner `src/tools/run_bots.gd` (CSV nach `reports/bots/`, `--param=name=wert` für
+        Experimente), messbare Korridore in `src/bots/corridors.gd`, CI-Lauf mit 20 Partien
+  - [x] Korridore auf Wahltermine umgestellt (Bundestagswahlen nur in Runde 8, 24, 40, 56, 72)
+  - [x] Formeltests mit festem Parametersatz (`SimFixture.TEST_PARAMS`), Balancing ändert
+        nur `data/params.json`; jede Änderung ins Protokoll `rechenmodell.md` Abschnitt 17
+  - [x] Passiv und Doppelzüngig im Korridor (`P_Basis` 0,5, `P_W` 1,4)
+  - [ ] **Radikaler Weg ist zu schwach** (0 % Bundestag bis Runde 24, nur 2 % Siege):
+        Radikalität bringt im Umfragemodell keinen Vorteil, nur Kosten (Stigma,
+        Medienklima, Glaubwürdigkeit, Geldgeber). Modellvorschlag liegt beim Nutzer.
+  - [ ] **Geld ist kein Engpass** (staatliche Teilfinanzierung, 2 % Mitgliederwachstum
+        auch ohne Aktivität, zu billige Kosten). Modellvorschlag liegt beim Nutzer.
+  - [ ] Danach: Korridorprüfung in CI scharf schalten (`--warn-only` entfernen)
+
+**Bot-Lauf:** `godot --headless --path . -s src/tools/run_bots.gd -- --runs=200 --warn-only`
 
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
 - [x] M0 Projektgerüst
