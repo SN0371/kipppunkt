@@ -1,0 +1,38 @@
+[
+	{
+		"id": "topic.wind_power",
+		"name_key": "topic.wind_power.name",
+		"kind": "location",
+		"ideology_vector": [0.0, -1.0]
+	},
+	{
+		"id": "topic.combustion_ban",
+		"name_key": "topic.combustion_ban.name",
+		"kind": "location",
+		"ideology_vector": [-0.5, -1.0]
+	},
+	{
+		"id": "topic.agriculture",
+		"name_key": "topic.agriculture.name",
+		"kind": "location",
+		"ideology_vector": [0.0, 1.0]
+	},
+	{
+		"id": "topic.housing_costs",
+		"name_key": "topic.housing_costs.name",
+		"kind": "location",
+		"ideology_vector": [-1.0, 0.0]
+	},
+	{
+		"id": "topic.taxes",
+		"name_key": "topic.taxes.name",
+		"kind": "principle",
+		"ideology_vector": [1.0, 0.0]
+	},
+	{
+		"id": "topic.welfare",
+		"name_key": "topic.welfare.name",
+		"kind": "principle",
+		"ideology_vector": [-1.0, 0.0]
+	}
+]

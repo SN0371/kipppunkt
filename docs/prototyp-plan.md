@@ -111,7 +111,7 @@ kipppunkt/
 │   │   └── turn_runner.gd          Rundenablauf (rechenmodell.md Abschnitt 2)
 │   ├── bots/                       Strategie-Bots
 │   ├── ui/                         Szenen und UI-Skripte
-│   └── tools/                      Headless-Einstiegspunkte (Bots, Validierung)
+│   └── tools/                      Headless-Einstiegspunkte (Bot-Läufe)
 ├── tests/
 │   ├── unit/                       Formeln einzeln
 │   └── integration/                Ganze Runden und Partien
@@ -124,18 +124,18 @@ kipppunkt/
 
 | Skript in `src/sim/systems/` | Rechenmodell |
 |---|---|
-| `economy.gd` | 6 Ressourcenfluss |
-| `crises.gd` | 11 Krisen |
-| `polling.gd` | 3 Umfragemodell |
-| `ideology.gd` | 5.1–5.3 Ideologie, Kurswechsel, Widerspruchsrisiko |
-| `donors.gd` | 5.4 Geldgeber |
-| `rivals.gd` | 5.5 Konkurrenzparteien |
-| `media.gd` | 5.6 Medienhäuser |
-| `elections.gd` | 7 Wahlen |
-| `surveillance.gd` | 8 Radikalität, Beobachtungsdruck, Verfassungsschutz |
-| `press.gd` | 9 Presse |
-| `persons.gd` | 10 Personen |
-| `phases.gd` | 12 Phasen und Spielende |
+| `economy_system.gd` | 6 Ressourcenfluss |
+| `crisis_system.gd` | 11 Krisen |
+| `polling_system.gd` | 3 Umfragemodell |
+| `ideology_system.gd` | 5.1–5.3 Ideologie, Kurswechsel, Widerspruchsrisiko |
+| `donor_system.gd` | 5.4 Geldgeber |
+| `rival_system.gd` | 5.5 Konkurrenzparteien |
+| `media_system.gd` | 5.6 Medienhäuser |
+| `election_system.gd` | 7 Wahlen |
+| `surveillance_system.gd` | 8 Radikalität, Beobachtungsdruck, Verfassungsschutz |
+| `press_system.gd` | 9 Presse |
+| `person_system.gd` | 10 Personen |
+| `phase_system.gd` | 12 Phasen und Spielende |
 
 **Namen im Code für die Symbole des Rechenmodells (Auszug)**
 
@@ -236,7 +236,7 @@ Alle Texte über Übersetzungsschlüssel (`tr()`), keine fest verdrahteten Strin
 Bei jedem Push und Pull Request:
 1. Godot 4.7.2 (Linux, offizielles Release) herunterladen, mit Cache.
 2. Projekt einmal importieren (`godot --headless --import`), damit Klassen registriert sind.
-3. Datenvalidierung.
+3. Datenvalidierung: läuft als Test (`test_shipped_data_loads_without_errors`) im Testschritt mit, kein eigenes Skript.
 4. Tests mit GUT, Ergebnis als JUnit-XML.
 5. Kurzer Bot-Lauf (z. B. 20 Partien je Bot) als Rauchtest. Die Korridorprüfung meldet
    zunächst nur Warnungen; sie wird zum harten Kriterium, sobald das Balancing steht.

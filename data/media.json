@@ -1,0 +1,52 @@
+[
+	{
+		"id": "media.tabloid",
+		"name_key": "media.tabloid.name",
+		"kind": "tabloid",
+		"area": "national",
+		"reach": 35,
+		"independence": 30,
+		"independence_fixed": false,
+		"owner": "family"
+	},
+	{
+		"id": "media.quality",
+		"name_key": "media.quality.name",
+		"kind": "quality",
+		"area": "national",
+		"reach": 15,
+		"independence": 80,
+		"independence_fixed": false,
+		"owner": "family"
+	},
+	{
+		"id": "media.regional_south",
+		"name_key": "media.regional_south.name",
+		"kind": "regional",
+		"area": "region.south",
+		"reach": 30,
+		"independence": 55,
+		"independence_fixed": false,
+		"owner": "family"
+	},
+	{
+		"id": "media.regional_north",
+		"name_key": "media.regional_north.name",
+		"kind": "regional",
+		"area": "region.north",
+		"reach": 30,
+		"independence": 55,
+		"independence_fixed": false,
+		"owner": "family"
+	},
+	{
+		"id": "media.public",
+		"name_key": "media.public.name",
+		"kind": "public",
+		"area": "national",
+		"reach": 35,
+		"independence": 85,
+		"independence_fixed": true,
+		"owner": "boards"
+	}
+]

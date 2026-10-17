@@ -1,0 +1,8 @@
+[
+	{ "id": "region.south", "name_key": "region.south.name", "has_municipal_level": true },
+	{ "id": "region.metropolises", "name_key": "region.metropolises.name", "has_municipal_level": false },
+	{ "id": "region.west", "name_key": "region.west.name", "has_municipal_level": true },
+	{ "id": "region.east", "name_key": "region.east.name", "has_municipal_level": true },
+	{ "id": "region.north", "name_key": "region.north.name", "has_municipal_level": true },
+	{ "id": "region.central", "name_key": "region.central.name", "has_municipal_level": true }
+]

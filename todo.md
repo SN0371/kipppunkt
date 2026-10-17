@@ -25,6 +25,21 @@ Stand: 2026-10-17
     Tests, JUnit-Bericht als Artefakt
   - Ordner aus `prototyp-plan.md` Abschnitt 4 entstehen mit ihren ersten Dateien
     (keine leeren Platzhalter)
+- **M1 Daten und Zustand** erledigt (32 Tests grün):
+  - `data/`: Parameter (mit Symbol aus dem Rechenmodell), 16 Länder, 6 Regionen,
+    6 Themen, 3 Konkurrenzparteien, 5 Medienhäuser, 5 Geldgeber, 2 Krisen,
+    Szenario `scenario.new_party`. Länderwerte sind plausible Spielwerte **[Vereinfachung]**.
+  - `src/sim/defs/`: `JsonReader` (typgeprüftes Lesen, sammelt Fehler),
+    je Datentyp eine `*Def`-Klasse, `GameDefs.load_from_dir("res://data")` mit
+    Querverweis-Prüfung (Regionen, Themen vollständig je Land, Bevölkerungsanteile = 1 …)
+  - `src/sim/state/`: `GameState` und Teilzustände mit `to_dict()`/`from_dict()`,
+    `StateFactory.create(defs, scenario_id, seed)`, `SaveGame` (JSON, Format-Version 1)
+  - Seed und Zufallsgenerator-Zustand werden als Text gespeichert (64 Bit passen nicht
+    exakt in JSON-Zahlen); Kommazahlen mit voller Genauigkeit
+  - `src/sim/systems/media_system.gd`: bisher nur `target_credibility()`
+- **Code-Konventionen im Projekt:** Runde heißt im Code `turn` (nicht `round`, Konflikt mit
+  der eingebauten Funktion); System-Skripte heißen `*_system.gd`; IDs mit Präfix
+  (`land.by`, `topic.taxes`).
 
 **Lokal testen:**
 ```
@@ -33,16 +48,26 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 ```
 
 ## Nächster Schritt
-- [ ] **M1 Daten und Zustand** (`prototyp-plan.md` Abschnitte 3–5):
-  - [ ] JSON-Daten für den MVP: Parameter, Länder, Regionen, Themen, Parteien,
-        Medienhäuser, Geldgeber, Krisen, Szenario "Neugründung"
-  - [ ] Typisierte Definitionen und Lader mit Validierung (`src/sim/defs/`)
-  - [ ] Spielzustand mit `to_dict()`/`from_dict()` (`src/sim/state/`)
-  - [ ] Tests: Daten laden, Verweise prüfen, Speichern/Laden ergibt identischen Zustand
+- [ ] **M2 Kernschleife** (`prototyp-plan.md` Abschnitt 5, Formeln aus `rechenmodell.md`).
+      Jedes System mit Formeltests (feste Eingaben, erwartetes Ergebnis):
+  - [ ] `SimLog` (strukturiertes Protokoll) und `TurnRunner` mit Rundenablauf (Rechenmodell 2)
+  - [ ] Ressourcenfluss (6)
+  - [ ] Ideologie, Kurswechsel, Widerspruchsrisiko (5.1–5.3), Konkurrenzparteien (5.5)
+  - [ ] Medienhäuser (5.6)
+  - [ ] Umfragemodell (3)
+  - [ ] Geldgeber (5.4)
+  - [ ] Wahlen (7), Phasen und Spielende (12)
+  - [ ] Beobachtungsdruck und Verfassungsschutz (8), Presse (9)
+  - [ ] Personen: Erzeugung, Agenden, Loyalitätscheck (10)
+  - [ ] Krisen (11)
+  - [ ] Aktionen: Auftrag, Kosten, Erfolgschance, Effekte als Daten; Modifikator-System;
+        MVP-Aktionen aus Rechenmodell 4.2 als JSON
+  - [ ] Integrationstests: 100 Runden ohne Absturz, Determinismus (gleicher Seed = gleiche
+        Partie), Speichern mitten in der Partie und Weiterspielen ergibt dieselbe Partie
 
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
 - [x] M0 Projektgerüst
-- [ ] M1 Daten und Zustand
+- [x] M1 Daten und Zustand
 - [ ] M2 Kernschleife
 - [ ] M3 Bots und Balancing
 - [ ] M4 Karte und UI-Grundgerüst

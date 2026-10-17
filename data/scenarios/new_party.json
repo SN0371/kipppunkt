@@ -1,0 +1,39 @@
+{
+	"id": "scenario.new_party",
+	"name_key": "scenario.new_party.name",
+	"start_year": 2041,
+	"max_turns": 80,
+	"playable_regions": ["region.south", "region.north"],
+	"resilience": 75,
+	"polling_default": 0.5,
+	"donor_satisfaction_default": 30,
+	"media_owner_ideology_radius": 50,
+	"anchoring": {
+		"region.south": 2,
+		"region.north": 2
+	},
+	"party": {
+		"money": 50,
+		"members": 300,
+		"credibility": 50,
+		"radicalism": 10,
+		"scrutiny": 0,
+		"vs_level": 0,
+		"unity": 70,
+		"reach_platform": 5,
+		"reach_classic_bonus": 0,
+		"contradiction_risk": 0,
+		"intransparency": 0
+	},
+	"elections": [
+		{ "type": "municipal", "land": "land.by", "first_turn": 3, "interval": 20 },
+		{ "type": "municipal", "land": "land.ni", "first_turn": 5, "interval": 20 },
+		{ "type": "municipal", "land": "land.bw", "first_turn": 7, "interval": 20 },
+		{ "type": "municipal", "land": "land.sh", "first_turn": 9, "interval": 20 },
+		{ "type": "state", "land": "land.sh", "first_turn": 11, "interval": 20 },
+		{ "type": "state", "land": "land.ni", "first_turn": 14, "interval": 20 },
+		{ "type": "state", "land": "land.bw", "first_turn": 17, "interval": 20 },
+		{ "type": "state", "land": "land.by", "first_turn": 19, "interval": 20 },
+		{ "type": "federal", "first_turn": 8, "interval": 16 }
+	]
+}

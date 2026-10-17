@@ -1,0 +1,27 @@
+[
+	{
+		"id": "crisis.energy",
+		"name_key": "crisis.energy.name",
+		"min_duration": 4,
+		"max_duration": 8,
+		"salience": {
+			"topic.housing_costs": 2.0,
+			"topic.wind_power": 1.5,
+			"topic.combustion_ban": 1.5
+		},
+		"donor_payment_factor": 0.8,
+		"member_growth_factor": 1.0
+	},
+	{
+		"id": "crisis.financial",
+		"name_key": "crisis.financial.name",
+		"min_duration": 4,
+		"max_duration": 6,
+		"salience": {
+			"topic.taxes": 2.0,
+			"topic.welfare": 2.0
+		},
+		"donor_payment_factor": 0.7,
+		"member_growth_factor": 0.5
+	}
+]

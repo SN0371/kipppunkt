@@ -1,0 +1,194 @@
+[
+	{
+		"id": "land.bw", "name_key": "land.bw.name", "region": "region.south",
+		"population_share": 0.134, "age_index": 35, "party_loyalty": 60,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 0 },
+			"topic.combustion_ban": { "weight": 3, "preference": -2 },
+			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 2, "preference": 1 },
+			"topic.welfare": { "weight": 1, "preference": 0 }
+		}
+	},
+	{
+		"id": "land.by", "name_key": "land.by.name", "region": "region.south",
+		"population_share": 0.158, "age_index": 35, "party_loyalty": 70,
+		"topics": {
+			"topic.wind_power": { "weight": 2, "preference": -1 },
+			"topic.combustion_ban": { "weight": 3, "preference": -2 },
+			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 2, "preference": 1 },
+			"topic.welfare": { "weight": 1, "preference": -1 }
+		}
+	},
+	{
+		"id": "land.be", "name_key": "land.be.name", "region": "region.metropolises",
+		"population_share": 0.046, "age_index": 20, "party_loyalty": 45,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 1 },
+			"topic.combustion_ban": { "weight": 1, "preference": 1 },
+			"topic.agriculture": { "weight": 0, "preference": -1 },
+			"topic.housing_costs": { "weight": 3, "preference": 2 },
+			"topic.taxes": { "weight": 1, "preference": -1 },
+			"topic.welfare": { "weight": 2, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.bb", "name_key": "land.bb.name", "region": "region.east",
+		"population_share": 0.031, "age_index": 60, "party_loyalty": 30,
+		"topics": {
+			"topic.wind_power": { "weight": 2, "preference": 0 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 2 }
+		}
+	},
+	{
+		"id": "land.hb", "name_key": "land.hb.name", "region": "region.metropolises",
+		"population_share": 0.008, "age_index": 30, "party_loyalty": 50,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 1 },
+			"topic.combustion_ban": { "weight": 1, "preference": 0 },
+			"topic.agriculture": { "weight": 0, "preference": 0 },
+			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.taxes": { "weight": 1, "preference": -1 },
+			"topic.welfare": { "weight": 2, "preference": 2 }
+		}
+	},
+	{
+		"id": "land.hh", "name_key": "land.hh.name", "region": "region.metropolises",
+		"population_share": 0.022, "age_index": 20, "party_loyalty": 50,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 1 },
+			"topic.combustion_ban": { "weight": 1, "preference": 1 },
+			"topic.agriculture": { "weight": 0, "preference": -1 },
+			"topic.housing_costs": { "weight": 3, "preference": 2 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 1, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.he", "name_key": "land.he.name", "region": "region.central",
+		"population_share": 0.076, "age_index": 35, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 0 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 1, "preference": 0 },
+			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.taxes": { "weight": 2, "preference": 1 },
+			"topic.welfare": { "weight": 1, "preference": 0 }
+		}
+	},
+	{
+		"id": "land.mv", "name_key": "land.mv.name", "region": "region.east",
+		"population_share": 0.019, "age_index": 60, "party_loyalty": 30,
+		"topics": {
+			"topic.wind_power": { "weight": 2, "preference": 0 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 2 }
+		}
+	},
+	{
+		"id": "land.ni", "name_key": "land.ni.name", "region": "region.north",
+		"population_share": 0.096, "age_index": 45, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 2, "preference": 1 },
+			"topic.combustion_ban": { "weight": 3, "preference": -1 },
+			"topic.agriculture": { "weight": 3, "preference": 2 },
+			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.nw", "name_key": "land.nw.name", "region": "region.west",
+		"population_share": 0.213, "age_index": 40, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 0 },
+			"topic.combustion_ban": { "weight": 2, "preference": -1 },
+			"topic.agriculture": { "weight": 1, "preference": 0 },
+			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 3, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.rp", "name_key": "land.rp.name", "region": "region.central",
+		"population_share": 0.050, "age_index": 45, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 0 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 1, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.sl", "name_key": "land.sl.name", "region": "region.west",
+		"population_share": 0.012, "age_index": 58, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": 0 },
+			"topic.combustion_ban": { "weight": 2, "preference": -2 },
+			"topic.agriculture": { "weight": 0, "preference": 0 },
+			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.sn", "name_key": "land.sn.name", "region": "region.east",
+		"population_share": 0.049, "age_index": 60, "party_loyalty": 30,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": -1 },
+			"topic.combustion_ban": { "weight": 2, "preference": -1 },
+			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.st", "name_key": "land.st.name", "region": "region.east",
+		"population_share": 0.026, "age_index": 65, "party_loyalty": 30,
+		"topics": {
+			"topic.wind_power": { "weight": 2, "preference": 0 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 2, "preference": 1 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 3, "preference": 2 }
+		}
+	},
+	{
+		"id": "land.sh", "name_key": "land.sh.name", "region": "region.north",
+		"population_share": 0.035, "age_index": 50, "party_loyalty": 55,
+		"topics": {
+			"topic.wind_power": { "weight": 3, "preference": 2 },
+			"topic.combustion_ban": { "weight": 1, "preference": 0 },
+			"topic.agriculture": { "weight": 2, "preference": 1 },
+			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 1, "preference": 1 }
+		}
+	},
+	{
+		"id": "land.th", "name_key": "land.th.name", "region": "region.east",
+		"population_share": 0.025, "age_index": 60, "party_loyalty": 30,
+		"topics": {
+			"topic.wind_power": { "weight": 1, "preference": -1 },
+			"topic.combustion_ban": { "weight": 1, "preference": -1 },
+			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.taxes": { "weight": 1, "preference": 0 },
+			"topic.welfare": { "weight": 2, "preference": 2 }
+		}
+	}
+]

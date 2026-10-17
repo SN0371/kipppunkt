@@ -1,0 +1,47 @@
+[
+	{
+		"id": "donor.auto_supplier",
+		"name_key": "donor.auto_supplier.name",
+		"kind": "family",
+		"region": "region.south",
+		"ideology": [40.0, 20.0],
+		"max_payment": 15,
+		"topic_preferences": { "topic.combustion_ban": -2, "topic.taxes": 2 }
+	},
+	{
+		"id": "donor.food_producer",
+		"name_key": "donor.food_producer.name",
+		"kind": "family",
+		"region": "region.north",
+		"ideology": [20.0, 40.0],
+		"max_payment": 10,
+		"topic_preferences": { "topic.agriculture": 2 }
+	},
+	{
+		"id": "donor.machine_builder",
+		"name_key": "donor.machine_builder.name",
+		"kind": "midsize",
+		"region": "region.south",
+		"ideology": [30.0, 0.0],
+		"max_payment": 8,
+		"topic_preferences": { "topic.taxes": 1, "topic.welfare": -1 }
+	},
+	{
+		"id": "donor.wind_energy",
+		"name_key": "donor.wind_energy.name",
+		"kind": "stock",
+		"region": "region.north",
+		"ideology": [0.0, -30.0],
+		"max_payment": 12,
+		"topic_preferences": { "topic.wind_power": 2 }
+	},
+	{
+		"id": "donor.real_estate",
+		"name_key": "donor.real_estate.name",
+		"kind": "stock",
+		"region": "national",
+		"ideology": [50.0, 0.0],
+		"max_payment": 20,
+		"topic_preferences": { "topic.housing_costs": -2, "topic.taxes": 2 }
+	}
+]

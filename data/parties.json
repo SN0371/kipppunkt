@@ -1,0 +1,35 @@
+[
+	{
+		"id": "party.conservatives",
+		"name_key": "party.conservatives.name",
+		"ideology": [9.0, 34.0],
+		"strength": {
+			"land.bw": 30, "land.by": 40, "land.be": 18, "land.bb": 18,
+			"land.hb": 20, "land.hh": 20, "land.he": 30, "land.mv": 22,
+			"land.ni": 28, "land.nw": 30, "land.rp": 30, "land.sl": 30,
+			"land.sn": 28, "land.st": 25, "land.sh": 30, "land.th": 24
+		}
+	},
+	{
+		"id": "party.liberals",
+		"name_key": "party.liberals.name",
+		"ideology": [25.0, -25.0],
+		"strength": {
+			"land.bw": 14, "land.by": 10, "land.be": 9, "land.bb": 6,
+			"land.hb": 8, "land.hh": 12, "land.he": 12, "land.mv": 6,
+			"land.ni": 9, "land.nw": 11, "land.rp": 10, "land.sl": 7,
+			"land.sn": 6, "land.st": 6, "land.sh": 10, "land.th": 6
+		}
+	},
+	{
+		"id": "party.labour",
+		"name_key": "party.labour.name",
+		"ideology": [-34.0, -9.0],
+		"strength": {
+			"land.bw": 18, "land.by": 15, "land.be": 20, "land.bb": 28,
+			"land.hb": 30, "land.hh": 30, "land.he": 25, "land.mv": 25,
+			"land.ni": 30, "land.nw": 28, "land.rp": 28, "land.sl": 32,
+			"land.sn": 12, "land.st": 18, "land.sh": 25, "land.th": 16
+		}
+	}
+]
