@@ -55,3 +55,16 @@ jobs:
           name: junit-report
           path: reports/junit.xml
           if-no-files-found: warn
+
+      # Smoke run of the strategy bots. Corridor misses only warn until balancing is done
+      # (prototyp-plan.md section 10); remove --warn-only to make them fail the build.
+      - name: Run strategy bots
+        run: godot --headless -s src/tools/run_bots.gd -- --runs=20 --warn-only
+
+      - name: Upload bot results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bot-results
+          path: reports/bots/
+          if-no-files-found: warn

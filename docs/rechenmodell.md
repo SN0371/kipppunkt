@@ -652,11 +652,14 @@ Seeds. Die Ergebnisse müssen in diesen Korridoren liegen:
 
 | Strategie-Bot | Erwartung |
 |---|---|
-| Geduldig, gemäßigt, konsistent | Bundestag nach 20–32 Runden in der Mehrheit der Partien |
-| Radikal und schnell | Bundestag eher nach 12–20 Runden, aber in mindestens einem Drittel der Partien Verdachtsfall vorher |
+| Geduldig, gemäßigt, konsistent | Bundestag spätestens in Runde 40 (dritte Bundestagswahl, nach 10 Jahren) in der Mehrheit der Partien |
+| Radikal und schnell | Bundestag schon in Runde 24 (zweite Bundestagswahl, nach 6 Jahren) in mindestens der Hälfte der Partien, aber in mindestens einem Drittel der Partien Verdachtsfall vorher |
 | Doppelzüngig (regionale Botschaften) | Aufdeckung meist nach 6–10 Runden |
 | Passiv (fast keine Aktionen) | Bedeutungslosigkeit in der Mehrheit der Partien |
 | Zufällig | Kaum Siege |
+
+Bundestagswahlen finden im Szenario "Neugründung" nur in den Runden 8, 24, 40, 56 und 72
+statt; die Korridore sind daher in Wahlterminen ausgedrückt. Messbare Fassung: `src/bots/corridors.gd`.
 
 Liegt ein Bot außerhalb seines Korridors, werden die Parameter angepasst. So bleibt das
 Balancing nachvollziehbar und wiederholbar.
