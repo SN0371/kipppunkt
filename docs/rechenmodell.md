@@ -437,9 +437,16 @@ G(t+1) = G(t)
 
 - **[Vereinfachung]** Staatliche Teilfinanzierung ab 1 % bei einer Landtagswahl oder 0,5 %
   bei einer Bundestagswahl, pro Stimme.
-- **Mitglieder:**
-  `M(t+1) = M · (1 + P_Mwachs + 0,02 · ΔU_Bund − Austritt(E))`,
-  `Austritt(E) = 0,03 · max(0, (40 − E) / 40)`.
+- **Mitglieder:** Eine sehr kleine Partei wächst von selbst (Startschub, der mit der Größe
+  ausläuft). Darüber hinaus folgen die Mitglieder dem Zuspruch:
+  ```
+  Startschub = P_Mwachs · max(0, 1 − M / P_Mklein)
+  Ziel_M     = P_Mpro · U_Bund
+  Zulauf     = 0,05 · (Ziel_M − M), wenn Ziel_M > M;  sonst 0,02 · (Ziel_M − M)
+  M(t+1)     = M · (1 + Startschub − Austritt(E)) + Zulauf
+  Austritt(E) = 0,03 · max(0, (40 − E) / 40)
+  ```
+  Krisen mit halbiertem Mitgliederwachstum halbieren Startschub und positiven Zulauf.
 - **Aktivisten:** `A = M · Quote`, `Quote = 0,05 + 0,10 · E/100 + 0,10 · Rad/100`. Radikale
   Parteien haben aktivere Mitglieder. Aktivisten erneuern sich jede Runde vollständig.
 - **Aktionspunkte:** `AP = 4 + besetzte Funktionen + Landtagsfraktionen`, höchstens 10.
@@ -623,7 +630,9 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_Beitrag` | 0,03 | Tsd. € pro Mitglied und Quartal |
 | `P_Staat` | 0,0002 | Tsd. € pro Stimme und Quartal |
 | `P_Fix` | 8 | Fixkosten in Tsd. € pro Quartal |
-| `P_Mwachs` | 0,02 | Grundwachstum Mitglieder |
+| `P_Mwachs` | 0,02 | Startschub einer sehr kleinen Partei pro Quartal |
+| `P_Mklein` | 1000 | Mitgliederzahl, bei der der Startschub ausgelaufen ist |
+| `P_Mpro` | 1000 | Mitglieder-Zielwert je Prozentpunkt bundesweiter Umfrage |
 | `P_RPzerfall` | 0,08 | Zerfall Plattformreichweite |
 | `P_Kommunal` | 2 | Verankerungsgewinn je Prozentpunkt Kommunalwahlergebnis |
 | `P_Presse` | 0,8 | Grundstärke Presse |
@@ -719,3 +728,4 @@ Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Wert
 |---|---|---|---|---|
 | 2026-10-17 | `P_Basis` | 1,0 → 0,5 | Eine passive Partei blieb dauerhaft über 1 % und endete nur in 39 % der Partien in Bedeutungslosigkeit | Passiv: 99 % Bedeutungslosigkeit; Geduldig weiter 83 % im Korridor |
 | 2026-10-17 | `P_W` | 2,0 → 1,4 | Widersprüche flogen zu früh auf (Median 6 Runden nach der ersten Botschaft, nur 50 % im Korridor) | Median 7 Runden, 63 % im Korridor |
+| 2026-10-17 | Mitgliederformel (Modelländerung, mit Nutzer entschieden) | 2 % Grundwachstum → Startschub bis 1.000 Mitglieder, danach Zielwert nach Umfrage | Mitglieder wuchsen auch ohne Aktivität um 2 % pro Quartal; passive Partei hatte am Ende > 3.000 Mitglieder und > 12.000 T€ | Passiv: ~565 Mitglieder, ~600 T€; Geduldig ~4.600 Mitglieder; Korridore unverändert |

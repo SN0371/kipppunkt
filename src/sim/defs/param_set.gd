@@ -15,6 +15,7 @@ const REQUIRED: PackedStringArray = [
 	"crisis_probability", "crisis_bonus", "rival_proximity_range", "rival_pressure",
 	"media_climate_effect", "media_climate_credibility_shift", "media_sensationalism_reach",
 	"donor_base", "donor_topic_weight", "donor_ideology_weight",
+	"member_small_party", "members_per_polling_point",
 ]
 
 var _values: Dictionary[String, float] = {}

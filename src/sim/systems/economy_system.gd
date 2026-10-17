@@ -9,8 +9,10 @@ const CAMPAIGN_ACTION_POINT_FACTOR := 1.5
 const ACTIVIST_BASE_QUOTA := 0.05
 const ACTIVIST_UNITY_QUOTA := 0.10
 const ACTIVIST_RADICALISM_QUOTA := 0.10
-## Member growth per percentage point of national polling change.
-const POLLING_MEMBER_EFFECT := 0.02
+## Share of the gap to the member target closed per turn while support attracts members.
+const MEMBER_ATTRACTION_RATE := 0.05
+## Share of the gap closed per turn while members drift away after support fell.
+const MEMBER_DRIFT_RATE := 0.02
 const EXIT_RATE := 0.03
 const EXIT_UNITY_THRESHOLD := 40.0
 ## Total anchoring at which the fixed costs have doubled.
@@ -65,6 +67,22 @@ static func action_points(state: GameState, defs: GameDefs) -> int:
 	return points
 
 
+## Returns the member count of the next turn (rechenmodell.md section 6).
+## A very small party grows by itself (start boost, fading out with size); beyond that,
+## members follow the party's support: they approach a target proportional to national polling.
+static func next_members(state: GameState, defs: GameDefs) -> int:
+	var party := state.party
+	var params := defs.params
+	var crisis_factor := CrisisSystem.member_growth_factor(state, defs)
+	var start_boost := params.value("member_growth") * crisis_factor \
+		* maxf(0.0, 1.0 - party.members / params.value("member_small_party"))
+	var exit := EXIT_RATE * maxf(0.0, (EXIT_UNITY_THRESHOLD - party.unity) / EXIT_UNITY_THRESHOLD)
+	var target := params.value("members_per_polling_point") * PollingSystem.national(state, defs)
+	var gap := target - party.members
+	var inflow := MEMBER_ATTRACTION_RATE * crisis_factor * gap if gap > 0.0 else MEMBER_DRIFT_RATE * gap
+	return maxi(0, roundi(party.members * (1.0 + start_boost - exit) + inflow))
+
+
 ## Books the income and costs of a turn and renews members, activists and action points
 ## (step 1 of the turn).
 static func income(state: GameState, defs: GameDefs) -> void:
@@ -78,12 +96,7 @@ static func income(state: GameState, defs: GameDefs) -> void:
 	var costs := fixed_costs(state, defs)
 	party.money += fees + donations + funding - costs
 	SimLog.add(state, "income", {"fees": fees, "donations": donations, "state_funding": funding, "costs": costs})
-	var history := state.national_polling_history
-	var polling_change := history[-1] - history[-2] if history.size() >= 2 else 0.0
-	var exit := EXIT_RATE * maxf(0.0, (EXIT_UNITY_THRESHOLD - party.unity) / EXIT_UNITY_THRESHOLD)
-	var growth := params.value("member_growth") * CrisisSystem.member_growth_factor(state, defs) \
-		+ POLLING_MEMBER_EFFECT * polling_change - exit
-	party.members = maxi(0, roundi(party.members * (1.0 + growth)))
+	party.members = next_members(state, defs)
 	var quota := ACTIVIST_BASE_QUOTA + ACTIVIST_UNITY_QUOTA * party.unity / 100.0 \
 		+ ACTIVIST_RADICALISM_QUOTA * party.radicalism / 100.0
 	party.activists = int(party.members * quota)

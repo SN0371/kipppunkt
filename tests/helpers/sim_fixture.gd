@@ -39,6 +39,8 @@ const TEST_PARAMS: Dictionary = {
 	"donor_base": 35.0,
 	"donor_topic_weight": 25.0,
 	"donor_ideology_weight": 15.0,
+	"member_small_party": 1000.0,
+	"members_per_polling_point": 1000.0,
 }
 
 static var _defs: GameDefs

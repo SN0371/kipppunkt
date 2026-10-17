@@ -14,9 +14,10 @@ func test_first_income() -> void:
 	EconomySystem.income(_state, _defs)
 	# 50 + 300 * 0.03 - 8 * (1 + 4 / 50); no donor is satisfied enough to pay yet.
 	assert_almost_eq(_state.party.money, 50.36, 0.0001)
-	assert_eq(_state.party.members, 306)
-	# 306 * (0.05 + 0.10 * 0.7 + 0.10 * 0.1)
-	assert_eq(_state.party.activists, 39)
+	# 300 * (1 + 0.02 * 0.7) + 0.05 * (1000 * 0.5 - 300) = 304.2 + 10
+	assert_eq(_state.party.members, 314)
+	# 314 * (0.05 + 0.10 * 0.7 + 0.10 * 0.1)
+	assert_eq(_state.party.activists, 40)
 	assert_eq(_state.party.action_points, 4)
 
 
@@ -42,12 +43,33 @@ func test_state_funding_for_votes() -> void:
 	assert_almost_eq(EconomySystem.funded_votes(_state, _defs), 426600.0, 0.5)
 
 
-func test_falling_polling_and_low_unity_cost_members() -> void:
-	_state.national_polling_history.assign([3.0, 2.0])
+func test_start_boost_fades_with_party_size() -> void:
+	_set_national_polling(1.0)
+	_state.party.members = 1000
+	# No start boost at 1000 members, and the target 1000 * 1 is reached: no change.
+	assert_eq(EconomySystem.next_members(_state, _defs), 1000)
+
+
+func test_support_attracts_members_towards_target() -> void:
+	_set_national_polling(5.0)
+	_state.party.members = 2000
+	# 2000 + 0.05 * (5000 - 2000)
+	assert_eq(EconomySystem.next_members(_state, _defs), 2150)
+
+
+func test_members_drift_away_when_support_falls() -> void:
+	_set_national_polling(1.0)
+	_state.party.members = 3000
+	# 3000 + 0.02 * (1000 - 3000)
+	assert_eq(EconomySystem.next_members(_state, _defs), 2960)
+
+
+func test_low_unity_makes_members_leave() -> void:
+	_set_national_polling(1.0)
+	_state.party.members = 1000
 	_state.party.unity = 0.0
-	EconomySystem.income(_state, _defs)
-	# Growth 0.02 - 0.02 * 1 - 0.03
-	assert_eq(_state.party.members, 291)
+	# Exit rate 0.03 at unity 0.
+	assert_eq(EconomySystem.next_members(_state, _defs), 970)
 
 
 func test_decay_of_reach_and_radicalism() -> void:
@@ -78,3 +100,8 @@ func test_positions_age() -> void:
 	_state.party.position_age["topic.taxes"] = 2
 	EconomySystem.decay(_state, _defs, PollingSystem.salience(_state, _defs))
 	assert_eq(_state.party.position_age["topic.taxes"], 3)
+
+
+func _set_national_polling(value: float) -> void:
+	for land: LandState in _state.lands.values():
+		land.polling = value
