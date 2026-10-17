@@ -92,10 +92,15 @@ static func income(state: GameState, defs: GameDefs) -> void:
 	var donations := 0.0
 	for donor_id: String in defs.donors:
 		donations += DonorSystem.payment(state, defs, donor_id)
-	var funding := params.value("state_funding_per_vote") * funded_votes(state, defs)
+	var entitlement := params.value("state_funding_per_vote") * funded_votes(state, defs)
+	# Relative cap of party financing law: state funds may not exceed the party's own income.
+	var funding := minf(entitlement, fees + donations)
 	var costs := fixed_costs(state, defs)
 	party.money += fees + donations + funding - costs
-	SimLog.add(state, "income", {"fees": fees, "donations": donations, "state_funding": funding, "costs": costs})
+	SimLog.add(state, "income", {
+		"fees": fees, "donations": donations, "state_funding": funding,
+		"state_funding_capped": entitlement - funding, "costs": costs,
+	})
 	party.members = next_members(state, defs)
 	var quota := ACTIVIST_BASE_QUOTA + ACTIVIST_UNITY_QUOTA * party.unity / 100.0 \
 		+ ACTIVIST_RADICALISM_QUOTA * party.radicalism / 100.0

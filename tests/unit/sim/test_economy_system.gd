@@ -43,6 +43,17 @@ func test_state_funding_for_votes() -> void:
 	assert_almost_eq(EconomySystem.funded_votes(_state, _defs), 426600.0, 0.5)
 
 
+func test_state_funding_is_capped_by_own_income() -> void:
+	_state.party.money = 0.0
+	_state.party.last_federal_result = 5.0
+	EconomySystem.income(_state, _defs)
+	# Entitlement 0.0002 * 2 250 000 = 450, capped at the fees 300 * 0.03 = 9.
+	var entry: Dictionary = SimLog.find(_state, "income")[0]["data"]
+	assert_almost_eq(entry["state_funding"], 9.0, 0.0001)
+	assert_almost_eq(entry["state_funding_capped"], 441.0, 0.0001)
+	assert_almost_eq(_state.party.money, 9.0 + 9.0 - 8.64, 0.0001)
+
+
 func test_start_boost_fades_with_party_size() -> void:
 	_set_national_polling(1.0)
 	_state.party.members = 1000

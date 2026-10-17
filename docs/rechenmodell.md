@@ -437,6 +437,12 @@ G(t+1) = G(t)
 
 - **[Vereinfachung]** Staatliche Teilfinanzierung ab 1 % bei einer Landtagswahl oder 0,5 %
   bei einer Bundestagswahl, pro Stimme.
+- **Relative Obergrenze:** Die staatlichen Mittel eines Quartals dürfen die selbst
+  erwirtschafteten Einnahmen (Mitgliedsbeiträge und Spenden desselben Quartals) nicht
+  übersteigen. Das entspricht dem Parteiengesetz und ist ein Lernpunkt fürs Lexikon:
+  Eine Partei ohne Rückhalt in Mitgliedern und Unterstützern kann sich nicht allein aus
+  Staatsgeld finanzieren. **[Vereinfachung]** Die absolute Obergrenze für alle Parteien
+  zusammen wird nicht abgebildet.
 - **Mitglieder:** Eine sehr kleine Partei wächst von selbst (Startschub, der mit der Größe
   ausläuft). Darüber hinaus folgen die Mitglieder dem Zuspruch:
   ```
@@ -729,3 +735,4 @@ Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Wert
 | 2026-10-17 | `P_Basis` | 1,0 → 0,5 | Eine passive Partei blieb dauerhaft über 1 % und endete nur in 39 % der Partien in Bedeutungslosigkeit | Passiv: 99 % Bedeutungslosigkeit; Geduldig weiter 83 % im Korridor |
 | 2026-10-17 | `P_W` | 2,0 → 1,4 | Widersprüche flogen zu früh auf (Median 6 Runden nach der ersten Botschaft, nur 50 % im Korridor) | Median 7 Runden, 63 % im Korridor |
 | 2026-10-17 | Mitgliederformel (Modelländerung, mit Nutzer entschieden) | 2 % Grundwachstum → Startschub bis 1.000 Mitglieder, danach Zielwert nach Umfrage | Mitglieder wuchsen auch ohne Aktivität um 2 % pro Quartal; passive Partei hatte am Ende > 3.000 Mitglieder und > 12.000 T€ | Passiv: ~565 Mitglieder, ~600 T€; Geduldig ~4.600 Mitglieder; Korridore unverändert |
+| 2026-10-17 | Relative Obergrenze der Parteienfinanzierung (Modelländerung, mit Nutzer entschieden) | unbegrenzt → höchstens Beiträge + Spenden des Quartals | Staatliche Teilfinanzierung machte Geld bedeutungslos | Geld am Ende (Median): Geduldig 15.900 → 4.000 T€, Radikal 37.400 → 8.000 T€, Passiv ~220 T€; keine Bankrotte, Korridore unverändert |
