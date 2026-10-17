@@ -266,6 +266,7 @@ anderer Parteien)
 ### 4.1 Runden und Zeit
 
 **Rundenlänge:** 1 Quartal. Ein volles Spiel umfasst grob 20–25 Spieljahre (80–100 Runden).
+Das **Startjahr ist fiktiv**; der Wahlkalender kommt aus dem Szenario.
 Es gibt **kein festes Zeitlimit**; Limits setzen nur Szenarien (4.5). Historische Vorbilder
 zeigen, dass der Weg unter den Bedingungen des Grundgesetzes eher länger als 16 Jahre dauert.
 
@@ -410,6 +411,16 @@ Beispiele zu verstehen, nicht als abschließende Liste.
 - **Modell:** Jede Mediendynastie ist eine Familie mit Oberhaupt, Erben und Chefredaktionen.
   Familienmitglieder haben unterschiedliche Haltungen; Erbfolge-Ereignisse können die
   Linie eines Hauses ändern.
+- **Zwei Kräfte in jedem Haus:** Der Eigentümer will seine Positionen vertreten sehen, die
+  Redaktion will unabhängigen Journalismus. Daraus folgen zwei konkurrierende Attribute:
+  **Reichweite** (Zuspitzung bringt Publikum, macht bekannt) und **Glaubwürdigkeit**
+  (entsteht durch Unabhängigkeit, überzeugt). Ein Eigentümer, der die Redaktion auf Linie
+  bringt, gewinnt Reichweite und verliert Glaubwürdigkeit. Details: `rechenmodell.md` 5.6.
+- **Öffentlich-rechtlicher Rundfunk:** Ohne Eigentümer; dessen Rolle übernehmen die
+  Aufsichtsgremien (höchstens ein Drittel staatsnah, Rest gesellschaftliche Gruppen).
+  Programmautonomie schützt die Redaktion. Hebel sind Gremienbesetzung über
+  Landesregierungen, Intendantenwahl, Rundfunkbeitrag und Delegitimierung als "Staatsfunk":
+  langsam und indirekt, aber nachhaltig.
 - **Aktionen:** Exklusivinterviews anbieten; Werbeetats von Unterstützern lenken; Erben
   umwerben; Übernahme durch befreundete Investoren (spät); Einfluss auf Landesmedienanstalten
   und Rundfunkräte über Landesregierungen.
@@ -482,6 +493,17 @@ Beispiele zu verstehen, nicht als abschließende Liste.
 - **Andere Parteien:** Fiktive Parteien mit Ideologie-Profil, Führung und Haltung zur
   Partei des Spielers (Ausgrenzung, Duldung, Kooperation). Ihre Haltung kann kippen,
   etwa durch Wahlniederlagen, Führungswechsel oder gezielte Angebote.
+  - Drei etablierte Parteien mit nur **grober Zielsetzung**: eine konservative (Werte),
+    eine wirtschaftsliberale und eine Arbeiterpartei mit sozialem, aber nicht radikalem
+    Einschlag.
+  - Sie stehen **gemäßigt und gleichmäßig verteilt nahe der Mitte** des Ideologie-Raums.
+    Sie besetzen keine Themen, sondern konkurrieren um Wähler, deren Profil ihrem ähnelt.
+  - **Ideologieoffenheit bleibt erhalten:** Jede Richtung hat gleich viel Konkurrenz in der
+    Mitte und gleich viel freien Raum nach außen. Jede der drei hat eine autoritäre
+    Verlängerung (reaktionär, oligarchisch, linksautoritär), die dem Spieler offensteht.
+  - **Nähe ist Abwägung:** Wer nah an einer etablierten Partei steht, findet leichter
+    Verbündete, verliert aber Wähler an das bekanntere Original. Wer weit weg steht, hat
+    eigenen Raum, aber keine Partner.
 - **Fraktionen:** In jedem Parlament eigenständig, mit Fraktionsdisziplin und möglichen
   Überläufern in beide Richtungen.
 
@@ -672,9 +694,11 @@ Ziel: Den Kern der Spielschleife testen, nicht das ganze Spiel.
 
 - **Phasen:** I–III (Graswurzel bis Bundestag)
 - **Karte:** Alle 16 Länder sichtbar, 2 kontrastierende Regionen vollständig spielbar
-  (Vorschlag: Süden und Norden, wegen Windkraft und Autoindustrie als Konfliktthemen)
+  (festgelegt: Süden und Norden, wegen Windkraft und Autoindustrie als Konfliktthemen)
 - **Systeme:** Soziale Medien, Kommunale Mobilisierung, Finanzierung, Ideologie-Pfad,
-  regionale Themen (4–5 Themen aus 3.5, inklusive Widerspruchsrisiko)
+  regionale Themen (6 Themen aus 3.5, inklusive Widerspruchsrisiko: Windkraft,
+  Verbrenner-Aus, Landwirtschaft, Wohnkosten, Steuern, Sozialstaat)
+- **Rechenmodell:** siehe `rechenmodell.md`
 - **Gegenkräfte:** Verfassungsschutz-Stufen, freie Presse
 - **Kennzahlen:** Vollständig, inklusive demokratischer Resilienz
 - **Personen:** Eigenes Personal mit Attributen und geheimer Agenda; übrige Personen ausgewürfelt
