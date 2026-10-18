@@ -147,6 +147,21 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   ob der Weg zum Bundestag spannend genug ist; ggf. Korridore um Obergrenzen ergänzen.
 - Geld am Ende noch reichlich (Median 4.000–8.000 T€), aber erstmals in sinnvoller Größe.
 
+## Nach dem MVP: Aktionen im späten Spiel
+Problem: Mit vielen Funktionären wird das Planen repetitiv (der 10. Ortsverband ist keine
+Entscheidung mehr). Beschlossen: beide Ansätze zusammen verfolgen, sie bauen aufeinander auf.
+1. **Aktionsset wechselt mit der Phase:** Ab dem Bundestag kommen neue Aktionen hinzu
+   (Koalitionsverhandlungen, Ausschussvorsitze, Bundesrat-Deals, Richterwahlen). Die alten
+   Graswurzel-Aktionen fallen nicht weg, sondern gehen an den Apparat über (delegiert).
+2. **Aufträge an Funktionäre statt Einzelaktionen:** Der Spieler gibt z. B. dem Landesvorsitz
+   einen Auftrag mit Budget ("Aufbau Ost, 50 G pro Runde"); die Person setzt ihn jede Runde
+   selbst um, abhängig von Kompetenz und Loyalität. Der Spieler steuert die Richtung, nicht
+   die Klicks.
+- Lernpunkt: Je größer die Partei, desto mehr Macht liegt bei Funktionären mit eigener
+  Agenda (Kontrollverlust, Landesverbände verselbständigen sich, Flügel übernehmen den Apparat).
+- Die **verborgene Agenda** bekommt dadurch mehr Gewicht; prüfen, wie sie sich weiter
+  ausbauen lässt (z. B. Funktionäre setzen Aufträge im Sinne ihrer Agenda um).
+
 ## Meilensteine (aus `prototyp-plan.md` Abschnitt 11)
 - [x] M0 Projektgerüst
 - [x] M1 Daten und Zustand
