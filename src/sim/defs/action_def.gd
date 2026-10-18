@@ -33,7 +33,7 @@ const OPS: Dictionary = {
 const DELEGATES: PackedStringArray = ["regional", "treasurer", "general_secretary", "none"]
 ## Optional preconditions.
 const REQUIREMENTS: PackedStringArray = [
-	"campaign", "municipal_level", "candidate", "staff", "min_target_satisfaction",
+	"campaign", "municipal_level", "candidate", "staff", "min_target_satisfaction", "addressed_topic",
 ]
 
 var id: String
@@ -41,6 +41,8 @@ var name_key: String
 var target: String
 var parameters: PackedStringArray
 var cost_action_points: int
+## True if the action point cost applies per step of a position change (rechenmodell.md 5.2).
+var action_points_per_step: bool
 var cost_money: float
 var cost_activists: int
 ## Success chance before competence and modifiers; 1 means the action always succeeds.
@@ -69,6 +71,7 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> ActionDef:
 			reader.error(ctx, "unknown parameter '%s'" % parameter)
 	var cost := reader.read_dict(d, "cost", ctx)
 	def.cost_action_points = reader.read_int(cost, "action_points", ctx + ".cost", 0, 10)
+	def.action_points_per_step = reader.read_optional_bool(cost, "per_step", ctx + ".cost", false)
 	def.cost_money = reader.read_float(cost, "money", ctx + ".cost", 0.0)
 	def.cost_activists = reader.read_int(cost, "activists", ctx + ".cost", 0)
 	def.base_chance = reader.read_float(d, "base_chance", ctx, 0.0, 1.0)

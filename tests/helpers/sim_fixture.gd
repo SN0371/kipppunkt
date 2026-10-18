@@ -45,6 +45,13 @@ const TEST_PARAMS: Dictionary = {
 	"turnout_base": 78.0,
 	"turnout_gap_effect": 30.0,
 	"inconsistency_penalty": 15.0,
+	"event_base_probability": 0.08,
+	"event_probability_growth": 0.02,
+	"event_max_wait": 16.0,
+	"event_repeat_probability": 0.03,
+	"event_salience_boost": 0.5,
+	"silence_credibility_cost": 3.0,
+	"reach_floor": 0.3,
 }
 
 static var _defs: GameDefs

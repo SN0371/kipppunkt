@@ -43,7 +43,7 @@ static func change_cost(state: GameState, defs: GameDefs, topic_id: String, new_
 
 
 ## Sets the federal position on a topic, paying the lock-in cost for a change.
-## Value 0 withdraws the position: the party no longer speaks about the topic.
+## Value 0 is a deliberately neutral position; it counts as having taken a stand.
 static func set_position(state: GameState, defs: GameDefs, topic_id: String, value: int) -> void:
 	var party := state.party
 	var previous: Variant = party.positions.get(topic_id)
@@ -51,12 +51,8 @@ static func set_position(state: GameState, defs: GameDefs, topic_id: String, val
 	party.credibility = SimMath.clamp100(party.credibility - cost)
 	if previous != null:
 		party.unity = SimMath.clamp100(party.unity - UNITY_COST_PER_STEP * absi(value - int(previous)))
-	if value == 0:
-		party.positions.erase(topic_id)
-		party.position_age.erase(topic_id)
-	else:
-		party.positions[topic_id] = value
-		party.position_age[topic_id] = 0
+	party.positions[topic_id] = value
+	party.position_age[topic_id] = 0
 	for region_id: String in party.regional_messages.keys():
 		if party.regional_messages[region_id].get(topic_id) == value:
 			_erase_message(party, region_id, topic_id)

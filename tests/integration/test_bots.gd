@@ -25,17 +25,20 @@ func test_two_faced_bot_sends_contradicting_messages() -> void:
 	var bot := TwoFacedBot.new()
 	bot.reset(1)
 	var state := StateFactory.create(_defs, SimFixture.SCENARIO, 1)
-	TurnRunner.start_turn(state, _defs)
-	TurnRunner.finish_turn(state, _defs, bot.orders(state, _defs))
+	bot.found(state, _defs)
+	for turn in 12:
+		bot.play_turn(state, _defs)
 	assert_false(state.party.regional_messages.is_empty())
+	assert_true(state.party.positions.values().has(0), "Neutral at federal level on disputed topics")
 
 
 func test_patient_bot_stays_moderate() -> void:
 	var bot := PatientBot.new()
 	bot.reset(2)
 	var state := StateFactory.create(_defs, SimFixture.SCENARIO, 2)
-	for turn in 10:
-		TurnRunner.play_turn(state, _defs, bot.orders(state, _defs))
+	bot.found(state, _defs)
+	for turn in 20:
+		bot.play_turn(state, _defs)
 	for value: int in state.party.positions.values():
 		assert_between(value, -1, 1)
 	assert_true(state.party.regional_messages.is_empty())
@@ -44,9 +47,9 @@ func test_patient_bot_stays_moderate() -> void:
 func _play(bot: Bot, game_seed: int) -> Dictionary:
 	bot.reset(game_seed)
 	var state := StateFactory.create(_defs, SimFixture.SCENARIO, game_seed)
+	bot.found(state, _defs)
 	var peak := 0.0
 	while not state.is_over():
-		TurnRunner.start_turn(state, _defs)
-		TurnRunner.finish_turn(state, _defs, bot.orders(state, _defs))
+		bot.play_turn(state, _defs)
 		peak = maxf(peak, state.latest_national_polling())
 	return GameMetrics.collect(state, bot.id(), peak)

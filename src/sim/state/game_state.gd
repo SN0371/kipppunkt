@@ -41,6 +41,10 @@ var pending_crisis_id: String = ""
 var pending_crisis_turns: int = 0
 ## False for a false alarm: the announced crisis will not come.
 var pending_crisis_real: bool = false
+## Event waiting for the party's response before the turn can be planned; empty if none.
+var pending_event_id: String = ""
+## Turns each topic has waited for its first event since the game started (rechenmodell.md 5.8).
+var topic_waiting: Dictionary[String, int] = {}
 ## Counter for unique person ids.
 var next_person_id: int = 1
 var party: PartyState = PartyState.new()
@@ -85,6 +89,8 @@ func to_dict() -> Dictionary:
 		"pending_crisis_id": pending_crisis_id,
 		"pending_crisis_turns": pending_crisis_turns,
 		"pending_crisis_real": pending_crisis_real,
+		"pending_event_id": pending_event_id,
+		"topic_waiting": topic_waiting.duplicate(),
 		"next_person_id": next_person_id,
 		"party": party.to_dict(),
 		"lands": _map_to_dict(lands),
@@ -124,6 +130,8 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> GameState:
 	state.pending_crisis_id = reader.read_string(d, "pending_crisis_id", ctx)
 	state.pending_crisis_turns = reader.read_int(d, "pending_crisis_turns", ctx, 0)
 	state.pending_crisis_real = reader.read_bool(d, "pending_crisis_real", ctx)
+	state.pending_event_id = reader.read_string(d, "pending_event_id", ctx)
+	state.topic_waiting = reader.read_int_map(d, "topic_waiting", ctx, 0, 1000000)
 	state.next_person_id = reader.read_int(d, "next_person_id", ctx, 1)
 	state.party = PartyState.from_dict(reader.read_dict(d, "party", ctx), reader)
 	var lands_raw := reader.read_dict(d, "lands", ctx)
@@ -177,6 +185,11 @@ func validate_against(defs: GameDefs, reader: JsonReader) -> void:
 			reader.error("state.crises", "unknown crisis '%s'" % crisis.crisis_id)
 	if not pending_crisis_id.is_empty() and not defs.crises.has(pending_crisis_id):
 		reader.error("state", "unknown pending crisis '%s'" % pending_crisis_id)
+	if not pending_event_id.is_empty() and not defs.events.has(pending_event_id):
+		reader.error("state", "unknown pending event '%s'" % pending_event_id)
+	for topic_id: String in topic_waiting:
+		if not defs.topics.has(topic_id):
+			reader.error("state.topic_waiting", "unknown topic '%s'" % topic_id)
 
 
 static func _map_to_dict(map: Dictionary) -> Dictionary:

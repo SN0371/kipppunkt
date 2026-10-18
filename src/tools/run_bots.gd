@@ -58,10 +58,10 @@ func _play_games(defs: GameDefs, bot_id: String, runs: int, first_seed: int) -> 
 		var bot := _create_bot(bot_id)
 		bot.reset(game_seed)
 		var state := StateFactory.create(defs, SCENARIO, game_seed)
+		bot.found(state, defs)
 		var peak := 0.0
 		while not state.is_over():
-			TurnRunner.start_turn(state, defs)
-			TurnRunner.finish_turn(state, defs, bot.orders(state, defs))
+			bot.play_turn(state, defs)
 			peak = maxf(peak, state.latest_national_polling())
 		rows.append(GameMetrics.collect(state, bot_id, peak))
 	return rows

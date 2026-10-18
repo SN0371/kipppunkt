@@ -11,6 +11,9 @@ func before_each() -> void:
 	_state.party.action_points = 4
 	_state.party.activists = 100
 	_state.party.money = 100.0
+	# Topics the party has already taken a stand on; others are still closed (rechenmodell.md 5.8).
+	_state.party.positions["topic.taxes"] = -1
+	_state.party.positions["topic.wind_power"] = 0
 
 
 func test_shipped_actions_are_loaded() -> void:
@@ -77,10 +80,17 @@ func test_success_chance_uses_competence() -> void:
 	assert_eq(ActionResolver.success_chance(_state, _defs, order), ActionResolver.CHANCE_MAX)
 
 
-func test_set_position_is_certain() -> void:
+func test_set_position_is_certain_and_costs_per_step() -> void:
 	_resolve("action.set_position", "topic.taxes", {"value": 2})
 	assert_eq(_state.party.positions["topic.taxes"], 2)
-	assert_eq(_state.party.action_points, 3)
+	# From -1 to +2: three steps.
+	assert_eq(_state.party.action_points, 1)
+
+
+func test_unaddressed_topics_are_closed() -> void:
+	assert_eq(_check("action.set_position", "topic.welfare", {"value": 1}), "topic not addressed yet")
+	assert_eq(_check("action.regional_message", "region.south", {"topic": "topic.welfare", "value": 1}), "topic not addressed yet")
+	assert_eq(_check("action.set_position", "topic.taxes", {"value": -1}), "position unchanged")
 
 
 func test_regional_message() -> void:

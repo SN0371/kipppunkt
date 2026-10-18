@@ -18,6 +18,7 @@ const LIST_FILES: Dictionary = {
 	"crises": "crises.json",
 	"actions": "actions.json",
 	"contradictions": "contradictions.json",
+	"events": "events.json",
 }
 const PARAMS_FILE := "params.json"
 const SCENARIO_DIR := "scenarios"
@@ -35,6 +36,7 @@ var donors: Dictionary[String, DonorDef] = {}
 var crises: Dictionary[String, CrisisDef] = {}
 var actions: Dictionary[String, ActionDef] = {}
 var contradictions: Dictionary[String, ContradictionDef] = {}
+var events: Dictionary[String, EventDef] = {}
 var scenarios: Dictionary[String, ScenarioDef] = {}
 
 
@@ -99,6 +101,8 @@ static func from_raw(raw: Dictionary, reader: JsonReader = null) -> GameDefs:
 		_add_unique(defs.actions, ActionDef.from_dict(item, reader), "actions", reader)
 	for item in _items(raw, "contradictions", reader):
 		_add_unique(defs.contradictions, ContradictionDef.from_dict(item, reader), "contradictions", reader)
+	for item in _items(raw, "events", reader):
+		_add_unique(defs.events, EventDef.from_dict(item, reader), "events", reader)
 	for item in _items(raw, "scenarios", reader):
 		_add_unique(defs.scenarios, ScenarioDef.from_dict(item, reader), "scenarios", reader)
 	defs._validate_references(reader)
@@ -136,6 +140,17 @@ func _validate_references(reader: JsonReader) -> void:
 		_check_known_ids(crisis.salience.keys(), topics, "crises[%s].salience" % crisis.id, reader)
 	for contradiction: ContradictionDef in contradictions.values():
 		_check_known_ids(contradiction.topics.keys(), topics, "contradictions[%s].topics" % contradiction.id, reader)
+	for event: EventDef in events.values():
+		var ctx := "events[%s]" % event.id
+		if not topics.has(event.topic):
+			reader.error(ctx, "unknown topic '%s'" % event.topic)
+		if not is_area(event.area):
+			reader.error(ctx, "unknown area '%s'" % event.area)
+		if not event.crisis.is_empty() and not crises.has(event.crisis):
+			reader.error(ctx, "unknown crisis '%s'" % event.crisis)
+	for topic_id: String in topics:
+		if not events.values().any(func(e: EventDef) -> bool: return e.topic == topic_id and e.crisis.is_empty()):
+			reader.error("events", "topic '%s' needs at least one event without crisis condition" % topic_id)
 	for scenario: ScenarioDef in scenarios.values():
 		_validate_scenario(scenario, reader)
 

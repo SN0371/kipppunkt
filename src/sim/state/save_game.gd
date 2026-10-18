@@ -6,7 +6,7 @@ extends RefCounted
 ## shared safely.
 
 ## Increase when the save format changes incompatibly.
-const FORMAT_VERSION := 1
+const FORMAT_VERSION := 2
 
 
 ## Serializes a game state to JSON. Floats are written with full precision; Godot's float

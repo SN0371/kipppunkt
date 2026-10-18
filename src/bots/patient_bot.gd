@@ -18,19 +18,22 @@ func id() -> String:
 	return "patient"
 
 
+## Takes a moderate stand voters in the playable regions want; neutral where they are
+## undecided or where a stand would contradict earlier positions. Keeps known positions.
+func respond(state: GameState, defs: GameDefs, event: EventDef) -> Variant:
+	if state.party.positions.has(event.topic):
+		return null
+	var wanted: float = preferences(defs, playable_regions(state, defs))[event.topic]
+	var position := clampi(roundi(wanted), -MAX_POSITION, MAX_POSITION) if absf(wanted) >= MIN_PREFERENCE else 0
+	return position if consistent(state, defs, event.topic, position) else 0
+
+
 ## Returns the orders for the current turn, most important first.
 func orders(state: GameState, defs: GameDefs) -> Array[ActionOrder]:
 	var result: Array[ActionOrder] = []
 	var regions := playable_regions(state, defs)
 	appoint_staff(state, result, func(p: PersonState) -> float: return p.competence + p.persuasion + p.loyalty)
 	campaign(state, defs, result)
-	var wanted := preferences(defs, regions)
-	for topic_id in topics_by_importance(defs, regions):
-		if not state.party.positions.has(topic_id) and absf(wanted[topic_id]) >= MIN_PREFERENCE:
-			var position := clampi(roundi(wanted[topic_id]), -MAX_POSITION, MAX_POSITION)
-			if consistent(state, defs, topic_id, position):
-				result.append(ActionOrder.create("action.set_position", topic_id, {"value": position}))
-				break
 	if state.party.unity < CONGRESS_UNITY:
 		result.append(ActionOrder.create("action.party_congress"))
 	for donor_id: String in state.donors:

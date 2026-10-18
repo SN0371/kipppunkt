@@ -37,6 +37,9 @@ func test_content_names_exist() -> void:
 			_assert_key(def.name_key, "data")
 	for action_id: String in defs.actions:
 		_assert_key(action_id + ".description", "data")
+	for event: EventDef in defs.events.values():
+		_assert_key(event.name_key, "events")
+		_assert_key(event.text_key, "events")
 	for place_id: String in MapData.load_default().places:
 		_assert_key(place_id + ".name", "map")
 

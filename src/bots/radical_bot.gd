@@ -4,7 +4,6 @@ extends Bot
 ## funding. Ignores scrutiny and welcomes persuasive firebrands.
 
 const MIN_PREFERENCE := 0.25
-const POSITIONS_PER_TURN := 2
 const DONATION_SATISFACTION := 60.0
 const HIDDEN_FUNDING_SATISFACTION := 50.0
 
@@ -14,21 +13,30 @@ func id() -> String:
 	return "radical"
 
 
+## Founds the party on two extreme positions.
+func founding_strength() -> int:
+	return 2
+
+
+## Takes the extreme stand voters lean towards, unless it contradicts earlier positions.
+## Keeps known positions.
+func respond(state: GameState, defs: GameDefs, event: EventDef) -> Variant:
+	if state.party.positions.has(event.topic):
+		return null
+	var wanted: float = preferences(defs, playable_regions(state, defs))[event.topic]
+	if absf(wanted) < MIN_PREFERENCE:
+		return 0
+	var position := 2 * int(signf(wanted))
+	return position if consistent(state, defs, event.topic, position) else 0
+
+
 ## Returns the orders for the current turn, most important first.
 func orders(state: GameState, defs: GameDefs) -> Array[ActionOrder]:
 	var result: Array[ActionOrder] = []
 	var regions := playable_regions(state, defs)
 	appoint_staff(state, result, func(p: PersonState) -> float: return 2.0 * p.persuasion + p.competence)
 	campaign(state, defs, result)
-	var wanted := preferences(defs, regions)
 	var topics := topics_by_importance(defs, regions)
-	var new_positions := 0
-	for topic_id in topics:
-		var position := 2 * int(signf(wanted[topic_id]))
-		if new_positions < POSITIONS_PER_TURN and not state.party.positions.has(topic_id) \
-				and absf(wanted[topic_id]) >= MIN_PREFERENCE and consistent(state, defs, topic_id, position):
-			result.append(ActionOrder.create("action.set_position", topic_id, {"value": position}))
-			new_positions += 1
 	for donor_id: String in state.donors:
 		var donor := state.donors[donor_id]
 		if donor.active and donor.satisfaction >= DONATION_SATISFACTION:

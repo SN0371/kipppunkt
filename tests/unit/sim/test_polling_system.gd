@@ -58,7 +58,7 @@ func test_topic_fit_can_be_negative() -> void:
 func test_reach_factor_mixes_platforms_and_classic_media_by_age() -> void:
 	_state.party.reach_platform = 5.0
 	# Bavaria, age index 35: 0.65 * 5 + 0.35 * 10 = 6.75 -> 0.3 + 0.7 * 0.0675
-	assert_almost_eq(PollingSystem.reach_factor(_defs.lands["land.by"], _state.party, 10.0), 0.34725, 0.00001)
+	assert_almost_eq(PollingSystem.reach_factor(_defs, _defs.lands["land.by"], _state.party, 10.0), 0.34725, 0.00001)
 
 
 func test_first_crisis_turn_rallies_round_the_government() -> void:

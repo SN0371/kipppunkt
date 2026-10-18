@@ -34,5 +34,12 @@
 	"mobilization_weight": { "symbol": "P_Mob", "value": 9.0 },
 	"turnout_base": { "symbol": "P_Wbasis", "value": 78.0 },
 	"turnout_gap_effect": { "symbol": "P_Lücke", "value": 30.0 },
-	"inconsistency_penalty": { "symbol": "P_Inkon", "value": 15.0 }
+	"inconsistency_penalty": { "symbol": "P_Inkon", "value": 15.0 },
+	"event_base_probability": { "symbol": "P_Ereignis", "value": 0.08 },
+	"event_probability_growth": { "symbol": "P_ErgWachs", "value": 0.02 },
+	"event_max_wait": { "symbol": "P_ErgMax", "value": 16.0 },
+	"event_repeat_probability": { "symbol": "P_ErgWdh", "value": 0.03 },
+	"event_salience_boost": { "symbol": "P_ErgSal", "value": 0.5 },
+	"silence_credibility_cost": { "symbol": "P_Schweigen", "value": 3.0 },
+	"reach_floor": { "symbol": "P_RMin", "value": 0.15 }
 }

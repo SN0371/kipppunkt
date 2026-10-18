@@ -9,6 +9,7 @@ var _session: GameSession
 func before_each() -> void:
 	_session = GameSession.new(SimFixture.defs())
 	_session.new_game(5)
+	_session.state.party.positions["topic.taxes"] = 0
 
 
 func after_all() -> void:
@@ -76,7 +77,7 @@ func test_planning_a_position_replaces_the_earlier_plan() -> void:
 	assert_eq(_session.plan_position("topic.taxes", 2), "")
 	assert_eq(_session.planned.size(), 1)
 	assert_eq(_session.intended_position("topic.taxes"), 2)
-	assert_eq(_session.plan_position("topic.taxes", 0), "", "Back to no position removes the plan")
+	assert_eq(_session.plan_position("topic.taxes", 0), "", "Back to the current position removes the plan")
 	assert_eq(_session.planned.size(), 0)
 	assert_false(_session.is_position_planned("topic.taxes"))
 

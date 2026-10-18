@@ -32,6 +32,43 @@ func orders(_state: GameState, _defs: GameDefs) -> Array[ActionOrder]:
 	return []
 
 
+## Returns the founding programme: two topics with a position each. By default the two most
+## important topics in the playable regions, in the direction voters there prefer.
+func founding_programme(state: GameState, defs: GameDefs) -> Dictionary:
+	var regions := playable_regions(state, defs)
+	var wanted := preferences(defs, regions)
+	var programme := {}
+	for topic_id in topics_by_importance(defs, regions):
+		if programme.size() < FoundingSystem.FOUNDING_POSITIONS and absf(wanted[topic_id]) >= 0.25:
+			programme[topic_id] = founding_strength() * int(signf(wanted[topic_id]))
+	return programme
+
+
+## Returns how strongly the bot founds its party on its two topics (1 or 2).
+func founding_strength() -> int:
+	return 1
+
+
+## Returns the response to an event: a position -2..+2, or null for silence (new topic) or
+## keeping the position (known topic). By default the bot keeps known positions and stays silent.
+func respond(_state: GameState, _defs: GameDefs, _event: EventDef) -> Variant:
+	return null
+
+
+## Founds the party with the bot's programme.
+func found(state: GameState, defs: GameDefs) -> void:
+	FoundingSystem.found(state, defs, "Bot " + id(), id().left(3).to_upper(), "Bot", founding_programme(state, defs))
+
+
+## Plays one whole turn: answers a pending event, then gives the orders.
+func play_turn(state: GameState, defs: GameDefs) -> void:
+	TurnRunner.start_turn(state, defs)
+	var event := EventSystem.pending(state, defs)
+	if event != null:
+		EventSystem.resolve(state, defs, respond(state, defs, event))
+	TurnRunner.finish_turn(state, defs, orders(state, defs))
+
+
 ## Returns the population- and weight-averaged preference per topic in the given regions
 ## (-2..+2). Bots use it to decide which positions voters there want.
 static func preferences(defs: GameDefs, regions: PackedStringArray) -> Dictionary[String, float]:

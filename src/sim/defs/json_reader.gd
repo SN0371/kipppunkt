@@ -49,6 +49,16 @@ func read_bool(d: Dictionary, key: String, ctx: String) -> bool:
 	return d[key]
 
 
+## Reads an optional boolean field, returning the default if it is missing.
+func read_optional_bool(d: Dictionary, key: String, ctx: String, default: bool) -> bool:
+	return read_bool(d, key, ctx) if d.has(key) else default
+
+
+## Reads an optional string field, returning the default if it is missing.
+func read_optional_string(d: Dictionary, key: String, ctx: String, default: String) -> String:
+	return read_string(d, key, ctx) if d.has(key) else default
+
+
 ## Reads a required number field within an inclusive range.
 func read_float(
 	d: Dictionary, key: String, ctx: String, min_value: float = -INF, max_value: float = INF

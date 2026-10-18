@@ -39,6 +39,12 @@ static func check(state: GameState, defs: GameDefs, order: ActionOrder, budget: 
 		return target_problem
 	if def.needs("topic") and not defs.topics.has(order.topic):
 		return "unknown topic"
+	if def.requires.get("addressed_topic", false):
+		var topic_id := order.topic if def.needs("topic") else order.target
+		if not state.party.positions.has(topic_id):
+			return "topic not addressed yet"
+		if def.action_points_per_step and order.value == state.party.positions[topic_id]:
+			return "position unchanged"
 	if def.needs("value") and (order.value < -2 or order.value > 2):
 		return "value out of range"
 	if def.needs("role"):
@@ -65,7 +71,10 @@ static func check(state: GameState, defs: GameDefs, order: ActionOrder, budget: 
 ## Returns the action points an order costs. Delegation costs nothing extra, but the chair
 ## taking over a task whose responsible function is filled costs PERSONAL_SURCHARGE more.
 static func action_point_cost(state: GameState, defs: GameDefs, order: ActionOrder) -> int:
-	var cost := defs.actions[order.action_id].cost_action_points
+	var def := defs.actions[order.action_id]
+	var cost := def.cost_action_points
+	if def.action_points_per_step:
+		cost *= absi(order.value - state.party.positions.get(order.target, 0))
 	return cost + PERSONAL_SURCHARGE if is_personal_override(state, defs, order) else cost
 
 

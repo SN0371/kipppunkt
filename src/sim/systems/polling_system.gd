@@ -4,8 +4,6 @@ extends RefCounted
 
 const SALIENCE_MIN := 0.5
 const SALIENCE_MAX := 3.0
-## Share of the message that arrives even without any reach (f_Reach at reach 0).
-const REACH_FLOOR := 0.3
 ## How strongly party loyalty slows polling movement (α_l).
 const LOYALTY_DAMPING := 0.7
 ## Credibility factor at credibility 0 (f_C).
@@ -66,12 +64,14 @@ static func effective_position(party: PartyState, land: LandDef, topic_id: Strin
 	return regional.get(topic_id, party.positions.get(topic_id))
 
 
-## Returns the share of messages that arrive in a land (f_Reach), REACH_FLOOR..1.
-## Older lands rely more on classic media, younger ones on platforms (rechenmodell.md 3.2).
-static func reach_factor(land: LandDef, party: PartyState, classic_reach: float) -> float:
+## Returns the share of messages that arrive in a land (f_Reach), from the parameter
+## reach_floor (no reach at all) to 1. Older lands rely more on classic media, younger ones
+## on platforms (rechenmodell.md 3.2).
+static func reach_factor(defs: GameDefs, land: LandDef, party: PartyState, classic_reach: float) -> float:
+	var floor_share := defs.params.value("reach_floor")
 	var age := land.age_index / 100.0
 	var reach := (1.0 - age) * party.reach_platform + age * classic_reach
-	return REACH_FLOOR + (1.0 - REACH_FLOOR) * reach / 100.0
+	return floor_share + (1.0 - floor_share) * reach / 100.0
 
 
 ## Returns the crisis term of the polling target (Krisenbonus_l, rechenmodell.md section 11).
@@ -96,7 +96,7 @@ static func target(state: GameState, defs: GameDefs, land_id: String, ctx: Conte
 	var party := state.party
 	var land := defs.lands[land_id]
 	var land_state := state.lands[land_id]
-	var f_reach := reach_factor(land, party, land_state.classic_reach)
+	var f_reach := reach_factor(defs, land, party, land_state.classic_reach)
 	var f_credibility := CREDIBILITY_FLOOR + party.credibility / 200.0
 	var leaders := PersonSystem.leadership(state, land.region)
 	var leadership: float = params.value("leadership_weight") * (leaders["persuasion"] - 50.0) / 50.0 * f_reach
@@ -108,9 +108,10 @@ static func target(state: GameState, defs: GameDefs, land_id: String, ctx: Conte
 		+ crisis_bonus(state, defs, land, ctx.salience)
 	var competition := RivalSystem.pressure(defs, land_id, ctx.ideology)
 	# Mobilized non-voters are not contested by the established parties: no competition factor.
+	# Like every message, mobilization only works as far as the party is heard (f_reach).
 	var value := params.value("polling_base") \
 		+ support * (1.0 - competition) * (1.0 + params.value("media_climate_effect") * land_state.media_climate) \
-		+ RepresentationSystem.mobilization(defs, land, party, ctx.salience) \
+		+ RepresentationSystem.mobilization(defs, land, party, ctx.salience) * f_reach \
 		- params.value("stigma_per_level") * party.vs_level * state.resilience / 100.0
 	if leaders["ideologue"] and state.resilience > POLARIZATION_RESILIENCE:
 		value -= params.value("polarization_penalty")

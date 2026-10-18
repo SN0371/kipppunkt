@@ -2,6 +2,9 @@ class_name PartyState
 extends RefCounted
 ## Dynamic state of the player's party (rechenmodell.md section 1.2).
 
+## Name and abbreviation chosen at founding; empty until the party is founded.
+var name: String = ""
+var abbreviation: String = ""
 ## Money in thousand euros (G).
 var money: float = 0.0
 ## Members (M).
@@ -51,6 +54,8 @@ func to_dict() -> Dictionary:
 	for region_id: String in regional_messages:
 		messages[region_id] = regional_messages[region_id].duplicate()
 	return {
+		"name": name,
+		"abbreviation": abbreviation,
 		"money": money,
 		"members": members,
 		"activists": activists,
@@ -79,6 +84,8 @@ func to_dict() -> Dictionary:
 static func from_dict(d: Dictionary, reader: JsonReader) -> PartyState:
 	var ctx := "state.party"
 	var party := PartyState.new()
+	party.name = reader.read_string(d, "name", ctx)
+	party.abbreviation = reader.read_string(d, "abbreviation", ctx)
 	party.money = reader.read_float(d, "money", ctx)
 	party.members = reader.read_int(d, "members", ctx, 0)
 	party.activists = reader.read_int(d, "activists", ctx, 0)

@@ -1,0 +1,149 @@
+[
+	{
+		"id": "event.wind_farm_protest",
+		"name_key": "event.wind_farm_protest.name",
+		"text_key": "event.wind_farm_protest.text",
+		"topic": "topic.wind_power",
+		"area": "region.north",
+		"weight": 1.0
+	},
+	{
+		"id": "event.grid_standstill",
+		"name_key": "event.grid_standstill.name",
+		"text_key": "event.grid_standstill.text",
+		"topic": "topic.wind_power",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.blackout",
+		"name_key": "event.blackout.name",
+		"text_key": "event.blackout.text",
+		"topic": "topic.wind_power",
+		"area": "national",
+		"weight": 2.0,
+		"crisis": "crisis.energy"
+	},
+	{
+		"id": "event.supplier_closure",
+		"name_key": "event.supplier_closure.name",
+		"text_key": "event.supplier_closure.text",
+		"topic": "topic.combustion_ban",
+		"area": "region.south",
+		"weight": 1.0
+	},
+	{
+		"id": "event.fleet_limits",
+		"name_key": "event.fleet_limits.name",
+		"text_key": "event.fleet_limits.text",
+		"topic": "topic.combustion_ban",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.farmer_blockades",
+		"name_key": "event.farmer_blockades.name",
+		"text_key": "event.farmer_blockades.text",
+		"topic": "topic.organic_farming",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.nitrate_wells",
+		"name_key": "event.nitrate_wells.name",
+		"text_key": "event.nitrate_wells.text",
+		"topic": "topic.organic_farming",
+		"area": "region.north",
+		"weight": 1.0
+	},
+	{
+		"id": "event.rent_demonstration",
+		"name_key": "event.rent_demonstration.name",
+		"text_key": "event.rent_demonstration.text",
+		"topic": "topic.housing_costs",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.heating_bills",
+		"name_key": "event.heating_bills.name",
+		"text_key": "event.heating_bills.text",
+		"topic": "topic.housing_costs",
+		"area": "national",
+		"weight": 2.0,
+		"crisis": "crisis.energy"
+	},
+	{
+		"id": "event.wolf_attack",
+		"name_key": "event.wolf_attack.name",
+		"text_key": "event.wolf_attack.text",
+		"topic": "topic.nature_conservation",
+		"area": "region.north",
+		"weight": 1.0
+	},
+	{
+		"id": "event.forest_dieback",
+		"name_key": "event.forest_dieback.name",
+		"text_key": "event.forest_dieback.text",
+		"topic": "topic.nature_conservation",
+		"area": "region.south",
+		"weight": 1.0
+	},
+	{
+		"id": "event.century_flood",
+		"name_key": "event.century_flood.name",
+		"text_key": "event.century_flood.text",
+		"topic": "topic.nature_conservation",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.craft_tax_burden",
+		"name_key": "event.craft_tax_burden.name",
+		"text_key": "event.craft_tax_burden.text",
+		"topic": "topic.taxes",
+		"area": "region.south",
+		"weight": 1.0
+	},
+	{
+		"id": "event.inheritance_tax_ruling",
+		"name_key": "event.inheritance_tax_ruling.name",
+		"text_key": "event.inheritance_tax_ruling.text",
+		"topic": "topic.taxes",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.food_banks",
+		"name_key": "event.food_banks.name",
+		"text_key": "event.food_banks.text",
+		"topic": "topic.welfare",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.pension_alarm",
+		"name_key": "event.pension_alarm.name",
+		"text_key": "event.pension_alarm.text",
+		"topic": "topic.welfare",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.bridge_closed",
+		"name_key": "event.bridge_closed.name",
+		"text_key": "event.bridge_closed.text",
+		"topic": "topic.debt_brake",
+		"area": "national",
+		"weight": 1.0
+	},
+	{
+		"id": "event.rating_warning",
+		"name_key": "event.rating_warning.name",
+		"text_key": "event.rating_warning.text",
+		"topic": "topic.debt_brake",
+		"area": "national",
+		"weight": 2.0,
+		"crisis": "crisis.financial"
+	}
+]

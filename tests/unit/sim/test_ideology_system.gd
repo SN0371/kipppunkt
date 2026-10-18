@@ -94,11 +94,10 @@ func test_contradiction_risk_grows_and_decays() -> void:
 	assert_almost_eq(_state.party.contradiction_risk, 6.0, 0.0001)
 
 
-func test_zero_withdraws_a_position() -> void:
+func test_zero_is_a_deliberately_neutral_position() -> void:
 	IdeologySystem.set_position(_state, _defs, "topic.taxes", 2)
 	IdeologySystem.set_position(_state, _defs, "topic.taxes", 0)
-	assert_false(_state.party.positions.has("topic.taxes"))
-	assert_false(_state.party.position_age.has("topic.taxes"))
+	assert_eq(_state.party.positions["topic.taxes"], 0, "Neutral counts as having taken a stand")
 
 
 func test_consistent_positions_have_no_contradiction() -> void:
