@@ -1,6 +1,6 @@
 # Game-Design-Dokument: Kipppunkt (Arbeitstitel)
 
-Stand: 2026-10-17 · Version 0.3 (Entwurf: Antworten aus `offene-fragen.md` eingearbeitet)
+Stand: 2026-10-18 · Version 0.4 (Entwurf: Spieltest-Rückmeldungen aus M4 eingearbeitet)
 
 > Vereinfachungen gegenüber dem echten Recht sind mit **[Vereinfachung]** markiert.
 > Werte wie Schwellen, Kosten und Wahrscheinlichkeiten sind Platzhalter für das Balancing.
@@ -274,14 +274,17 @@ zeigen, dass der Weg unter den Bedingungen des Grundgesetzes eher länger als 16
 Aktionspunkte, weil Wahlkämpfe sich in Wochen entscheiden, nicht in Quartalen.
 
 **Ablauf einer Runde**
-1. **Lage:** Nachrichtenüberblick, neue Ereignisse, Umfrageveränderungen
+1. **Lage:** Nachrichtenüberblick, neue Ereignisse, Umfrageveränderungen; ein Ereignis
+   verlangt vor der Planung eine Stellungnahme (8)
 2. **Planung:** Spieler verteilt Aktionspunkte (AP) und Ressourcen auf Aktionen
 3. **Auflösung:** Aktionen werden ausgewertet, Gegenkräfte reagieren
 4. **Folgen:** Kennzahlen aktualisieren, verzögerte Effekte früherer Runden treten ein
 
 **Aktionspunkte:** Begrenzte Aufmerksamkeit der Parteiführung. AP steigen mit Parteigröße
 und Personal (Generalsekretär, Landesvorsitzende), sodass Delegation wichtig wird.
-Delegierte Aktionen sind billiger, aber abhängig von Loyalität und Kompetenz der Person.
+Besetzte Funktionen übernehmen ihre Aufgaben automatisch; das Ergebnis hängt von Loyalität
+und Kompetenz der Person ab. Will die Parteiführung eine Aufgabe trotzdem selbst erledigen,
+kostet das 1 AP mehr (`rechenmodell.md` 4.1).
 
 **Wahlkalender** (gestaffelt, pro Land eigener Rhythmus)
 | Wahl | Turnus | Wirkung |

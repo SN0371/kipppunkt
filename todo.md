@@ -7,9 +7,9 @@ Stand: 2026-10-17
   führt eine junge Partei und versucht, eine Demokratie nach bundesdeutschem Vorbild
   autoritär umzubauen; Lernziel ist die wehrhafte Demokratie.
 - **Dokumente** (in dieser Reihenfolge lesen):
-  1. `docs/game-design.md` – Was das Spiel ist (Version 0.3)
-  2. `docs/rechenmodell.md` – Formeln und Parameter der Kernschleife (Version 0.1)
-  3. `docs/prototyp-plan.md` – Wie der MVP gebaut wird (Version 0.1, Meilensteine M0–M6)
+  1. `docs/game-design.md` – Was das Spiel ist (Version 0.4)
+  2. `docs/rechenmodell.md` – Formeln und Parameter der Kernschleife (Version 0.5)
+  3. `docs/prototyp-plan.md` – Wie der MVP gebaut wird (Version 0.2, Meilensteine M0–M6 mit Stand)
   4. `docs/offene-fragen.md` – Inhaltliche Fragen, die noch warten können
 - **Sprachen:** Design- und Planungsdokumente auf Deutsch; Code, Kommentare, Commits auf
   Englisch. Keine "Co-Authored-By"-Zeilen in Commits.

@@ -1,6 +1,6 @@
 # Rechenmodell der Kernschleife (MVP)
 
-Stand: 2026-10-17 · Version 0.5 (Gründung, Ereignisse, Stellungnahmen) · Bezug: `game-design.md` Version 0.3
+Stand: 2026-10-18 · Version 0.5 (Gründung, Ereignisse, Stellungnahmen) · Bezug: `game-design.md` Version 0.4
 
 > Dieses Dokument übersetzt die Systeme des Design-Dokuments in Zahlen und Formeln für den
 > MVP (Phasen I–III, Regionen Süden und Norden spielbar). Alle Konstanten heißen `P_…`,
@@ -251,7 +251,7 @@ Kapazität des Personals steckt schon im Aktionspunkt je besetzter Funktion (Abs
 |---|---|---|---|---|
 | Ortsverband gründen | Kommunen | 2 AP, 5 G, 20 A | `V_r` +4 | – |
 | Präsenz in Vereinen | Kommunen | 1 AP, 30 A | `V_r` +2, Mitglieder +2 % | – |
-| Lokales Thema besetzen | Kommunen/Themen | 1 AP | `p_k,r` setzen | `W` steigt (Abschnitt 5.3) |
+| Regionale Botschaft | Kommunen/Themen | 1 AP | `p_k,r` setzen (nur zu Themen mit Position, 5.8) | `W` steigt (Abschnitt 5.3) |
 | Social-Media-Kampagne | Soziale Medien | 1 AP, 10 G | `RP` +6 | – |
 | Empörungswelle reiten | Soziale Medien | 1 AP | `RP` +10, `s_k` +0,3 für ein Thema | `Rad` +3, `C` −2 |
 | Influencer gewinnen | Soziale Medien | 2 AP, 20 G | `RP` +8 dauerhaft (langsamer Zerfall) | Aufdeckung: `C` −5 |
@@ -260,13 +260,14 @@ Kapazität des Personals steckt schon im Aktionspunkt je besetzter Funktion (Abs
 | Spender umwerben | Finanzierung | 1 AP | `Z_u` +10 für ein Unternehmen | – |
 | Großspende annehmen | Finanzierung | 0 AP | `G` + Spende | Aufdeckungsrisiko bei Intransparenz |
 | Unterstützung über Dritte | Finanzierung | 2 AP | `G` +, keine Veröffentlichung | `B` +3, Recherche-Risiko |
-| Position beziehen/ändern | Themen | 1 AP | `p_k` setzen | Kurswechselkosten (5.2) |
+| Position ändern | Themen | 1 AP je Reglerstufe | `p_k` ändern (nur Themen mit Position; die erste Position entsteht bei Gründung oder Ereignis, 5.8) | Kurswechselkosten (5.2) |
 | Parteitag | Partei | 3 AP, 30 G | `E` +10 | Gelegenheit für Flügelkonflikte |
 | Personal überprüfen | Personen | 2 AP, 10 G | Agenda einer Person aufdecken (Chance 70 %) | `E` −3 |
 | Säuberung | Personen | 3 AP | Alle Personen mit `Loy` < 40 entfernen | `Komp` im Apparat −, `E` −10 |
 | Wahlkampf (nur Wahlkampfquartal) | Wahlen | 2 AP, 40 G, 50 A | Wahlergebnis +1,5 % im Land | – |
 
-Die vollständige Liste von rund 20 Aktionen entsteht als Daten im Prototyp.
+Die vollständige Liste (18 Aktionen, inklusive Berufen und Entlassen von Personal) steht in
+`data/actions.json`.
 
 ---
 

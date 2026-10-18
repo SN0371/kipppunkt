@@ -1,6 +1,6 @@
 ## Offene Fragen
 
-Stand: Game-Design-Dokument Version 0.3. Beantwortete Fragen sind in `game-design.md`
+Stand: Game-Design-Dokument Version 0.4. Beantwortete Fragen sind in `game-design.md`
 eingearbeitet.
 
 1. **Spieldauer:** Hängt davon ab, wie abwechslungsreich das Spiel wird; nach dem MVP neu
