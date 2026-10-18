@@ -9,6 +9,7 @@ const SHOWN_KINDS: PackedStringArray = [
 	"election", "surveillance_level", "press_exposed_contradiction", "press_exposed_funding",
 	"press_exposed_insider", "media_conflict", "media_new_owner", "donor_withdrew",
 	"donor_returned", "person_left", "agenda_revealed", "purge", "phase", "game_over",
+	"event", "event_silence", "event_position_kept", "party_founded",
 ]
 ## Actions whose effect has its own, more precise report line.
 const SELF_REPORTING_ACTIONS: PackedStringArray = ["action.set_position", "action.regional_message"]
@@ -79,6 +80,14 @@ static func format(entry: Dictionary, defs: GameDefs) -> String:
 			return server.translate("log.phase") % int(data["phase"])
 		"game_over":
 			return server.translate("log.game_over") % server.translate("outcome." + String(data["outcome"]))
+		"event":
+			return server.translate("log.event") % server.translate(String(data["event"]) + ".name")
+		"event_silence":
+			return server.translate("log.event_silence") % [server.translate(String(data["topic"]) + ".name"), data["credibility_cost"]]
+		"event_position_kept":
+			return server.translate("log.event_position_kept") % server.translate(String(data["topic"]) + ".name")
+		"party_founded":
+			return server.translate("log.party_founded") % [data["name"], data["abbreviation"]]
 	return server.translate("log." + kind)
 
 

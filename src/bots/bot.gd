@@ -69,20 +69,9 @@ func play_turn(state: GameState, defs: GameDefs) -> void:
 	TurnRunner.finish_turn(state, defs, orders(state, defs))
 
 
-## Returns the population- and weight-averaged preference per topic in the given regions
-## (-2..+2). Bots use it to decide which positions voters there want.
+## Returns the average voter preference per topic in the given regions (-2..+2).
 static func preferences(defs: GameDefs, regions: PackedStringArray) -> Dictionary[String, float]:
-	var result: Dictionary[String, float] = {}
-	for topic_id: String in defs.topics:
-		var weighted := 0.0
-		var weight := 0.0
-		for land: LandDef in defs.lands.values():
-			if regions.has(land.region):
-				var w := land.population_share * land.topic_weights[topic_id]
-				weighted += w * land.topic_preferences[topic_id]
-				weight += w
-		result[topic_id] = weighted / weight if weight > 0.0 else 0.0
-	return result
+	return VoterPreferences.average(defs, regions)
 
 
 ## Returns true if taking the position would not add a contradiction (rechenmodell.md 5.7).

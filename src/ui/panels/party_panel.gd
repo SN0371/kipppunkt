@@ -73,8 +73,13 @@ func _section(key: String, title: String) -> VBoxContainer:
 
 
 func _add_position_row(box: VBoxContainer, topic_id: String) -> void:
+	if not session.state.party.positions.has(topic_id):
+		box.add_child(UiKit.label(tr(topic_id + ".name") + ": " + tr("ui.party.no_position")))
+		box.add_child(UiKit.hint(tr("ui.party.closed_hint")))
+		return
+	var current: int = session.state.party.positions[topic_id]
 	var intended := session.intended_position(topic_id)
-	var text := tr(topic_id + ".name") + ": " + (tr("position.%d" % intended) if intended != 0 else tr("ui.party.no_position"))
+	var text := tr(topic_id + ".name") + ": " + tr("position.%d" % intended)
 	if session.is_position_planned(topic_id):
 		text += " " + tr("ui.party.planned_marker")
 	box.add_child(UiKit.label(text))
@@ -82,17 +87,19 @@ func _add_position_row(box: VBoxContainer, topic_id: String) -> void:
 		report("action.set_position", session.plan_position(topic_id, value)))
 	var reason := ""
 	if not session.is_position_planned(topic_id):
-		# Probe with any other value: what blocks a change is the budget, not the value.
-		var probe := 1 if intended != 1 else -1
+		# Probe with the neighbouring value: the cheapest change, one step.
+		var probe: int = current + 1 if current < 2 else current - 1
 		reason = session.check(ActionOrder.create("action.set_position", topic_id, {"value": probe}))
 	if not reason.is_empty():
 		slider.editable = false
 		slider.modulate = Color(1, 1, 1, 0.5)
 	var cost_hints := PackedStringArray()
 	for value in [-2, -1, 0, 1, 2]:
-		var cost := IdeologySystem.change_cost(session.state, session.defs, topic_id, value)
-		if cost > 0.0:
-			cost_hints.append("%s: −%.1f" % [UiKit.position(value), cost])
+		if value != current:
+			cost_hints.append(tr("ui.party.change_cost_entry") % [
+				UiKit.position(value), absi(value - current),
+				IdeologySystem.change_cost(session.state, session.defs, topic_id, value),
+			])
 	slider.tooltip_text = tr("ui.party.slider_hint")
 	if not cost_hints.is_empty():
 		slider.tooltip_text += "\n" + tr("ui.party.change_costs") + " " + ", ".join(cost_hints)

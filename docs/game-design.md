@@ -524,7 +524,17 @@ Beispiele zu verstehen, nicht als abschließende Liste.
 
 ## 8. Ideologie-Pfad-Mechanik
 
-**Start:** Die Partei beginnt ideologisch offen (Mittelpunkt beider Achsen).
+**Start:** Die Partei wird mit einem **Gründungsprogramm aus zwei Positionen** gegründet,
+denn eine Gründung hat einen Grund. Zu allen anderen Themen schweigt sie zunächst.
+
+**Ereignisse zwingen zur Stellungnahme:** Massendemos, Stromausfälle, Naturkatastrophen, ein
+Wolf, der ein Kind verletzt: Zu jedem Thema kommt früher oder später ein Ereignis, bei dem
+die Partei Farbe bekennen muss – oder schweigt und dafür Glaubwürdigkeit verliert. Bei einem
+erneuten Ereignis kann sie "noch einmal ganz neu nachdenken": Kurswechsel ohne
+Aktionspunkte, aber mit vollem Glaubwürdigkeitsverlust. Zwischen Ereignissen kostet jeder
+Wechsel Aktionspunkte und Glaubwürdigkeit. So bestimmen die Ereignisse die Reihenfolge, in
+der sich das Profil bildet, und der Spieler rutscht in einen Pfad, statt ihn zu wählen
+(Details: `rechenmodell.md` 5.8).
 
 **Zwei Achsen**
 - Wirtschaft: Markt ↔ Staat

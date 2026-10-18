@@ -1,0 +1,18 @@
+{
+	"first_names": [
+		"Alex", "Andrea", "Benedikt", "Birgit", "Christian", "Claudia", "Daniel", "Dagmar",
+		"Elias", "Eva", "Florian", "Franziska", "Georg", "Gabriele", "Hannes", "Heike",
+		"Jan", "Jana", "Kai", "Katrin", "Lukas", "Lea", "Markus", "Miriam", "Nils", "Nora",
+		"Oliver", "Petra", "Robin", "Sabine", "Tobias", "Ulrike", "Vincent", "Wiebke"
+	],
+	"last_names": [
+		"Albrecht", "Brandt", "Dietrich", "Engel", "Franke", "Graf", "Hartmann", "Jansen",
+		"Keller", "Lorenz", "Möller", "Neumann", "Otte", "Pohl", "Roth", "Seidel",
+		"Thiele", "Ulrich", "Voigt", "Winkler", "Ziegler", "Haase", "Kühn", "Lindner"
+	],
+	"party_names": [
+		["Aufbruch", "Bürger"], ["Bündnis", "Gemeinsinn"], ["Allianz", "Zukunft"],
+		["Bewegung", "Klartext"], ["Union", "Heimat und Fortschritt"], ["Liste", "Wandel"],
+		["Initiative", "Neue Wege"], ["Forum", "Verantwortung"]
+	]
+}

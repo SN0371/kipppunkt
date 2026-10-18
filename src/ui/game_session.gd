@@ -28,12 +28,37 @@ func has_game() -> bool:
 	return state != null
 
 
-## Starts a new game and its first turn.
+## Creates a new game. The first turn starts once the party is founded (found()).
 func new_game(game_seed: int) -> void:
 	state = StateFactory.create(defs, SCENARIO, game_seed)
 	planned.clear()
 	last_report.clear()
-	TurnRunner.start_turn(state, defs)
+	changed.emit()
+
+
+## Returns true once the party of the running game is founded.
+func is_founded() -> bool:
+	return has_game() and not state.party.name.is_empty()
+
+
+## Founds the party and starts the first turn. Returns the rejection reason or "".
+func found(party_name: String, abbreviation: String, chair_name: String, programme: Dictionary) -> String:
+	var reason := FoundingSystem.check(defs, party_name, abbreviation, chair_name, programme)
+	if reason.is_empty():
+		FoundingSystem.found(state, defs, party_name, abbreviation, chair_name, programme)
+		TurnRunner.start_turn(state, defs)
+		changed.emit()
+	return reason
+
+
+## Returns the event waiting for a response, or null.
+func pending_event() -> EventDef:
+	return EventSystem.pending(state, defs) if has_game() else null
+
+
+## Answers the pending event: a position -2..+2, or null for silence or keeping the position.
+func respond_to_event(choice: Variant) -> void:
+	EventSystem.resolve(state, defs, choice)
 	changed.emit()
 
 
@@ -175,7 +200,7 @@ func load_game(slot: String) -> String:
 	state = loaded
 	planned.clear()
 	last_report.clear()
-	if not state.awaiting_orders and not state.is_over():
+	if is_founded() and not state.awaiting_orders and not state.is_over():
 		TurnRunner.start_turn(state, defs)
 	changed.emit()
 	return ""

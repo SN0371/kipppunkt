@@ -98,6 +98,10 @@ func test_every_report_line_is_translated() -> void:
 		"purge": {"removed": ["person.1"]},
 		"phase": {"phase": 2.0},
 		"game_over": {"outcome": "won"},
+		"event": {"event": "event.wolf_attack", "topic": "topic.nature_conservation", "first": true},
+		"event_silence": {"event": "event.wolf_attack", "topic": "topic.nature_conservation", "credibility_cost": 3.0},
+		"event_position_kept": {"event": "event.wolf_attack", "topic": "topic.nature_conservation"},
+		"party_founded": {"name": "Allianz Zukunft", "abbreviation": "AZ", "positions": {}},
 	}
 	assert_eq(entries.keys().size(), LogFormatter.SHOWN_KINDS.size(), "Every shown kind has a sample")
 	for language in LANGUAGES:

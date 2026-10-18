@@ -82,8 +82,9 @@ func _election_text(type: String, land_id: String) -> String:
 
 
 func _open_message_dialog() -> void:
-	if _message_topic.is_empty():
-		_message_topic = session.defs.topics.keys()[0]
+	var addressed := session.state.party.positions.keys()
+	if not addressed.has(_message_topic):
+		_message_topic = addressed[0] if not addressed.is_empty() else ""
 	_message_dialog.open()
 
 
@@ -95,10 +96,17 @@ func _build_message_dialog(box: VBoxContainer) -> void:
 	box.add_child(UiKit.heading(tr("ui.message.title") % tr(region + ".name")))
 	box.add_child(UiKit.label(tr("ui.message.explanation")))
 	var entries := []
+	var addressed: Array = session.state.party.positions.keys()
 	for topic_id: String in session.defs.topics:
-		entries.append([tr(topic_id + ".name"), topic_id])
+		if addressed.has(topic_id):
+			entries.append([tr(topic_id + ".name"), topic_id])
+	if entries.is_empty() or _message_topic.is_empty():
+		box.add_child(UiKit.hint(tr("ui.message.no_topics")))
+		return
 	var topic_choice := UiKit.choice(entries)
-	topic_choice.selected = session.defs.topics.keys().find(_message_topic)
+	for i in entries.size():
+		if entries[i][1] == _message_topic:
+			topic_choice.selected = i
 	topic_choice.item_selected.connect(func(index: int) -> void:
 		_message_topic = topic_choice.get_item_metadata(index)
 		_message_dialog.rebuild.call_deferred())
@@ -106,7 +114,7 @@ func _build_message_dialog(box: VBoxContainer) -> void:
 	var federal: int = session.state.party.positions.get(_message_topic, 0)
 	var current: Variant = session.state.party.regional_messages.get(region, {}).get(_message_topic)
 	box.add_child(UiKit.grid([
-		[tr("ui.message.federal"), tr("position.%d" % federal) if federal != 0 else tr("ui.party.no_position")],
+		[tr("ui.message.federal"), tr("position.%d" % federal)],
 		[tr("ui.message.current"), tr("position.%d" % int(current)) if current != null else tr("ui.message.none")],
 	]))
 	var value_label := UiKit.label(tr("ui.message.choose") + " " + tr("position.%d" % _message_value))

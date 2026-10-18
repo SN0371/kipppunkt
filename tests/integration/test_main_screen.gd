@@ -11,12 +11,40 @@ func before_each() -> void:
 	_main = MAIN_SCENE.instantiate()
 	add_child_autofree(_main)
 	await wait_process_frames(2)
+	assert_true(_main.founding_dialog.visible, "A new game starts with the founding assistant")
+	assert_eq(_main.session.found("Allianz Zukunft", "AZ", "Jana Keller", {"topic.taxes": 1, "topic.wind_power": -1}), "")
+	_main.founding_dialog.hide()
+	await wait_process_frames(2)
 
 
 func test_main_screen_starts_a_game() -> void:
-	assert_not_null(_main.session)
-	assert_true(_main.session.has_game())
-	assert_true(_main.top_bar_label.text.begins_with("Q1/2041"), _main.top_bar_label.text)
+	assert_true(_main.session.is_founded())
+	assert_true(_main.session.state.awaiting_orders, "Founding starts the first turn")
+	assert_true(_main.top_bar_label.text.begins_with("AZ · Q1/2041"), _main.top_bar_label.text)
+
+
+func test_founding_assistant_walks_through_all_steps() -> void:
+	var dialog: FoundingDialog = _main.founding_dialog
+	_main.session.new_game(3)
+	dialog.open()
+	for step in FoundingDialog.STEPS:
+		dialog._step = step
+		dialog._rebuild()
+		await wait_process_frames(1)
+		assert_gt(dialog._content.get_child_count(), 1, "Step %d" % step)
+	dialog._programme = {"topic.welfare": 2, "topic.debt_brake": -1}
+	dialog._found()
+	assert_true(_main.session.is_founded())
+	assert_eq(_main.session.state.party.positions, {"topic.welfare": 2, "topic.debt_brake": -1})
+
+
+func test_event_overlay_takes_a_stand() -> void:
+	_main.session.state.pending_event_id = "event.wolf_attack"
+	assert_true(_main.event_dialog.open_pending())
+	await wait_process_frames(1)
+	_main.event_dialog._respond(1)
+	assert_eq(_main.session.state.party.positions["topic.nature_conservation"], 1)
+	assert_false(_main.event_dialog.visible)
 
 
 func test_every_panel_and_overlay_renders() -> void:

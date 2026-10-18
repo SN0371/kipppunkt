@@ -432,6 +432,15 @@ msgstr "State election in %s: %.1f %% (turnout %.1f %%), below the 5 %% threshol
 msgid "log.election_state_seats"
 msgstr "State election in %s: %.1f %% (turnout %.1f %%) – the party enters the state parliament."
 
+msgid "log.event"
+msgstr "Event: %s."
+
+msgid "log.event_position_kept"
+msgstr "The party keeps its position on %s."
+
+msgid "log.event_silence"
+msgstr "The party stays silent on %s (credibility −%.1f)."
+
 msgid "log.game_over"
 msgstr "Game over: %s."
 
@@ -449,6 +458,9 @@ msgstr "%s has a new owner."
 
 msgid "log.order_rejected"
 msgstr "%s not carried out: %s."
+
+msgid "log.party_founded"
+msgstr "The party “%s” (%s) is founded."
 
 msgid "log.person_left"
 msgstr "%s has left the party."
@@ -544,7 +556,7 @@ msgid "position.-2"
 msgstr "−2 strongly against"
 
 msgid "position.0"
-msgstr "no position"
+msgstr "0 neutral"
 
 msgid "position.1"
 msgstr "+1 for"
@@ -720,6 +732,105 @@ msgstr "%d activists"
 msgid "ui.end_turn"
 msgstr "End turn"
 
+msgid "ui.event.choice"
+msgstr "Stand: %s"
+
+msgid "ui.event.current"
+msgstr "Current position: %s"
+
+msgid "ui.event.first_stand"
+msgstr "The party has not spoken about this yet. Now it has to take a stand – or stay silent."
+
+msgid "ui.event.keep"
+msgstr "Keep the position"
+
+msgid "ui.event.rethink"
+msgstr "Rethink"
+
+msgid "ui.event.rethink_cost"
+msgstr "−%.1f credibility"
+
+msgid "ui.event.rethink_hint"
+msgstr "At a new event the party may rethink its position without action points. Changing course still costs credibility."
+
+msgid "ui.event.silence"
+msgstr "Stay silent (−%.0f credibility)"
+
+msgid "ui.event.take_stand"
+msgstr "Take a stand"
+
+msgid "ui.event.title"
+msgstr "Event"
+
+msgid "ui.founding.abbreviation"
+msgstr "Abbreviation"
+
+msgid "ui.founding.back"
+msgstr "Back"
+
+msgid "ui.founding.chair"
+msgstr "The party chair"
+
+msgid "ui.founding.chair_hint"
+msgstr "That is you: the face of the party. The abilities are given; only the name is your choice."
+
+msgid "ui.founding.chair_name"
+msgstr "Name of the party chair"
+
+msgid "ui.founding.chosen"
+msgstr "Chosen: %d of %d"
+
+msgid "ui.founding.found"
+msgstr "Found the party"
+
+msgid "ui.founding.full"
+msgstr "The programme already has two topics. Move one back to the middle to choose another."
+
+msgid "ui.founding.missing_chair"
+msgstr "The party chair's name is missing."
+
+msgid "ui.founding.missing_name"
+msgstr "Name and abbreviation are missing."
+
+msgid "ui.founding.next"
+msgstr "Next"
+
+msgid "ui.founding.not_chosen"
+msgstr "not in the programme"
+
+msgid "ui.founding.party"
+msgstr "The party"
+
+msgid "ui.founding.party_hint"
+msgstr "Every party starts with a name. It should be fictional – similarities to real parties are unintended."
+
+msgid "ui.founding.party_name"
+msgstr "Party name"
+
+msgid "ui.founding.programme"
+msgstr "The founding programme"
+
+msgid "ui.founding.programme_hint"
+msgstr "A party is founded for a reason: choose %d topics it stands for or against. On all other topics it only takes a stand when events force it to."
+
+msgid "ui.founding.regional_mood"
+msgstr "Mood in the South: %s · in the North: %s"
+
+msgid "ui.founding.step"
+msgstr "Step %d of %d"
+
+msgid "ui.founding.suggest"
+msgstr "Roll a suggestion"
+
+msgid "ui.founding.summary"
+msgstr "Summary"
+
+msgid "ui.founding.summary_hint"
+msgstr "Founding starts the first quarter."
+
+msgid "ui.founding.title"
+msgstr "Founding the party"
+
 msgid "ui.game_over"
 msgstr "Game over"
 
@@ -855,6 +966,9 @@ msgstr "A regional message is a position that deviates from the federal position
 msgid "ui.message.federal"
 msgstr "Federal position"
 
+msgid "ui.message.no_topics"
+msgstr "Regional messages are only possible on topics the party has already taken a stand on."
+
 msgid "ui.message.none"
 msgstr "none"
 
@@ -862,10 +976,25 @@ msgid "ui.message.plan"
 msgstr "Plan message"
 
 msgid "ui.message.risk"
-msgstr "The same position as federally removes the regional message. The middle means: stay silent on the topic in this region."
+msgstr "The same position as federally removes the regional message."
 
 msgid "ui.message.title"
 msgstr "Regional message: %s"
+
+msgid "ui.mood.against"
+msgstr "rather against"
+
+msgid "ui.mood.for"
+msgstr "rather for"
+
+msgid "ui.mood.strongly_against"
+msgstr "strongly against"
+
+msgid "ui.mood.strongly_for"
+msgstr "strongly for"
+
+msgid "ui.mood.undecided"
+msgstr "divided"
 
 msgid "ui.new_game"
 msgstr "New game"
@@ -882,8 +1011,14 @@ msgstr "Not possible right now: %s"
 msgid "ui.party.actions"
 msgstr "Actions"
 
+msgid "ui.party.change_cost_entry"
+msgstr "%s: %d AP, −%.1f credibility"
+
 msgid "ui.party.change_costs"
-msgstr "Credibility cost of changing course:"
+msgstr "Cost of a change:"
+
+msgid "ui.party.closed_hint"
+msgstr "The party only speaks about this when an event forces it to take a stand."
 
 msgid "ui.party.contradiction_risk"
 msgstr "Contradiction risk"
@@ -934,7 +1069,7 @@ msgid "ui.party.members"
 msgstr "Members"
 
 msgid "ui.party.no_position"
-msgstr "no position"
+msgstr "no stand taken yet"
 
 msgid "ui.party.planned_marker"
 msgstr "(planned)"
@@ -943,7 +1078,7 @@ msgid "ui.party.positions"
 msgstr "Positions"
 
 msgid "ui.party.positions_hint"
-msgstr "Middle: no position. Right: for, left: against. Moving the slider plans the action “Take a position” (1 AP). A first position is free; every later change of course costs credibility."
+msgstr "New topics open through events. Changing a position costs 1 action point per slider step and credibility; at a repeated event on the topic it costs no action points."
 
 msgid "ui.party.radicalism"
 msgstr "Radicalism"
@@ -967,7 +1102,7 @@ msgid "ui.party.scrutiny"
 msgstr "Scrutiny"
 
 msgid "ui.party.slider_hint"
-msgstr "Middle: no position. Right for, left against."
+msgstr "Right for, left against, middle neutral."
 
 msgid "ui.party.unity"
 msgstr "Party unity"
@@ -1099,7 +1234,7 @@ msgid "ui.tab.staff"
 msgstr "Staff"
 
 msgid "ui.top_bar"
-msgstr "Q%d/%d · Money %s · Action points %d of %d · Activists %d"
+msgstr "%s · Q%d/%d · Money %s · Action points %d of %d · Activists %d"
 
 msgid "ui.turn.planned"
 msgstr "Planned for Q%d/%d"

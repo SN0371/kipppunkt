@@ -21,6 +21,8 @@ var load_dialog: ConfirmationDialog
 var load_list: ItemList
 var info_dialog: AcceptDialog
 var turn_dialog: ContentDialog
+var founding_dialog: FoundingDialog
+var event_dialog: EventDialog
 ## True while the turn dialog shows the results of the resolved turn.
 var _showing_results: bool = false
 var settings: UiSettings
@@ -62,12 +64,20 @@ func _fit_window_to_screen() -> void:
 	window.position = screen.position + (screen.size - window.size) / 2
 
 
-## Starts a new game with a random seed; the seed is shown so a game can be reproduced.
+## Starts a new game with a random seed and opens the founding assistant; the seed is shown
+## so a game can be reproduced.
 func new_game() -> void:
 	var game_seed := randi()
 	session.new_game(game_seed)
 	selection_panel.select("")
 	_set_status(tr("ui.status.new_game") % game_seed)
+	founding_dialog.open()
+
+
+## Shows the event waiting for a response, if any.
+func _show_pending_event() -> void:
+	if not session.state.is_over():
+		event_dialog.open_pending()
 
 
 func _build(map: MapData) -> void:
@@ -177,13 +187,20 @@ func _build_dialogs() -> void:
 	turn_dialog.setup(session, tr("ui.end_turn"), _build_turn_dialog)
 	turn_dialog.confirmed.connect(_on_turn_dialog_confirmed)
 	add_child(turn_dialog)
+	founding_dialog = FoundingDialog.new()
+	founding_dialog.setup(session)
+	founding_dialog.founded.connect(_show_pending_event)
+	add_child(founding_dialog)
+	event_dialog = EventDialog.new()
+	event_dialog.setup(session)
+	add_child(event_dialog)
 
 
 func _refresh() -> void:
-	var state := session.state
-	var party := state.party
+	var party := session.state.party
 	var budget := session.remaining()
 	top_bar_label.text = tr("ui.top_bar") % [
+		party.abbreviation if not party.abbreviation.is_empty() else "–",
 		session.quarter(), session.year(), UiKit.money(budget["money"]),
 		budget["action_points"], party.action_points, budget["activists"],
 	]
@@ -199,6 +216,11 @@ func _open_turn_dialog() -> void:
 	if session.state.is_over():
 		_set_status(tr("ui.status.game_over"))
 		return
+	if not session.is_founded():
+		founding_dialog.open()
+		return
+	if event_dialog.open_pending():
+		return
 	_showing_results = false
 	turn_dialog.get_cancel_button().visible = true
 	turn_dialog.ok_button_text = tr("ui.end_turn")
@@ -213,6 +235,7 @@ func _end_turn() -> void:
 
 func _on_turn_dialog_confirmed() -> void:
 	if _showing_results:
+		_show_pending_event()
 		return
 	_end_turn()
 	_showing_results = true
@@ -273,6 +296,10 @@ func _load() -> void:
 	if problem.is_empty():
 		selection_panel.select("")
 		_set_status(tr("ui.status.loaded") % slot)
+		if not session.is_founded():
+			founding_dialog.open()
+		else:
+			_show_pending_event()
 	else:
 		info_dialog.title = tr("ui.load")
 		info_dialog.dialog_text = tr("ui.status.load_failed") + "\n" + problem

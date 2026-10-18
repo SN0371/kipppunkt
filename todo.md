@@ -121,13 +121,22 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
 - **Datei `feedback`:** private Spieltest-Notizen des Nutzers, in `.git/info/exclude`,
   nie committen (war einmal versehentlich in 61484c6, Historie bleibt so)
 
+- **Spieltest-Rückmeldung 4 (2026-10-18) umgesetzt:** Gründungsassistent (Name, Abkürzung,
+  Parteichef, Gründungsprogramm aus genau 2 Positionen; Namensvorschläge aus
+  `data/names/suggestions.json`); Themen sind gesperrt, bis ein Ereignis zur Stellungnahme
+  zwingt (`data/events.json`, 18 Ereignisse, `EventSystem`, Overlay vor der Planung);
+  Schweigen kostet Glaubwürdigkeit; erneutes Ereignis erlaubt „neu nachdenken“ ohne AP;
+  Positionswechsel per Regler 1 AP je Stufe; 0 = bewusst neutral; Speicherformat Version 2;
+  Bots gründen und antworten nach Strategie; Balancing `P_RMin` 0,15, Mobilisierung · f_Reach
+
 **Spiel starten:** `godot --path .` (oder im Editor F5).
 **Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
 
 ## Nächster Schritt
 - [ ] **Nutzer spielt eine Partie von Hand** und gibt Rückmeldung zur Bedienung
 - [ ] **M5 Inhalte und Lokalisierung** (`prototyp-plan.md` Abschnitt 11):
-  - [ ] ca. 20 Aktionen (derzeit 18), 30 Ereignisse (derzeit keine Ereignisse außer Krisen)
+  - [ ] ca. 20 Aktionen (derzeit 18), weitere Ereignisse (derzeit 18 Themen-Ereignisse; noch
+        keine Ereignisse ohne Themenbezug, z. B. Skandale, Überläufer)
   - [ ] Namenspools für Personen (derzeit namenlos, nur Funktion/Kandidat)
   - [ ] Fiktive Namen für Konkurrenzparteien, Medienhäuser und Geldgeber statt Arbeitsnamen
   - [ ] Lexikon-Texte (Institutionen, Normen, Vereinfachungen)

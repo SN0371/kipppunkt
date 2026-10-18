@@ -9,6 +9,7 @@ var _session: GameSession
 func before_each() -> void:
 	_session = GameSession.new(SimFixture.defs())
 	_session.new_game(5)
+	assert_eq(_session.found("Allianz Zukunft", "AZ", "Jana Keller", {"topic.welfare": 1, "topic.wind_power": -1}), "")
 	_session.state.party.positions["topic.taxes"] = 0
 
 
@@ -18,7 +19,15 @@ func after_all() -> void:
 		DirAccess.remove_absolute(path)
 
 
-func test_new_game_waits_for_orders() -> void:
+func test_new_game_waits_for_founding() -> void:
+	var fresh := GameSession.new(SimFixture.defs())
+	fresh.new_game(1)
+	assert_false(fresh.is_founded())
+	assert_false(fresh.state.awaiting_orders, "The first turn starts with the founding")
+	assert_ne(fresh.found("", "X", "Y", {"topic.taxes": 1, "topic.welfare": 1}), "", "Invalid founding is rejected")
+
+
+func test_founding_starts_the_first_turn() -> void:
 	assert_true(_session.has_game())
 	assert_true(_session.state.awaiting_orders)
 	assert_eq(_session.year(), 2041)
@@ -63,6 +72,7 @@ func test_save_and_load() -> void:
 	assert_true(GameSession.save_slots().has(SLOT))
 	var other := GameSession.new(SimFixture.defs())
 	assert_eq(other.load_game(SLOT), "")
+	assert_true(other.is_founded())
 	assert_eq(other.state.turn, 2)
 	assert_true(other.state.awaiting_orders)
 

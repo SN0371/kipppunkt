@@ -1,6 +1,6 @@
 # Rechenmodell der Kernschleife (MVP)
 
-Stand: 2026-10-17 · Version 0.4 (Themen als gerichtete Aussagen, Widersprüche) · Bezug: `game-design.md` Version 0.3
+Stand: 2026-10-17 · Version 0.5 (Gründung, Ereignisse, Stellungnahmen) · Bezug: `game-design.md` Version 0.3
 
 > Dieses Dokument übersetzt die Systeme des Design-Dokuments in Zahlen und Formeln für den
 > MVP (Phasen I–III, Regionen Süden und Norden spielbar). Alle Konstanten heißen `P_…`,
@@ -48,7 +48,7 @@ Stand: 2026-10-17 · Version 0.4 (Themen als gerichtete Aussagen, Widersprüche)
 | `RK_l` | 0–100 | Reichweite klassische Medien je Land, berechnet aus den Medienhäusern (5.6) |
 | `RK_Bonus` | 0–100 | Kurzfristige Aufmerksamkeit durch Aktionen und Ereignisse |
 | `W` | 0–100 | Widerspruchsrisiko |
-| `p_k` | −2, −1, +1, +2 oder leer | Bundesweite Position zu Thema `k`; leer = keine Position. Eine Position 0 gibt es nicht: Wer 0 wählt, zieht seine Position zurück |
+| `p_k` | −2 … +2 oder leer | Bundesweite Position zu Thema `k`; 0 = bewusst neutral; leer = noch nicht Stellung bezogen (Thema gesperrt, siehe 5.8) |
 | `p_k,r` | −2…+2 oder leer | Abweichende regionale Botschaft in Region `r` (optional) |
 | `h_k` | Runden | Haltedauer der aktuellen Position zu Thema `k` |
 
@@ -130,7 +130,7 @@ Botschaften wirken nur, soweit sie ankommen. Ältere Länder nutzen mehr klassis
 
 ```
 Reach_l = (1 − Alt_l/100) · RP  +  (Alt_l/100) · RK_l        (0–100)
-f_Reach = 0,3 + 0,7 · Reach_l / 100                           (0,3 … 1,0)
+f_Reach = P_RMin + (1 − P_RMin) · Reach_l / 100              (P_RMin … 1,0)
 ```
 
 ### 3.3 Konkurrenzdruck
@@ -155,7 +155,7 @@ Zuspruch_l = P_T     · T_l · f_Reach · f_C              Themen
 
 Ziel_l = P_Basis
        + Zuspruch_l · (1 − Konk_l) · (1 + P_MK · MK_l)  Konkurrenzdruck (3.3), Medienklima (5.6)
-       + Mobilisierung_l                                Repräsentationslücke (3.8), ohne Konkurrenzdruck
+       + Mobilisierung_l · f_Reach                      Repräsentationslücke (3.8), ohne Konkurrenzdruck
        − P_Stigma · VS · (R / 100)                      Stigma durch Einstufung
        + Σ mod
 
@@ -207,7 +207,8 @@ Beteiligung_l   = P_Wbasis − P_Lücke · Lücke_l + Mobilisierung_l           
 - **Krisen vergrößern die Lücke**, weil sie die Salienz erhöhen.
 - Ohne passende Positionen bringt Radikalität keine Mobilisierung.
 - Mobilisierte Nichtwähler werden von den etablierten Parteien nicht umworben: kein
-  Konkurrenzdruck.
+  Konkurrenzdruck. Wie jede Botschaft wirkt Mobilisierung aber nur, soweit die Partei
+  gehört wird (`f_Reach`).
 - Die Wahlbeteiligung wird bei jeder Wahl protokolliert und bestimmt die abgegebenen
   Stimmen für die Parteienfinanzierung (61 Mio. Wahlberechtigte, je Land nach Bevölkerung).
 - **Lernpunkt:** Radikale werden dort stark, wo vorher die Wahlbeteiligung niedrig war,
@@ -295,8 +296,9 @@ MVP-Themen und Vektoren. Jedes Thema ist eine **gerichtete Aussage**: +2 heißt 
 | Schuldenbremse einhalten | Grundsatz | (+0,8, +0,3) | Kredite aufnehmen |
 
 ### 5.2 Kurswechsel (Lock-in)
-Eine Position zu ändern kostet Glaubwürdigkeit, umso mehr, je länger sie gehalten wurde und
-je mehr Unterstützer an ihr hängen:
+Eine Position zu ändern kostet **1 Aktionspunkt je Reglerstufe** (bei einem erneuten
+Ereignis zum Thema entfällt das, siehe 5.8) und Glaubwürdigkeit, umso mehr, je länger sie
+gehalten wurde und je mehr Unterstützer an ihr hängen:
 
 ```
 ΔC = − P_Wechsel · |Δp_k| · (1 + h_k / 8) · (1 + n_k / 2)
@@ -480,6 +482,38 @@ Ruhewert der Glaubwürdigkeit = 60 + P_MKC · MK_Bund − P_Inkon · Inkonsisten
 
 Die schwächste beteiligte Position bestimmt die Stärke: Wer "Steuern senken +2" und
 "Sozialstaat ausbauen +1" vertritt, hat den Widerspruch zur Hälfte.
+
+### 5.8 Gründung, Ereignisse und Stellungnahmen
+Die Partei sucht sich ihr Profil nicht am Reißbrett aus: Ereignisse zwingen sie, Farbe zu
+bekennen. So rutscht sie in ihren Pfad (Design-Dokument Abschnitt 8).
+
+**Gründung:** Vor der ersten Runde wählt der Spieler Name, Abkürzung, den Namen des
+Parteichefs und ein **Gründungsprogramm aus genau zwei Positionen** (dafür oder dagegen).
+Das Programm ist kostenlos. Alle anderen Themen sind gesperrt.
+
+**Ereignisse** (`data/events.json`): Jedes Ereignis gehört zu einem Thema und einem Gebiet;
+manche setzen eine laufende Krise voraus. Ab Runde 2 kann zu Rundenbeginn ein Ereignis
+eintreten, höchstens eines pro Runde:
+
+```
+Wartezeit_k      = Runden, die ein gesperrtes Thema schon wartet
+P(erstes Ereignis zu k) = min(1, P_Ereignis + P_ErgWachs · Wartezeit_k),   1 ab Wartezeit P_ErgMax
+P(erneutes Ereignis zu k) = P_ErgWdh                                        für besetzte Themen
+```
+Unter mehreren ausgelösten gesperrten Themen kommt das am längsten wartende zum Zug. Das
+Ereignis erhöht die Salienz seines Themas zwei Runden lang um `P_ErgSal`.
+
+**Antworten** (Overlay vor der Planung):
+
+| Lage | Antwort | Wirkung |
+|---|---|---|
+| Thema gesperrt | Stellung beziehen (−2 … +2, 0 = neutral) | Kostenlos; das Thema ist ab jetzt besetzt |
+| Thema gesperrt | Schweigen | Glaubwürdigkeit −`P_Schweigen`; das Thema bleibt gesperrt, die Wartezeit beginnt neu |
+| Thema besetzt | Position beibehalten | – |
+| Thema besetzt | Neu nachdenken | Wechsel ohne Aktionspunkte, aber mit vollem Glaubwürdigkeitsverlust (5.2) |
+
+Unbeantwortete Ereignisse gelten als Schweigen bzw. Beibehalten. Regionale Botschaften und
+Positionswechsel per Aktion sind nur zu besetzten Themen möglich.
 
 ---
 
@@ -716,6 +750,13 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_Wbasis` | 78 | Wahlbeteiligung ohne Repräsentationslücke in % |
 | `P_Lücke` | 30 | Beteiligungsverlust in Prozentpunkten bei voller Lücke |
 | `P_Inkon` | 15 | Senkung des Glaubwürdigkeits-Ruhewerts bei einem vollen Widerspruch |
+| `P_RMin` | 0,15 | Anteil einer Botschaft, der ganz ohne Reichweite ankommt |
+| `P_Ereignis` | 0,08 | Grundwahrscheinlichkeit eines ersten Ereignisses je gesperrtem Thema und Runde |
+| `P_ErgWachs` | 0,02 | Zuwachs dieser Wahrscheinlichkeit je Runde Wartezeit |
+| `P_ErgMax` | 16 | Wartezeit, nach der das erste Ereignis sicher kommt |
+| `P_ErgWdh` | 0,03 | Wahrscheinlichkeit eines erneuten Ereignisses je besetztem Thema und Runde |
+| `P_ErgSal` | 0,5 | Salienz-Zuwachs des Ereignisthemas für zwei Runden |
+| `P_Schweigen` | 3 | Glaubwürdigkeitsverlust, wenn die Partei bei einem Ereignis schweigt |
 
 **Startwerte Szenario "Neugründung":** `G` 50, `M` 300, `U_l` 0,5 %, `C` 50, `R` 75,
 `Rad` 10, `B` 0, `VS` 0, `E` 70, `RP` 5, `RK_Bonus` 0, `V_r` 2 (Süden, Norden), 0 sonst,
@@ -803,3 +844,4 @@ Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Wert
 | 2026-10-17 | Relative Obergrenze der Parteienfinanzierung (Modelländerung, mit Nutzer entschieden) | unbegrenzt → höchstens Beiträge + Spenden des Quartals | Staatliche Teilfinanzierung machte Geld bedeutungslos | Geld am Ende (Median): Geduldig 15.900 → 4.000 T€, Radikal 37.400 → 8.000 T€, Passiv ~220 T€; keine Bankrotte, Korridore unverändert |
 | 2026-10-17 | Repräsentationslücke und Mobilisierung (Modelländerung, mit Nutzer entschieden), `P_Mob` 8 | – | Radikalität brachte im Umfragemodell keinen Vorteil, der radikale Weg war nicht schneller (3 % Siege, 0 % bis Runde 24) | Radikal 72 % bis Runde 24, 87 % vorher Verdachtsfall; Zufall 7 % Siege; alle Korridore erfüllt. `P_Mob` 12 machte das Spiel zu leicht (Zufall 18 % Siege) |
 | 2026-10-18 | Themen als gerichtete Aussagen, 8 statt 6 Themen (Naturschutz, Schuldenbremse), widersprüchliche Positionen, Position 0 = keine Position (Modelländerung, mit Nutzer entschieden); `P_Mob` 8 → 9 | – | Spieltest-Rückmeldung: Themen waren unklar, Widersprüche blieben folgenlos. Mehr Themen verdünnen jede Position; der radikale Weg fiel auf 44 % bis Runde 24 | Radikal 61 % bis Runde 24; alle Korridore erfüllt. Bots vermeiden bei der Positionswahl Widersprüche, wie ein überlegter Spieler |
+| 2026-10-18 | Gründung mit zwei Positionen, Ereignisse öffnen Themen, Positionswechsel 1 AP je Stufe (Modelländerung, mit Nutzer entschieden); Mobilisierung · `f_Reach`; `P_RMin` 0,3 → 0,15 | – | Spieltest-Rückmeldung 4: Das Hineinrutschen in einen Pfad soll im Mittelpunkt stehen. Danach blieb eine gegründete, aber untätige Partei über 1 % (nur 6 % bedeutungslos), weil Botschaften und Mobilisierung ohne Reichweite wirkten | Passiv 83 % bedeutungslos, Radikal 63 % bis Runde 24, Doppelzüngig 53 % im Korridor; alle Korridore erfüllt |
