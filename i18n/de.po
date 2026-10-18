@@ -741,6 +741,12 @@ msgstr "Name des Spielstands"
 msgid "ui.selection.hint"
 msgstr "Klicke auf ein Land oder eine Institution auf der Karte."
 
+msgid "ui.settings.ui_scale"
+msgstr "Textgröße %d %%"
+
+msgid "ui.settings.ui_scale_hint"
+msgstr "Größe von Schrift und Bedienelementen"
+
 msgid "ui.staff.candidate"
 msgstr "Kandidat"
 

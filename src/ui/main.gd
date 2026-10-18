@@ -3,6 +3,8 @@ extends Control
 ## The layout is built in code so it stays readable in diffs.
 
 const SIDE_BAR_WIDTH := 460
+## Share of the usable screen the window takes at start.
+const WINDOW_SCREEN_SHARE := 0.85
 const ZOOM_REGIONS: PackedStringArray = ["", "region.south", "region.north"]
 
 var session: GameSession
@@ -18,9 +20,13 @@ var save_name: LineEdit
 var load_dialog: ConfirmationDialog
 var load_list: ItemList
 var info_dialog: AcceptDialog
+var settings: UiSettings
 
 
 func _ready() -> void:
+	_fit_window_to_screen()
+	settings = UiSettings.load_from()
+	settings.apply(get_window())
 	var defs := GameDefs.load_from_dir("res://data")
 	if not defs.is_valid():
 		add_child(UiKit.label("Invalid data:\n" + "\n".join(defs.errors)))
@@ -34,6 +40,23 @@ func _ready() -> void:
 	session.changed.connect(_refresh)
 	session.turn_finished.connect(_on_turn_finished)
 	new_game()
+
+
+## Sizes the window to most of the screen in physical pixels. The interface stretches with the
+## window (project setting "canvas_items"), so on high-resolution screens it grows with the
+## pixel density instead of appearing tiny.
+func _fit_window_to_screen() -> void:
+	var window := get_window()
+	if DisplayServer.get_name() == "headless" or window.is_embedded():
+		return
+	var screen := DisplayServer.screen_get_usable_rect(window.current_screen)
+	var base := Vector2(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height"),
+	)
+	var factor := minf(screen.size.x / base.x, screen.size.y / base.y) * WINDOW_SCREEN_SHARE
+	window.size = Vector2i(base * factor)
+	window.position = screen.position + (screen.size - window.size) / 2
 
 
 ## Starts a new game with a random seed; the seed is shown so a game can be reproduced.
@@ -51,6 +74,7 @@ func _build(map: MapData) -> void:
 	top_bar_label = UiKit.label("")
 	root.add_child(UiKit.row([
 		top_bar_label,
+		_build_scale_choice(),
 		UiKit.button(tr("ui.new_game"), new_game),
 		UiKit.button(tr("ui.save"), _open_save_dialog),
 		UiKit.button(tr("ui.load"), _open_load_dialog),
@@ -64,6 +88,20 @@ func _build(map: MapData) -> void:
 	status_label = UiKit.label("")
 	root.add_child(status_label)
 	_build_dialogs()
+
+
+func _build_scale_choice() -> OptionButton:
+	var entries := []
+	for scale in UiSettings.SCALES:
+		entries.append([tr("ui.settings.ui_scale") % scale, scale])
+	var choice := UiKit.choice(entries)
+	choice.selected = UiSettings.SCALES.find(settings.ui_scale)
+	choice.tooltip_text = tr("ui.settings.ui_scale_hint")
+	choice.item_selected.connect(func(index: int) -> void:
+		settings.ui_scale = choice.get_item_metadata(index)
+		settings.apply(get_window())
+		settings.save_to())
+	return choice
 
 
 func _build_map_area(map: MapData) -> Control:

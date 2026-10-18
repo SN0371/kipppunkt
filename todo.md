@@ -91,6 +91,11 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   - `ActionResolver.check()` nimmt optional ein Restbudget, damit die Planung mehrere Aufträge
     gemeinsam prüft
 
+- **Lesbarkeit (Nutzerrückmeldung):** Fenster startet mit 85 % der Bildschirmfläche in echten
+  Pixeln, Oberfläche streckt mit (`canvas_items`), auf Retina also ~1,5-fach größer;
+  zusätzlich Einstellung „Textgröße“ (80–200 %) in der Kopfzeile, gespeichert in
+  `user://settings.cfg` (`UiSettings`).
+
 **Spiel starten:** `godot --path .` (oder im Editor F5).
 **Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
 

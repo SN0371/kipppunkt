@@ -741,6 +741,12 @@ msgstr "Name of the save game"
 msgid "ui.selection.hint"
 msgstr "Click a land or an institution on the map."
 
+msgid "ui.settings.ui_scale"
+msgstr "Text size %d %%"
+
+msgid "ui.settings.ui_scale_hint"
+msgstr "Size of text and controls"
+
 msgid "ui.staff.candidate"
 msgstr "Candidate"
 
