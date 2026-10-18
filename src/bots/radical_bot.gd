@@ -24,9 +24,10 @@ func orders(state: GameState, defs: GameDefs) -> Array[ActionOrder]:
 	var topics := topics_by_importance(defs, regions)
 	var new_positions := 0
 	for topic_id in topics:
+		var position := 2 * int(signf(wanted[topic_id]))
 		if new_positions < POSITIONS_PER_TURN and not state.party.positions.has(topic_id) \
-				and absf(wanted[topic_id]) >= MIN_PREFERENCE:
-			result.append(ActionOrder.create("action.set_position", topic_id, {"value": 2 * int(signf(wanted[topic_id]))}))
+				and absf(wanted[topic_id]) >= MIN_PREFERENCE and consistent(state, defs, topic_id, position):
+			result.append(ActionOrder.create("action.set_position", topic_id, {"value": position}))
 			new_positions += 1
 	for donor_id: String in state.donors:
 		var donor := state.donors[donor_id]

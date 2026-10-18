@@ -5,10 +5,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 0 },
 			"topic.combustion_ban": { "weight": 3, "preference": -2 },
-			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.organic_farming": { "weight": 1, "preference": -1 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 2, "preference": 1 },
-			"topic.welfare": { "weight": 1, "preference": 0 }
+			"topic.welfare": { "weight": 1, "preference": 0 },
+			"topic.debt_brake": { "weight": 2, "preference": 1 }
 		}
 	},
 	{
@@ -17,10 +19,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 2, "preference": -1 },
 			"topic.combustion_ban": { "weight": 3, "preference": -2 },
-			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.organic_farming": { "weight": 2, "preference": -2 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 2, "preference": 1 },
 			"topic.taxes": { "weight": 2, "preference": 1 },
-			"topic.welfare": { "weight": 1, "preference": -1 }
+			"topic.welfare": { "weight": 1, "preference": -1 },
+			"topic.debt_brake": { "weight": 2, "preference": 2 }
 		}
 	},
 	{
@@ -29,10 +33,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 1 },
 			"topic.combustion_ban": { "weight": 1, "preference": 1 },
-			"topic.agriculture": { "weight": 0, "preference": -1 },
+			"topic.organic_farming": { "weight": 0, "preference": 1 },
 			"topic.housing_costs": { "weight": 3, "preference": 2 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": -1 },
-			"topic.welfare": { "weight": 2, "preference": 1 }
+			"topic.welfare": { "weight": 2, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": -1 }
 		}
 	},
 	{
@@ -41,10 +47,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 2, "preference": 0 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.organic_farming": { "weight": 2, "preference": -2 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 2 }
+			"topic.welfare": { "weight": 2, "preference": 2 },
+			"topic.debt_brake": { "weight": 1, "preference": -1 }
 		}
 	},
 	{
@@ -53,10 +61,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 1 },
 			"topic.combustion_ban": { "weight": 1, "preference": 0 },
-			"topic.agriculture": { "weight": 0, "preference": 0 },
+			"topic.organic_farming": { "weight": 0, "preference": 0 },
 			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": -1 },
-			"topic.welfare": { "weight": 2, "preference": 2 }
+			"topic.welfare": { "weight": 2, "preference": 2 },
+			"topic.debt_brake": { "weight": 1, "preference": -2 }
 		}
 	},
 	{
@@ -65,10 +75,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 1 },
 			"topic.combustion_ban": { "weight": 1, "preference": 1 },
-			"topic.agriculture": { "weight": 0, "preference": -1 },
+			"topic.organic_farming": { "weight": 0, "preference": 1 },
 			"topic.housing_costs": { "weight": 3, "preference": 2 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 1, "preference": 1 }
+			"topic.welfare": { "weight": 1, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 1 }
 		}
 	},
 	{
@@ -77,10 +89,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 0 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 1, "preference": 0 },
+			"topic.organic_farming": { "weight": 1, "preference": 0 },
 			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 2, "preference": 1 },
-			"topic.welfare": { "weight": 1, "preference": 0 }
+			"topic.welfare": { "weight": 1, "preference": 0 },
+			"topic.debt_brake": { "weight": 2, "preference": 1 }
 		}
 	},
 	{
@@ -89,10 +103,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 2, "preference": 0 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 2, "preference": 2 },
+			"topic.organic_farming": { "weight": 2, "preference": -2 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 2, "preference": 2 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 2 }
+			"topic.welfare": { "weight": 2, "preference": 2 },
+			"topic.debt_brake": { "weight": 1, "preference": -1 }
 		}
 	},
 	{
@@ -101,10 +117,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 2, "preference": 1 },
 			"topic.combustion_ban": { "weight": 3, "preference": -1 },
-			"topic.agriculture": { "weight": 3, "preference": 2 },
+			"topic.organic_farming": { "weight": 3, "preference": -2 },
 			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 1 }
+			"topic.welfare": { "weight": 2, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 0 }
 		}
 	},
 	{
@@ -113,10 +131,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 0 },
 			"topic.combustion_ban": { "weight": 2, "preference": -1 },
-			"topic.agriculture": { "weight": 1, "preference": 0 },
+			"topic.organic_farming": { "weight": 1, "preference": 0 },
 			"topic.housing_costs": { "weight": 2, "preference": 2 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 3, "preference": 1 }
+			"topic.welfare": { "weight": 3, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 0 }
 		}
 	},
 	{
@@ -125,10 +145,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 0 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.organic_farming": { "weight": 1, "preference": -1 },
 			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 1, "preference": 1 }
+			"topic.welfare": { "weight": 1, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 0 }
 		}
 	},
 	{
@@ -137,10 +159,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": 0 },
 			"topic.combustion_ban": { "weight": 2, "preference": -2 },
-			"topic.agriculture": { "weight": 0, "preference": 0 },
+			"topic.organic_farming": { "weight": 0, "preference": 0 },
 			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 1 }
+			"topic.welfare": { "weight": 2, "preference": 1 },
+			"topic.debt_brake": { "weight": 2, "preference": -2 }
 		}
 	},
 	{
@@ -149,10 +173,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": -1 },
 			"topic.combustion_ban": { "weight": 2, "preference": -1 },
-			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.organic_farming": { "weight": 1, "preference": -1 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 1 }
+			"topic.welfare": { "weight": 2, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 0 }
 		}
 	},
 	{
@@ -161,10 +187,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 2, "preference": 0 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 2, "preference": 1 },
+			"topic.organic_farming": { "weight": 2, "preference": -1 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 0 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 3, "preference": 2 }
+			"topic.welfare": { "weight": 3, "preference": 2 },
+			"topic.debt_brake": { "weight": 1, "preference": -1 }
 		}
 	},
 	{
@@ -173,10 +201,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 3, "preference": 2 },
 			"topic.combustion_ban": { "weight": 1, "preference": 0 },
-			"topic.agriculture": { "weight": 2, "preference": 1 },
+			"topic.organic_farming": { "weight": 2, "preference": -1 },
 			"topic.housing_costs": { "weight": 1, "preference": 1 },
+			"topic.nature_conservation": { "weight": 2, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 1, "preference": 1 }
+			"topic.welfare": { "weight": 1, "preference": 1 },
+			"topic.debt_brake": { "weight": 1, "preference": 0 }
 		}
 	},
 	{
@@ -185,10 +215,12 @@
 		"topics": {
 			"topic.wind_power": { "weight": 1, "preference": -1 },
 			"topic.combustion_ban": { "weight": 1, "preference": -1 },
-			"topic.agriculture": { "weight": 1, "preference": 1 },
+			"topic.organic_farming": { "weight": 1, "preference": -1 },
 			"topic.housing_costs": { "weight": 2, "preference": 1 },
+			"topic.nature_conservation": { "weight": 1, "preference": 1 },
 			"topic.taxes": { "weight": 1, "preference": 0 },
-			"topic.welfare": { "weight": 2, "preference": 2 }
+			"topic.welfare": { "weight": 2, "preference": 2 },
+			"topic.debt_brake": { "weight": 1, "preference": -1 }
 		}
 	}
 ]

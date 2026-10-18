@@ -41,7 +41,7 @@ func orders(state: GameState, defs: GameDefs) -> Array[ActionOrder]:
 		var signs: Array[int] = []
 		for region_id in regions:
 			signs.append(int(signf(by_region[region_id][topic_id])))
-		if signs.min() == signs.max() and signs[0] != 0:
+		if signs.min() == signs.max() and signs[0] != 0 and consistent(state, defs, topic_id, signs[0]):
 			result.append(ActionOrder.create("action.set_position", topic_id, {"value": signs[0]}))
 			break
 	result.append(ActionOrder.create("action.found_local_branch", weakest_region(state, defs)))

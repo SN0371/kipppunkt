@@ -1,0 +1,18 @@
+1. GUI muss übersichtlicher strukturiert sein:
+- In der Zeile über der Karte sollten nur die Spiel Resourcen Geld, AP, Aktivisten gezeigt werden, andere Werte sind schon im Partei-Tab
+- Runde beenden sollte ein Overlay öffnen, wo angezeigt wird, was getan werden soll in der Runde, dann kann man abbrechen oder "okay". Bei "okay" wird im Overlay nur noch angezeigt, was die Resultate der Aktionen waren und ein "Schließen" Button.
+
+1.1 Tab Auwahl:
+- UI zur regionalen Botschaft ist unklar. Es sollte nur den Knopf geben, bei Klick ein Fenster öffnen, wo man Thema und Position auswählen
+kann, mit einer Erklärung, was diese Regionale Botschaft ist: Eine abweichende, regionale Position zur Bundesposition
+- Repräsentiationslücke: Intern verwalten, aber soll sich dem Spieler aus der Wahlbeteiligung selbst herleiten, also nicht anzeigen
+- "Medienklima" und "Reichweiter klassischer Medien" sollte einen Tooltip bekommen. Finden die Menschen die Medien gut oder die Medien die Partei? Das ist unklar
+- Bei Werten wie "Verankerung in der Region" sollte der Maximalwert mit angegeben sein: 6/10 also 6 von 10
+- Die Auflistung der Position als Tabelle gefällt mir nicht, da sollte später eine Beschreibung erstellt werden, aus der sich die Positionen ergeben. Sowas wie "Die Metropolregion im Land hat mit steigenden Mieten zu kämpfen, viele Arbeitsplätze hängen an der Autoindustrie" oder "Größte Arbeitgeber in der ländlich geprägten Region sind Tourismus in der erholsamen Natur und die Landwirtschaft". Daraus sollten sich dann die Positionen zu Mieten, Verbrenner-Aus oder Windkraft und Landwirtschaft ergeben.
+- Es sollte die Anzahl der Runden bis zur Wahl angezeigt werden
+
+1.2 Tab Partei
+- Positionen beschreibungen unklar: Es muss klar sein, was "Steuern" bdeutet. Es müsste also "Steuern senken" bedeuten, gleiches gilt auch für Landwirtschaft. Sollte vielleicht "Ökologische Landwirtschaft" sein, wobei Ablehnung für konventionelle Landwirtschaft steht.. Wir brauchen dabei Positionen, die sich widersprechen und wenn die Positionen der Partei nicht konsistent ist, muss das Glaubwürdigkeit kosten., gleiches gilt auch für Landwirtschaft. Sollte vielleicht "Ökologische Landwirtschaft" sein, wobei Ablehnung für konventionelle Landwirtschaft steht. Steuern senken vs Sozialstaat stärken. Da müssen wir noch ein paar Positionen ergänzen. Naturschutz z.b.
+- kann man für die Postionssetzung Schieberegler einführen, die man von der Mitte bis zu zwei nach Links und zwei nach Rechts schieben kann? Der Schieber sollte sich dann ensprechen rot (dagegen) oder grün (dafür) färben.
+- Aktionen und Geldgeber sollte jeweils ein Overlay öffnen, wo man die entsprechenden Dinge tun kann
+- 

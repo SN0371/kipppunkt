@@ -48,6 +48,16 @@ static func preferences(defs: GameDefs, regions: PackedStringArray) -> Dictionar
 	return result
 
 
+## Returns true if taking the position would not add a contradiction (rechenmodell.md 5.7).
+## Bots that plan their positions avoid obvious contradictions, as a thoughtful player would.
+static func consistent(state: GameState, defs: GameDefs, topic_id: String, value: int) -> bool:
+	var before := IdeologySystem.inconsistency(state.party, defs)
+	var hypothetical := PartyState.new()
+	hypothetical.positions = state.party.positions.duplicate()
+	hypothetical.positions[topic_id] = value
+	return IdeologySystem.inconsistency(hypothetical, defs) <= before
+
+
 ## Returns the regions the player may act in.
 static func playable_regions(state: GameState, defs: GameDefs) -> PackedStringArray:
 	return defs.scenarios[state.scenario_id].playable_regions

@@ -27,8 +27,8 @@ func test_opposing_topics_cancel_out() -> void:
 
 func test_profile_is_weighted_by_vector_length() -> void:
 	_state.party.positions["topic.wind_power"] = 1
-	_state.party.positions["topic.agriculture"] = -1
-	# (0,-1)*1 + (0,1)*(-1) = (0,-2); weight 2; scaled by 50.
+	_state.party.positions["topic.organic_farming"] = 1
+	# (0,-1)*1 + (0,-1)*1 = (0,-2); weight 2; scaled by 50.
 	assert_eq(IdeologySystem.profile(_state.party, _defs), Vector2(0, -50))
 
 
@@ -92,3 +92,44 @@ func test_contradiction_risk_grows_and_decays() -> void:
 	_state.party.regional_messages.clear()
 	IdeologySystem.update_contradiction(_state, _defs, salience)
 	assert_almost_eq(_state.party.contradiction_risk, 6.0, 0.0001)
+
+
+func test_zero_withdraws_a_position() -> void:
+	IdeologySystem.set_position(_state, _defs, "topic.taxes", 2)
+	IdeologySystem.set_position(_state, _defs, "topic.taxes", 0)
+	assert_false(_state.party.positions.has("topic.taxes"))
+	assert_false(_state.party.position_age.has("topic.taxes"))
+
+
+func test_consistent_positions_have_no_contradiction() -> void:
+	_state.party.positions["topic.taxes"] = 2
+	_state.party.positions["topic.welfare"] = -2
+	_state.party.positions["topic.nature_conservation"] = 1
+	_state.party.positions["topic.organic_farming"] = 1
+	assert_eq(IdeologySystem.inconsistency(_state.party, _defs), 0.0)
+
+
+func test_contradiction_strength_follows_the_weakest_position() -> void:
+	_state.party.positions["topic.taxes"] = 2
+	_state.party.positions["topic.welfare"] = 2
+	# Tax cuts and welfare: weight 0.5 at full positions.
+	assert_almost_eq(IdeologySystem.inconsistency(_state.party, _defs), 0.5, 0.00001)
+	_state.party.positions["topic.debt_brake"] = 1
+	# Fiscal trilemma on top: weight 1.0, weakest position 1 of 2.
+	assert_almost_eq(IdeologySystem.inconsistency(_state.party, _defs), 1.0, 0.00001)
+	assert_eq(IdeologySystem.active_contradictions(_state.party, _defs).keys().size(), 2)
+
+
+func test_nature_conservation_and_conventional_farming_contradict() -> void:
+	_state.party.positions["topic.nature_conservation"] = 2
+	_state.party.positions["topic.organic_farming"] = -1
+	assert_almost_eq(IdeologySystem.inconsistency(_state.party, _defs), 0.5, 0.00001)
+
+
+func test_contradictions_lower_the_credibility_rest_value() -> void:
+	var rest := EconomySystem.credibility_rest(_state, _defs)
+	_state.party.positions["topic.taxes"] = 2
+	_state.party.positions["topic.welfare"] = 2
+	# 15 * 0.5
+	assert_almost_eq(EconomySystem.credibility_rest(_state, _defs), rest - 7.5, 0.00001)
+

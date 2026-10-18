@@ -12,16 +12,22 @@
 		"ideology_vector": [-0.5, -1.0]
 	},
 	{
-		"id": "topic.agriculture",
-		"name_key": "topic.agriculture.name",
+		"id": "topic.organic_farming",
+		"name_key": "topic.organic_farming.name",
 		"kind": "location",
-		"ideology_vector": [0.0, 1.0]
+		"ideology_vector": [0.0, -1.0]
 	},
 	{
 		"id": "topic.housing_costs",
 		"name_key": "topic.housing_costs.name",
 		"kind": "location",
 		"ideology_vector": [-1.0, 0.0]
+	},
+	{
+		"id": "topic.nature_conservation",
+		"name_key": "topic.nature_conservation.name",
+		"kind": "location",
+		"ideology_vector": [-0.3, -0.5]
 	},
 	{
 		"id": "topic.taxes",
@@ -34,5 +40,11 @@
 		"name_key": "topic.welfare.name",
 		"kind": "principle",
 		"ideology_vector": [-1.0, 0.0]
+	},
+	{
+		"id": "topic.debt_brake",
+		"name_key": "topic.debt_brake.name",
+		"kind": "principle",
+		"ideology_vector": [0.8, 0.3]
 	}
 ]

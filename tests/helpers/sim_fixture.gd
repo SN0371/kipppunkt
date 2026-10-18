@@ -44,6 +44,7 @@ const TEST_PARAMS: Dictionary = {
 	"mobilization_weight": 6.0,
 	"turnout_base": 78.0,
 	"turnout_gap_effect": 30.0,
+	"inconsistency_penalty": 15.0,
 }
 
 static var _defs: GameDefs

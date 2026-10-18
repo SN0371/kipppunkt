@@ -111,6 +111,14 @@ static func income(state: GameState, defs: GameDefs) -> void:
 	party.action_points = action_points(state, defs)
 
 
+## Returns the value credibility slowly moves to: shifted by the media climate and lowered by
+## contradicting positions as long as they exist (rechenmodell.md 5.7 and 6).
+static func credibility_rest(state: GameState, defs: GameDefs) -> float:
+	var params := defs.params
+	return CREDIBILITY_REST + params.value("media_climate_credibility_shift") * state.media_climate \
+		- params.value("inconsistency_penalty") * IdeologySystem.inconsistency(state.party, defs)
+
+
 ## Lets indicators decay or recover at the end of a turn (step 9 of the turn).
 static func decay(state: GameState, defs: GameDefs, salience: Dictionary[String, float]) -> void:
 	var party := state.party
@@ -120,10 +128,7 @@ static func decay(state: GameState, defs: GameDefs, salience: Dictionary[String,
 			+ ModifierSystem.total_add(state, "reach_platform_per_turn")
 	)
 	party.reach_classic_bonus *= 1.0 - CLASSIC_BONUS_DECAY
-	party.credibility = SimMath.clamp100(SimMath.approach(
-		party.credibility, CREDIBILITY_REST + params.value("media_climate_credibility_shift") * state.media_climate,
-		CREDIBILITY_RATE
-	))
+	party.credibility = SimMath.clamp100(SimMath.approach(party.credibility, credibility_rest(state, defs), CREDIBILITY_RATE))
 	party.unity = SimMath.clamp100(SimMath.approach(party.unity, UNITY_REST, UNITY_RATE))
 	party.intransparency = SimMath.clamp100(party.intransparency - INTRANSPARENCY_DECAY)
 	if not party.radical_action_this_turn:

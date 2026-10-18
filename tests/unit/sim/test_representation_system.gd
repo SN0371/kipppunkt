@@ -12,19 +12,19 @@ func before_each() -> void:
 
 func test_gap_is_the_weighted_share_of_strong_preferences() -> void:
 	var salience := PollingSystem.salience(_state, _defs)
-	# Baden-Württemberg: only the combustion ban (weight 3 of 10) is held strongly.
-	assert_almost_eq(RepresentationSystem.gap(_defs, _defs.lands["land.bw"], salience), 0.3, 0.00001)
+	# Baden-Württemberg: only the combustion ban (weight 3 of 13) is held strongly.
+	assert_almost_eq(RepresentationSystem.gap(_defs, _defs.lands["land.bw"], salience), 3.0 / 13.0, 0.00001)
 
 
 func test_crisis_widens_the_gap() -> void:
 	var salience := PollingSystem.salience(_state, _defs)
 	var land := _defs.lands["land.be"]
-	# Berlin: housing (weight 3 of 8) is held strongly.
-	assert_almost_eq(RepresentationSystem.gap(_defs, land, salience), 0.375, 0.00001)
+	# Berlin: housing (weight 3 of 10) is held strongly.
+	assert_almost_eq(RepresentationSystem.gap(_defs, land, salience), 0.3, 0.00001)
 	CrisisSystem.start(_state, _defs, "crisis.energy")
 	salience = PollingSystem.salience(_state, _defs)
-	# Housing x2, wind and combustion ban x1.5: 6 of 12.
-	assert_almost_eq(RepresentationSystem.gap(_defs, land, salience), 0.5, 0.00001)
+	# Housing x2, wind and combustion ban x1.5: 6 of 14.
+	assert_almost_eq(RepresentationSystem.gap(_defs, land, salience), 6.0 / 14.0, 0.00001)
 
 
 func test_no_mobilization_without_matching_positions() -> void:
@@ -40,12 +40,12 @@ func test_mobilization_rewards_strong_answers_amplified_by_radicalism() -> void:
 	var land := _defs.lands["land.bw"]
 	_state.party.positions["topic.combustion_ban"] = -2
 	_state.party.radicalism = 50.0
-	# 6 * 0.3 * 1 * (0.5 + 0.5)
-	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 1.8, 0.00001)
+	# 6 * 3/13 * 1 * (0.5 + 0.5)
+	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 18.0 / 13.0, 0.00001)
 	_state.party.radicalism = 0.0
-	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 0.9, 0.00001)
+	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 9.0 / 13.0, 0.00001)
 	_state.party.positions["topic.combustion_ban"] = -1
-	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 0.45, 0.00001, "Moderate answer counts half")
+	assert_almost_eq(RepresentationSystem.mobilization(_defs, land, _state.party, salience), 4.5 / 13.0, 0.00001, "Moderate answer counts half")
 
 
 func test_regional_message_counts_for_mobilization() -> void:
@@ -62,8 +62,9 @@ func test_turnout_falls_with_gap_and_rises_with_mobilization() -> void:
 
 
 func test_start_state_has_turnout() -> void:
-	assert_almost_eq(_state.lands["land.bw"].turnout, 69.0, 0.00001)
-	assert_almost_eq(_state.lands["land.bw"].representation_gap, 0.3, 0.00001)
+	# 78 - 30 * 3/13
+	assert_almost_eq(_state.lands["land.bw"].turnout, 78.0 - 90.0 / 13.0, 0.00001)
+	assert_almost_eq(_state.lands["land.bw"].representation_gap, 3.0 / 13.0, 0.00001)
 
 
 func test_mobilization_raises_polling_target_outside_competition() -> void:

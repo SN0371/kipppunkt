@@ -15,7 +15,7 @@
 		"region": "region.north",
 		"ideology": [20.0, 40.0],
 		"max_payment": 10,
-		"topic_preferences": { "topic.agriculture": 2 }
+		"topic_preferences": { "topic.organic_farming": -2 }
 	},
 	{
 		"id": "donor.machine_builder",
@@ -33,7 +33,7 @@
 		"region": "region.north",
 		"ideology": [0.0, -30.0],
 		"max_payment": 12,
-		"topic_preferences": { "topic.wind_power": 2 }
+		"topic_preferences": { "topic.wind_power": 2, "topic.nature_conservation": -1 }
 	},
 	{
 		"id": "donor.real_estate",

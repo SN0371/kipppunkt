@@ -1,0 +1,32 @@
+[
+	{
+		"id": "contradiction.tax_cuts_and_welfare",
+		"name_key": "contradiction.tax_cuts_and_welfare.name",
+		"topics": { "topic.taxes": 1, "topic.welfare": 1 },
+		"weight": 0.5
+	},
+	{
+		"id": "contradiction.fiscal_trilemma",
+		"name_key": "contradiction.fiscal_trilemma.name",
+		"topics": { "topic.taxes": 1, "topic.welfare": 1, "topic.debt_brake": 1 },
+		"weight": 1.0
+	},
+	{
+		"id": "contradiction.nature_and_conventional_farming",
+		"name_key": "contradiction.nature_and_conventional_farming.name",
+		"topics": { "topic.nature_conservation": 1, "topic.organic_farming": -1 },
+		"weight": 1.0
+	},
+	{
+		"id": "contradiction.organic_farming_against_nature",
+		"name_key": "contradiction.organic_farming_against_nature.name",
+		"topics": { "topic.nature_conservation": -1, "topic.organic_farming": 1 },
+		"weight": 1.0
+	},
+	{
+		"id": "contradiction.wind_power_and_nature",
+		"name_key": "contradiction.wind_power_and_nature.name",
+		"topics": { "topic.wind_power": 1, "topic.nature_conservation": 1 },
+		"weight": 0.3
+	}
+]

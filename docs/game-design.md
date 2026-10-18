@@ -701,8 +701,11 @@ Ziel: Den Kern der Spielschleife testen, nicht das ganze Spiel.
 - **Karte:** Alle 16 Länder sichtbar, 2 kontrastierende Regionen vollständig spielbar
   (festgelegt: Süden und Norden, wegen Windkraft und Autoindustrie als Konfliktthemen)
 - **Systeme:** Soziale Medien, Kommunale Mobilisierung, Finanzierung, Ideologie-Pfad,
-  regionale Themen (6 Themen aus 3.5, inklusive Widerspruchsrisiko: Windkraft,
-  Verbrenner-Aus, Landwirtschaft, Wohnkosten, Steuern, Sozialstaat)
+  regionale Themen (8 Themen als gerichtete Aussagen, inklusive Widerspruchsrisiko:
+  Windkraft ausbauen, Verbrenner-Aus festschreiben, Ökologische Landwirtschaft fördern,
+  Mieten regulieren, Naturschutz stärken, Steuern senken, Sozialstaat ausbauen,
+  Schuldenbremse einhalten). Widersprüchliche Positionen kosten dauerhaft Glaubwürdigkeit
+  (`rechenmodell.md` 5.7).
 - **Rechenmodell:** siehe `rechenmodell.md`
 - **Gegenkräfte:** Verfassungsschutz-Stufen, freie Presse
 - **Kennzahlen:** Vollständig, inklusive demokratischer Resilienz

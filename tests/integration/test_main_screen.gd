@@ -38,7 +38,7 @@ func test_every_panel_and_overlay_renders() -> void:
 
 
 func test_end_turn_fills_the_report() -> void:
-	_main.session.plan(ActionOrder.create("action.set_position", "topic.agriculture", {"value": 2}))
+	_main.session.plan(ActionOrder.create("action.set_position", "topic.organic_farming", {"value": -2}))
 	_main._end_turn()
 	await wait_process_frames(1)
 	assert_eq(_main.session.state.turn, 2)

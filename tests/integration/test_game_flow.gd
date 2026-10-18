@@ -91,7 +91,7 @@ func _play(state: GameState, max_turns: int, with_orders: bool) -> int:
 func _scripted_orders(state: GameState) -> Array[ActionOrder]:
 	var orders: Array[ActionOrder] = []
 	if state.turn == 1:
-		orders.append(ActionOrder.create("action.set_position", "topic.agriculture", {"value": 2}))
+		orders.append(ActionOrder.create("action.set_position", "topic.organic_farming", {"value": -2}))
 		orders.append(ActionOrder.create("action.set_position", "topic.combustion_ban", {"value": -1}))
 	for role in PersonSystem.STAFF_FUNCTIONS:
 		if PersonSystem.by_role(state, role) == null:

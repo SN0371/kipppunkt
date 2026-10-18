@@ -17,6 +17,7 @@ const LIST_FILES: Dictionary = {
 	"donors": "donors.json",
 	"crises": "crises.json",
 	"actions": "actions.json",
+	"contradictions": "contradictions.json",
 }
 const PARAMS_FILE := "params.json"
 const SCENARIO_DIR := "scenarios"
@@ -33,6 +34,7 @@ var media: Dictionary[String, MediaDef] = {}
 var donors: Dictionary[String, DonorDef] = {}
 var crises: Dictionary[String, CrisisDef] = {}
 var actions: Dictionary[String, ActionDef] = {}
+var contradictions: Dictionary[String, ContradictionDef] = {}
 var scenarios: Dictionary[String, ScenarioDef] = {}
 
 
@@ -95,6 +97,8 @@ static func from_raw(raw: Dictionary, reader: JsonReader = null) -> GameDefs:
 		_add_unique(defs.crises, CrisisDef.from_dict(item, reader), "crises", reader)
 	for item in _items(raw, "actions", reader):
 		_add_unique(defs.actions, ActionDef.from_dict(item, reader), "actions", reader)
+	for item in _items(raw, "contradictions", reader):
+		_add_unique(defs.contradictions, ContradictionDef.from_dict(item, reader), "contradictions", reader)
 	for item in _items(raw, "scenarios", reader):
 		_add_unique(defs.scenarios, ScenarioDef.from_dict(item, reader), "scenarios", reader)
 	defs._validate_references(reader)
@@ -130,6 +134,8 @@ func _validate_references(reader: JsonReader) -> void:
 		_check_known_ids(donor.topic_preferences.keys(), topics, ctx + ".topic_preferences", reader)
 	for crisis: CrisisDef in crises.values():
 		_check_known_ids(crisis.salience.keys(), topics, "crises[%s].salience" % crisis.id, reader)
+	for contradiction: ContradictionDef in contradictions.values():
+		_check_known_ids(contradiction.topics.keys(), topics, "contradictions[%s].topics" % contradiction.id, reader)
 	for scenario: ScenarioDef in scenarios.values():
 		_validate_scenario(scenario, reader)
 

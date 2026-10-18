@@ -43,6 +43,7 @@ static func change_cost(state: GameState, defs: GameDefs, topic_id: String, new_
 
 
 ## Sets the federal position on a topic, paying the lock-in cost for a change.
+## Value 0 withdraws the position: the party no longer speaks about the topic.
 static func set_position(state: GameState, defs: GameDefs, topic_id: String, value: int) -> void:
 	var party := state.party
 	var previous: Variant = party.positions.get(topic_id)
@@ -50,14 +51,37 @@ static func set_position(state: GameState, defs: GameDefs, topic_id: String, val
 	party.credibility = SimMath.clamp100(party.credibility - cost)
 	if previous != null:
 		party.unity = SimMath.clamp100(party.unity - UNITY_COST_PER_STEP * absi(value - int(previous)))
-	party.positions[topic_id] = value
-	party.position_age[topic_id] = 0
+	if value == 0:
+		party.positions.erase(topic_id)
+		party.position_age.erase(topic_id)
+	else:
+		party.positions[topic_id] = value
+		party.position_age[topic_id] = 0
 	for region_id: String in party.regional_messages.keys():
 		if party.regional_messages[region_id].get(topic_id) == value:
 			_erase_message(party, region_id, topic_id)
 	SimLog.add(state, "position_set", {
 		"topic": topic_id, "value": value, "previous": previous, "credibility_cost": cost,
 	})
+
+
+## Returns the total strength of all contradictions in the party's federal positions
+## (rechenmodell.md 5.7).
+static func inconsistency(party: PartyState, defs: GameDefs) -> float:
+	var total := 0.0
+	for contradiction: ContradictionDef in defs.contradictions.values():
+		total += contradiction.strength(party.positions)
+	return total
+
+
+## Returns the contradictions the party currently falls into, with their strength.
+static func active_contradictions(party: PartyState, defs: GameDefs) -> Dictionary[String, float]:
+	var result: Dictionary[String, float] = {}
+	for contradiction: ContradictionDef in defs.contradictions.values():
+		var strength := contradiction.strength(party.positions)
+		if strength > 0.0:
+			result[contradiction.id] = strength
+	return result
 
 
 ## Sets a regional message that deviates from the federal position (rechenmodell.md 5.3).

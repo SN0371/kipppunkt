@@ -1,6 +1,6 @@
 # Rechenmodell der Kernschleife (MVP)
 
-Stand: 2026-10-17 · Version 0.3 (Geldgeber zahlen nur für passende Positionen) · Bezug: `game-design.md` Version 0.3
+Stand: 2026-10-17 · Version 0.4 (Themen als gerichtete Aussagen, Widersprüche) · Bezug: `game-design.md` Version 0.3
 
 > Dieses Dokument übersetzt die Systeme des Design-Dokuments in Zahlen und Formeln für den
 > MVP (Phasen I–III, Regionen Süden und Norden spielbar). Alle Konstanten heißen `P_…`,
@@ -48,7 +48,7 @@ Stand: 2026-10-17 · Version 0.3 (Geldgeber zahlen nur für passende Positionen)
 | `RK_l` | 0–100 | Reichweite klassische Medien je Land, berechnet aus den Medienhäusern (5.6) |
 | `RK_Bonus` | 0–100 | Kurzfristige Aufmerksamkeit durch Aktionen und Ereignisse |
 | `W` | 0–100 | Widerspruchsrisiko |
-| `p_k` | −2…+2 oder leer | Bundesweite Position zu Thema `k` (leer = keine Position) |
+| `p_k` | −2, −1, +1, +2 oder leer | Bundesweite Position zu Thema `k`; leer = keine Position. Eine Position 0 gibt es nicht: Wer 0 wählt, zieht seine Position zurück |
 | `p_k,r` | −2…+2 oder leer | Abweichende regionale Botschaft in Region `r` (optional) |
 | `h_k` | Runden | Haltedauer der aktuellen Position zu Thema `k` |
 
@@ -274,16 +274,19 @@ Positionen **berechnet**, nicht gesetzt:
 I = 50 · Σ_k (p_k · e_k)  /  Σ_k |e_k|        (nur Themen mit Position; Ergebnis je Achse −100 … +100)
 ```
 
-MVP-Themen und Vektoren (Position +2 bedeutet "stark dafür"):
+MVP-Themen und Vektoren. Jedes Thema ist eine **gerichtete Aussage**: +2 heißt "stark dafür",
+−2 "stark dagegen".
 
-| Thema | Typ | `e_k` | Bedeutung von +2 |
+| Thema | Typ | `e_k` | Dagegen bedeutet |
 |---|---|---|---|
-| Windkraftausbau | Standort | (0, −1) | Ausbau stark vorantreiben |
-| Verbrenner-Aus | Standort | (−0,5, −1) | Aus festschreiben |
-| Landwirtschaft | Standort | (0, +1) | Bauern schützen, Auflagen lockern |
-| Wohnkosten | Standort/Grundsatz | (−1, 0) | Stärker regulieren und fördern |
-| Steuern | Grundsatz | (+1, 0) | Entlasten, Erbschaftsteuer senken |
-| Sozialstaat | Grundsatz | (−1, 0) | Ausbauen |
+| Windkraft ausbauen | Standort | (0, −1) | Ausbau bremsen |
+| Verbrenner-Aus festschreiben | Standort | (−0,5, −1) | Verbrenner erhalten |
+| Ökologische Landwirtschaft fördern | Standort | (0, −1) | Konventionelle Landwirtschaft stärken |
+| Mieten regulieren | Standort | (−1, 0) | Markt entscheiden lassen |
+| Naturschutz stärken | Standort | (−0,3, −0,5) | Naturschutz zurückstellen |
+| Steuern senken | Grundsatz | (+1, 0) | Steuern erhöhen |
+| Sozialstaat ausbauen | Grundsatz | (−1, 0) | Sozialstaat kürzen |
+| Schuldenbremse einhalten | Grundsatz | (+0,8, +0,3) | Kredite aufnehmen |
 
 ### 5.2 Kurswechsel (Lock-in)
 Eine Position zu ändern kostet Glaubwürdigkeit, umso mehr, je länger sie gehalten wurde und
@@ -450,6 +453,28 @@ Eigentümer_ÖR = clamp(1 − |I − I_Gremien| / 50,  −1, 1)
 - **Später:** Aufteilung in eine bundesweite Anstalt und regionale Landesrundfunkanstalten,
   passend zu den Regionen.
 
+### 5.7 Widersprüchliche Positionen
+Manche Positionen passen nicht zusammen. Wer sie gleichzeitig vertritt, verliert dauerhaft
+an Glaubwürdigkeit, solange der Widerspruch besteht. Die Regeln stehen als Daten in
+`data/contradictions.json`.
+
+```
+Stärke_c   = Gewicht_c · min über die Themen von c ( max(0, p_k · Richtung_c,k) / 2 )
+Inkonsistenz = Σ_c Stärke_c
+Ruhewert der Glaubwürdigkeit = 60 + P_MKC · MK_Bund − P_Inkon · Inkonsistenz       (Abschnitt 6)
+```
+
+| Widerspruch | Gewicht |
+|---|---|
+| Steuern senken und Sozialstaat ausbauen | 0,5 |
+| Steuern senken, Sozialstaat ausbauen und Schuldenbremse einhalten (nur zwei der drei sind vereinbar) | 1,0 zusätzlich |
+| Naturschutz stärken und konventionelle Landwirtschaft fördern | 1,0 |
+| Ökologische Landwirtschaft fördern, aber Naturschutz ablehnen | 1,0 |
+| Windkraft ausbauen und Naturschutz stärken (Spannungsfeld) | 0,3 |
+
+Die schwächste beteiligte Position bestimmt die Stärke: Wer "Steuern senken +2" und
+"Sozialstaat ausbauen +1" vertritt, hat den Widerspruch zur Hälfte.
+
 ---
 
 ## 6. Ressourcenfluss pro Runde
@@ -490,8 +515,9 @@ G(t+1) = G(t)
   `RP(t+1) = RP · (1 − P_RPzerfall) + Aktionen`,
   `RK_l` ergibt sich aus den Medienhäusern (5.6); `RK_Bonus` steigt durch Aktionen und
   Ereignisse und zerfällt um 30 % pro Runde.
-- **Glaubwürdigkeit:** erholt sich langsam auf einen Wert zu, den das bundesweite
-  Medienklima verschiebt: `C(t+1) = C + 0,05 · (60 + P_MKC · MK_Bund − C)`.
+- **Glaubwürdigkeit:** erholt sich langsam auf einen Ruhewert zu, den das bundesweite
+  Medienklima verschiebt und widersprüchliche Positionen senken (5.7):
+  `C(t+1) = C + 0,05 · (60 + P_MKC · MK_Bund − P_Inkon · Inkonsistenz − C)`.
 - **Parteieinheit:** erholt sich auf 60 zu (Annäherung 0,1); Ideologen im Personal und
   Kurswechsel senken sie.
 
@@ -680,9 +706,10 @@ Regierungsbeteiligung, Bundesrat und Parteiverbot sind nicht Teil des MVP.
 | `P_Gbasis` | 35 | Zufriedenheit eines Geldgebers mit einer Partei ohne Positionen |
 | `P_Gthema` | 25 | Zufriedenheit je voll übereinstimmendem Thema |
 | `P_Gideo` | 15 | Einfluss der ideologischen Nähe auf die Zufriedenheit |
-| `P_Mob` | 8 | Max. Prozentpunkte durch Mobilisierung bei voller Lücke, voller Antwort und Radikalität 50 |
+| `P_Mob` | 9 | Max. Prozentpunkte durch Mobilisierung bei voller Lücke, voller Antwort und Radikalität 50 |
 | `P_Wbasis` | 78 | Wahlbeteiligung ohne Repräsentationslücke in % |
 | `P_Lücke` | 30 | Beteiligungsverlust in Prozentpunkten bei voller Lücke |
+| `P_Inkon` | 15 | Senkung des Glaubwürdigkeits-Ruhewerts bei einem vollen Widerspruch |
 
 **Startwerte Szenario "Neugründung":** `G` 50, `M` 300, `U_l` 0,5 %, `C` 50, `R` 75,
 `Rad` 10, `B` 0, `VS` 0, `E` 70, `RP` 5, `RK_Bonus` 0, `V_r` 2 (Süden, Norden), 0 sonst,
@@ -768,3 +795,4 @@ Parametersatz (`tests/helpers/sim_fixture.gd`) und hängen nicht von diesen Wert
 | 2026-10-17 | Mitgliederformel (Modelländerung, mit Nutzer entschieden) | 2 % Grundwachstum → Startschub bis 1.000 Mitglieder, danach Zielwert nach Umfrage | Mitglieder wuchsen auch ohne Aktivität um 2 % pro Quartal; passive Partei hatte am Ende > 3.000 Mitglieder und > 12.000 T€ | Passiv: ~565 Mitglieder, ~600 T€; Geduldig ~4.600 Mitglieder; Korridore unverändert |
 | 2026-10-17 | Relative Obergrenze der Parteienfinanzierung (Modelländerung, mit Nutzer entschieden) | unbegrenzt → höchstens Beiträge + Spenden des Quartals | Staatliche Teilfinanzierung machte Geld bedeutungslos | Geld am Ende (Median): Geduldig 15.900 → 4.000 T€, Radikal 37.400 → 8.000 T€, Passiv ~220 T€; keine Bankrotte, Korridore unverändert |
 | 2026-10-17 | Repräsentationslücke und Mobilisierung (Modelländerung, mit Nutzer entschieden), `P_Mob` 8 | – | Radikalität brachte im Umfragemodell keinen Vorteil, der radikale Weg war nicht schneller (3 % Siege, 0 % bis Runde 24) | Radikal 72 % bis Runde 24, 87 % vorher Verdachtsfall; Zufall 7 % Siege; alle Korridore erfüllt. `P_Mob` 12 machte das Spiel zu leicht (Zufall 18 % Siege) |
+| 2026-10-18 | Themen als gerichtete Aussagen, 8 statt 6 Themen (Naturschutz, Schuldenbremse), widersprüchliche Positionen, Position 0 = keine Position (Modelländerung, mit Nutzer entschieden); `P_Mob` 8 → 9 | – | Spieltest-Rückmeldung: Themen waren unklar, Widersprüche blieben folgenlos. Mehr Themen verdünnen jede Position; der radikale Weg fiel auf 44 % bis Runde 24 | Radikal 61 % bis Runde 24; alle Korridore erfüllt. Bots vermeiden bei der Positionswahl Widersprüche, wie ein überlegter Spieler |

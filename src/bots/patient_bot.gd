@@ -28,8 +28,9 @@ func orders(state: GameState, defs: GameDefs) -> Array[ActionOrder]:
 	for topic_id in topics_by_importance(defs, regions):
 		if not state.party.positions.has(topic_id) and absf(wanted[topic_id]) >= MIN_PREFERENCE:
 			var position := clampi(roundi(wanted[topic_id]), -MAX_POSITION, MAX_POSITION)
-			result.append(ActionOrder.create("action.set_position", topic_id, {"value": position}))
-			break
+			if consistent(state, defs, topic_id, position):
+				result.append(ActionOrder.create("action.set_position", topic_id, {"value": position}))
+				break
 	if state.party.unity < CONGRESS_UNITY:
 		result.append(ActionOrder.create("action.party_congress"))
 	for donor_id: String in state.donors:

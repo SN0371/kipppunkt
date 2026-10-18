@@ -126,6 +126,21 @@ msgstr "Journalist mit Tarnidentität"
 msgid "agenda.none"
 msgstr "keine Agenda"
 
+msgid "contradiction.fiscal_trilemma.name"
+msgstr "Steuern senken, Sozialstaat ausbauen und Schuldenbremse einhalten – nur zwei davon gehen zusammen"
+
+msgid "contradiction.nature_and_conventional_farming.name"
+msgstr "Naturschutz stärken und zugleich konventionelle Landwirtschaft fördern"
+
+msgid "contradiction.organic_farming_against_nature.name"
+msgstr "Ökologische Landwirtschaft fördern, aber Naturschutz ablehnen"
+
+msgid "contradiction.tax_cuts_and_welfare.name"
+msgstr "Steuern senken und zugleich den Sozialstaat ausbauen"
+
+msgid "contradiction.wind_power_and_nature.name"
+msgstr "Windkraft ausbauen und zugleich Naturschutz stärken (Spannungsfeld)"
+
 msgid "crisis.energy.name"
 msgstr "Energiekrise"
 
@@ -486,23 +501,29 @@ msgstr "Schatzmeister"
 msgid "scenario.new_party.name"
 msgstr "Neugründung"
 
-msgid "topic.agriculture.name"
-msgstr "Landwirtschaft"
-
 msgid "topic.combustion_ban.name"
-msgstr "Verbrenner-Aus"
+msgstr "Verbrenner-Aus festschreiben"
+
+msgid "topic.debt_brake.name"
+msgstr "Schuldenbremse einhalten"
 
 msgid "topic.housing_costs.name"
-msgstr "Wohnkosten"
+msgstr "Mieten regulieren"
+
+msgid "topic.nature_conservation.name"
+msgstr "Naturschutz stärken"
+
+msgid "topic.organic_farming.name"
+msgstr "Ökologische Landwirtschaft fördern"
 
 msgid "topic.taxes.name"
-msgstr "Steuern"
+msgstr "Steuern senken"
 
 msgid "topic.welfare.name"
-msgstr "Sozialstaat"
+msgstr "Sozialstaat ausbauen"
 
 msgid "topic.wind_power.name"
-msgstr "Windkraftausbau"
+msgstr "Windkraft ausbauen"
 
 msgid "ui.actions"
 msgstr "Aktionen"

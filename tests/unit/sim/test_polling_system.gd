@@ -34,8 +34,8 @@ func test_salience_is_capped() -> void:
 func test_topic_fit_uses_all_topics_in_denominator() -> void:
 	_state.party.positions["topic.taxes"] = 1
 	var salience := PollingSystem.salience(_state, _defs)
-	# Bavaria weights sum to 12; taxes weight 2, full agreement.
-	assert_almost_eq(PollingSystem.topic_fit(_defs, _defs.lands["land.by"], _state.party, salience), 2.0 / 12.0, 0.00001)
+	# Bavaria weights sum to 16; taxes weight 2, full agreement.
+	assert_almost_eq(PollingSystem.topic_fit(_defs, _defs.lands["land.by"], _state.party, salience), 2.0 / 16.0, 0.00001)
 
 
 func test_regional_message_replaces_federal_position() -> void:
@@ -51,8 +51,8 @@ func test_regional_message_replaces_federal_position() -> void:
 func test_topic_fit_can_be_negative() -> void:
 	_state.party.positions["topic.combustion_ban"] = 2
 	var salience := PollingSystem.salience(_state, _defs)
-	# Baden-Württemberg: weight 3, preference -2, agreement -1; total weight 10.
-	assert_almost_eq(PollingSystem.topic_fit(_defs, _defs.lands["land.bw"], _state.party, salience), -0.3, 0.00001)
+	# Baden-Württemberg: weight 3, preference -2, agreement -1; total weight 13.
+	assert_almost_eq(PollingSystem.topic_fit(_defs, _defs.lands["land.bw"], _state.party, salience), -3.0 / 13.0, 0.00001)
 
 
 func test_reach_factor_mixes_platforms_and_classic_media_by_age() -> void:
@@ -69,8 +69,9 @@ func test_first_crisis_turn_rallies_round_the_government() -> void:
 	assert_eq(PollingSystem.crisis_bonus(_state, _defs, _defs.lands["land.by"], salience), -1.0)
 	crisis.elapsed_turns = 1
 	_state.party.positions["topic.welfare"] = 2
-	# Saxony-Anhalt: welfare weight 3, preference 2 -> fit over crisis topics = 3*2 / (1*2 + 3*2) = 0.75
-	assert_almost_eq(PollingSystem.crisis_bonus(_state, _defs, _defs.lands["land.st"], salience), 4.0 * 0.75, 0.00001)
+	# Saxony-Anhalt: crisis topics taxes (1 x 2), welfare (3 x 2), debt brake (1 x 1.5);
+	# only welfare has a position, full agreement: 6 / 9.5.
+	assert_almost_eq(PollingSystem.crisis_bonus(_state, _defs, _defs.lands["land.st"], salience), 4.0 * 6.0 / 9.5, 0.00001)
 
 
 func test_surveillance_level_costs_stigma() -> void:

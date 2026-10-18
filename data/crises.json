@@ -19,7 +19,8 @@
 		"max_duration": 6,
 		"salience": {
 			"topic.taxes": 2.0,
-			"topic.welfare": 2.0
+			"topic.welfare": 2.0,
+			"topic.debt_brake": 1.5
 		},
 		"donor_payment_factor": 0.7,
 		"member_growth_factor": 0.5

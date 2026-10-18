@@ -126,6 +126,21 @@ msgstr "Undercover journalist"
 msgid "agenda.none"
 msgstr "no agenda"
 
+msgid "contradiction.fiscal_trilemma.name"
+msgstr "Cutting taxes, expanding welfare and keeping the debt brake – only two of them fit together"
+
+msgid "contradiction.nature_and_conventional_farming.name"
+msgstr "Strengthening nature conservation while promoting conventional farming"
+
+msgid "contradiction.organic_farming_against_nature.name"
+msgstr "Promoting organic farming but rejecting nature conservation"
+
+msgid "contradiction.tax_cuts_and_welfare.name"
+msgstr "Cutting taxes while expanding the welfare state"
+
+msgid "contradiction.wind_power_and_nature.name"
+msgstr "Expanding wind power while strengthening nature conservation (tension)"
+
 msgid "crisis.energy.name"
 msgstr "Energy crisis"
 
@@ -486,23 +501,29 @@ msgstr "Treasurer"
 msgid "scenario.new_party.name"
 msgstr "New party"
 
-msgid "topic.agriculture.name"
-msgstr "Agriculture"
-
 msgid "topic.combustion_ban.name"
-msgstr "Combustion engine ban"
+msgstr "Fix the combustion engine ban"
+
+msgid "topic.debt_brake.name"
+msgstr "Keep the debt brake"
 
 msgid "topic.housing_costs.name"
-msgstr "Housing costs"
+msgstr "Regulate rents"
+
+msgid "topic.nature_conservation.name"
+msgstr "Strengthen nature conservation"
+
+msgid "topic.organic_farming.name"
+msgstr "Promote organic farming"
 
 msgid "topic.taxes.name"
-msgstr "Taxes"
+msgstr "Cut taxes"
 
 msgid "topic.welfare.name"
-msgstr "Welfare state"
+msgstr "Expand the welfare state"
 
 msgid "topic.wind_power.name"
-msgstr "Wind power expansion"
+msgstr "Expand wind power"
 
 msgid "ui.actions"
 msgstr "Actions"

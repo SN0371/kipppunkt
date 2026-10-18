@@ -9,7 +9,8 @@ func test_shipped_data_loads_without_errors() -> void:
 	assert_eq(defs.errors, PackedStringArray(), "Shipped data must be valid")
 	assert_eq(defs.lands.size(), 16, "16 lands")
 	assert_eq(defs.regions.size(), 6, "6 regions")
-	assert_eq(defs.topics.size(), 6, "6 MVP topics")
+	assert_eq(defs.topics.size(), 8, "8 MVP topics")
+	assert_eq(defs.contradictions.size(), 5, "5 contradictions")
 	assert_eq(defs.rivals.size(), 3, "3 rival parties")
 	assert_eq(defs.media.size(), 5, "5 media houses")
 	assert_eq(defs.crises.size(), 2, "2 MVP crises")
@@ -96,6 +97,13 @@ func test_election_in_unknown_land_is_reported() -> void:
 	raw["scenarios"][0]["elections"][0]["land"] = "land.xx"
 	var defs := GameDefs.from_raw(raw)
 	assert_true(_has_error(defs, "elections[0]", "unknown land 'land.xx'"))
+
+
+func test_contradiction_with_unknown_topic_is_reported() -> void:
+	var raw := _raw_data()
+	raw["contradictions"][0]["topics"]["topic.unknown"] = 1
+	var defs := GameDefs.from_raw(raw)
+	assert_true(_has_error(defs, "contradictions[contradiction.tax_cuts_and_welfare].topics", "unknown id 'topic.unknown'"))
 
 
 func test_missing_directory_is_reported() -> void:
