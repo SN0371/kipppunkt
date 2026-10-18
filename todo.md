@@ -107,6 +107,12 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
     Tooltips für Medienklima, Reichweite, Wahlbeteiligung; Runden bis zur nächsten Wahl;
     Länderbeschreibungen statt Themen-Tabelle; Repräsentationslücke nicht mehr sichtbar
 
+- **Spieltest-Rückmeldung 2 (2026-10-18) umgesetzt:** Ernennen zeigt nach dem Planen einen
+  Haken statt der zurückspringenden Auswahl; Personenwerte als Tabelle; Agenda-Hinweis
+  entfernt (Aha-Moment); Partei-Reiter mit Klappbereichen (`FoldableContainer`);
+  Delegation automatisch nach zuständiger Funktion (`delegate` in `data/actions.json`),
+  kein AP-Rabatt, Parteichef übernimmt für +1 AP (Planungs-Reiter)
+
 **Spiel starten:** `godot --path .` (oder im Editor F5).
 **Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
 

@@ -39,6 +39,20 @@ static func button(text: String, callback: Callable, tooltip: String = "") -> Bu
 	return result
 
 
+## Adds a collapsible section to the parent and returns the container for its content.
+## The callback receives the new folded state, so callers can keep it across rebuilds.
+static func section(parent: Control, title: String, folded: bool, on_fold: Callable) -> VBoxContainer:
+	var foldable := FoldableContainer.new()
+	foldable.title = title
+	foldable.folded = folded
+	foldable.folding_changed.connect(on_fold)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	foldable.add_child(box)
+	parent.add_child(foldable)
+	return box
+
+
 ## Returns a horizontal row of controls.
 static func row(children: Array) -> HBoxContainer:
 	var result := HBoxContainer.new()

@@ -37,10 +37,28 @@ func test_rejected_orders_are_logged_and_cost_nothing() -> void:
 	assert_eq(SimLog.find(_state, "order_rejected").size(), 1)
 
 
-func test_delegation_saves_an_action_point() -> void:
+func test_responsible_function_carries_out_its_tasks() -> void:
+	var south := _staff("state_chair_south", "none")
+	var treasurer := _staff("treasurer", "none")
 	var secretary := _staff("general_secretary", "none")
-	var order := ActionOrder.create("action.found_local_branch", "region.south", {"performer": secretary.id})
-	assert_eq(ActionResolver.action_point_cost(_state, _defs.actions[order.action_id], order), 1)
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.found_local_branch", "region.south")), south)
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.campaign", "land.by")), south, "Lands belong to their region")
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.court_donor", "donor.real_estate")), treasurer)
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.press_conference")), secretary)
+	var chair := PersonSystem.by_role(_state, "chair")
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.found_local_branch", "region.north")), chair, "Vacant function")
+	assert_eq(ActionResolver.performer(_state, _defs, ActionOrder.create("action.set_position", "topic.taxes", {"value": 1})), chair, "Chair's own task")
+
+
+func test_delegation_costs_nothing_extra_but_taking_over_does() -> void:
+	_staff("state_chair_south", "none")
+	var chair := PersonSystem.by_role(_state, "chair")
+	var delegated := ActionOrder.create("action.found_local_branch", "region.south")
+	assert_eq(ActionResolver.action_point_cost(_state, _defs, delegated), 2)
+	var personal := ActionOrder.create("action.found_local_branch", "region.south", {"performer": chair.id})
+	assert_eq(ActionResolver.action_point_cost(_state, _defs, personal), 2 + ActionResolver.PERSONAL_SURCHARGE)
+	var vacant := ActionOrder.create("action.found_local_branch", "region.north", {"performer": chair.id})
+	assert_eq(ActionResolver.action_point_cost(_state, _defs, vacant), 2, "No surcharge if nobody else is responsible")
 
 
 func test_chair_actions_cannot_be_delegated_where_forbidden() -> void:
@@ -52,12 +70,11 @@ func test_chair_actions_cannot_be_delegated_where_forbidden() -> void:
 
 
 func test_success_chance_uses_competence() -> void:
-	var def := _defs.actions["action.found_local_branch"]
-	var order := ActionOrder.create(def.id, "region.south")
+	var order := ActionOrder.create("action.found_local_branch", "region.south")
 	PersonSystem.by_role(_state, "chair").competence = 70.0
-	assert_almost_eq(ActionResolver.success_chance(_state, def, order), 0.9, 0.00001)
+	assert_almost_eq(ActionResolver.success_chance(_state, _defs, order), 0.9, 0.00001)
 	PersonSystem.by_role(_state, "chair").competence = 100.0
-	assert_eq(ActionResolver.success_chance(_state, def, order), ActionResolver.CHANCE_MAX)
+	assert_eq(ActionResolver.success_chance(_state, _defs, order), ActionResolver.CHANCE_MAX)
 
 
 func test_set_position_is_certain() -> void:
@@ -127,7 +144,8 @@ func test_disloyal_informant_reports_hidden_funding() -> void:
 	var informant := _staff("treasurer", "informant")
 	informant.loyalty = 0.0
 	_state.donors["donor.real_estate"].satisfaction = 80.0
-	_resolve("action.third_party_funding", "donor.real_estate", {"performer": informant.id})
+	# The treasurer is responsible for funding: no explicit assignment needed.
+	_resolve("action.third_party_funding", "donor.real_estate")
 	# Report +5 and side effect +3
 	assert_almost_eq(_state.party.scrutiny, 8.0, 0.0001)
 

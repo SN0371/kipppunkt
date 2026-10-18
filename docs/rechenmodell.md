@@ -235,9 +235,15 @@ Jede Aktion ist ein Datensatz mit:
 Erfolgschance = clamp(p0 + (Komp − 50) / 200 + Σ mod,  0,05,  0,95)
 ```
 
-Ohne ausführende Person zählt die Kompetenz des Parteichefs. **Delegation** kostet 1 AP
-weniger (Minimum 1), setzt aber einen Loyalitätscheck voraus, wenn ein Agenda-Konflikt
-besteht (Abschnitt 10).
+**Zuständigkeit und Delegation:** Jede Aktion hat in den Daten eine zuständige Funktion
+(`delegate`): regionale Aktionen der Landesvorsitz der Zielregion, Finanzaktionen der
+Schatzmeister, übrige Bundesaktionen der Generalsekretär; manche Aktionen (Positionen,
+Personalfragen) erledigt immer der Parteichef. Ist die Funktion besetzt, führt die Person
+die Aktion automatisch aus: Ihre Kompetenz zählt, und bei einem Agenda-Konflikt greift der
+Loyalitätscheck (Abschnitt 10). Delegation kostet keine zusätzlichen Aktionspunkte; die
+Kapazität des Personals steckt schon im Aktionspunkt je besetzter Funktion (Abschnitt 6).
+Übernimmt der Parteichef eine Aufgabe, für die eine Funktion besetzt ist, kostet das
+**1 AP mehr**. Ist die Funktion unbesetzt, erledigt der Parteichef sie zum normalen Preis.
 
 ### 4.2 Beispielaktionen MVP
 | Aktion | System | Kosten | Wirkung (Erfolg) | Nebenwirkung |
@@ -768,6 +774,7 @@ Startwerte für das Balancing (M3).
 | Geldgeber: Rückkehr | Nach der Wartezeit, sobald die Zufriedenheit wieder mindestens 50 erreicht |
 | Bedeutungslosigkeit | Wird erst ab Runde 8 gezählt, frühestes Ende also in Runde 15 |
 | Karrierist läuft über | Bei Vernetzung > 70: −0,5 Umfrage in der geführten Region, bei Bundesfunktion in allen Ländern |
+| Delegation (Spieltest-Rückmeldung 2, mit Nutzer entschieden) | Automatisch an die zuständige Funktion, kein AP-Rabatt; Parteichef übernimmt für +1 AP |
 | Loyalitätsbruch bei Delegation | Ideologe: `Rad` +5; Journalist: `Material` +20; V-Mann: `B` +5; Karrierist verlässt die Partei, die Aktion entfällt |
 | Agenda-Konflikte | Ideologe: Abschwächen einer Position; V-Mann: Aktionen, die `B` erhöhen; Journalist: Aktionen, die Intransparenz erhöhen; zusätzlich je Aktion in den Daten |
 | Sichere Aktionen | Aktionen mit Grundchance 1 gelingen immer (keine Kappung auf 95 %) |

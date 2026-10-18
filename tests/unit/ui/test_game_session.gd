@@ -79,3 +79,15 @@ func test_planning_a_position_replaces_the_earlier_plan() -> void:
 	assert_eq(_session.plan_position("topic.taxes", 0), "", "Back to no position removes the plan")
 	assert_eq(_session.planned.size(), 0)
 	assert_false(_session.is_position_planned("topic.taxes"))
+
+
+func test_chair_taking_over_costs_an_extra_action_point() -> void:
+	var candidate: PersonState = _session.state.persons.filter(func(p: PersonState) -> bool: return p.role.is_empty())[0]
+	candidate.role = "general_secretary"
+	var points: int = _session.remaining()["action_points"]
+	_session.plan(ActionOrder.create("action.press_conference"))
+	assert_eq(_session.remaining()["action_points"], points - 1)
+	assert_eq(_session.set_personal(0, true), "")
+	assert_eq(_session.remaining()["action_points"], points - 1 - ActionResolver.PERSONAL_SURCHARGE)
+	assert_eq(_session.set_personal(0, false), "")
+	assert_eq(_session.remaining()["action_points"], points - 1)

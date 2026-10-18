@@ -28,6 +28,9 @@ const OPS: Dictionary = {
 	"appoint": "person",
 	"dismiss": "person",
 }
+## Who carries out an action once the function is filled: the state chair of the target's
+## region, the treasurer, the general secretary, or always the chair ("none").
+const DELEGATES: PackedStringArray = ["regional", "treasurer", "general_secretary", "none"]
 ## Optional preconditions.
 const REQUIREMENTS: PackedStringArray = [
 	"campaign", "municipal_level", "candidate", "staff", "min_target_satisfaction",
@@ -42,8 +45,8 @@ var cost_money: float
 var cost_activists: int
 ## Success chance before competence and modifiers; 1 means the action always succeeds.
 var base_chance: float
-## False for actions the chair must take personally.
-var delegable: bool
+## Responsible function, see DELEGATES.
+var delegate: String
 var requires: Dictionary = {}
 ## Hidden agendas that refuse this action when it is delegated to them.
 var agenda_conflicts: PackedStringArray
@@ -69,7 +72,7 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> ActionDef:
 	def.cost_money = reader.read_float(cost, "money", ctx + ".cost", 0.0)
 	def.cost_activists = reader.read_int(cost, "activists", ctx + ".cost", 0)
 	def.base_chance = reader.read_float(d, "base_chance", ctx, 0.0, 1.0)
-	def.delegable = reader.read_bool(d, "delegable", ctx)
+	def.delegate = reader.read_enum(d, "delegate", ctx, DELEGATES)
 	def.requires = reader.read_dict(d, "requires", ctx)
 	for key: String in def.requires:
 		if not REQUIREMENTS.has(key):
@@ -82,6 +85,11 @@ static func from_dict(d: Dictionary, reader: JsonReader) -> ActionDef:
 	def.failure_effects = _read_ops(d, "failure_effects", ctx, def, reader)
 	def.side_effects = _read_ops(d, "side_effects", ctx, def, reader)
 	return def
+
+
+## Returns true if a staff function other than the chair is responsible for the action.
+func is_delegable() -> bool:
+	return delegate != "none"
 
 
 ## Returns true if a parameter must be given in the order.

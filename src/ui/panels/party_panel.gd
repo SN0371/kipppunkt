@@ -11,9 +11,11 @@ const PARTY_ACTIONS: PackedStringArray = [
 var _actions_dialog: ContentDialog
 var _donors_dialog: ContentDialog
 var _outrage_topic: String = ""
+## Folded state per section; open by default are indicators, positions and contradictions.
+var _folded: Dictionary = {"indicators": false, "positions": false, "contradictions": false}
 
 
-## Fills the content.
+## Fills the content. Sections can be folded; the folded state survives rebuilds.
 func build() -> void:
 	if _actions_dialog == null:
 		_actions_dialog = make_dialog("ui.party.actions", _build_actions)
@@ -25,9 +27,9 @@ func build() -> void:
 		UiKit.button(tr("ui.party.actions") + " …", _actions_dialog.open),
 		UiKit.button(tr("ui.party.donors") + " …", _donors_dialog.open),
 	]))
-	content.add_child(UiKit.heading(tr("ui.party.indicators")))
 	var ideology := IdeologySystem.profile(party, defs)
-	content.add_child(UiKit.grid([
+	var indicators := _section("indicators", tr("ui.party.indicators"))
+	indicators.add_child(UiKit.grid([
 		[tr("ui.party.credibility"), UiKit.score(party.credibility), tr("ui.party.credibility_hint")],
 		[tr("ui.party.radicalism"), UiKit.score(party.radicalism)],
 		[tr("ui.party.unity"), UiKit.score(party.unity)],
@@ -39,39 +41,43 @@ func build() -> void:
 		[tr("ui.party.resilience"), UiKit.score(state.resilience)],
 		[tr("ui.party.ideology"), tr("ui.party.ideology_value") % [ideology.x, ideology.y]],
 	]))
-	content.add_child(UiKit.heading(tr("ui.party.positions")))
-	content.add_child(UiKit.hint(tr("ui.party.positions_hint")))
+	var positions := _section("positions", tr("ui.party.positions"))
+	positions.add_child(UiKit.hint(tr("ui.party.positions_hint")))
 	for topic_id: String in defs.topics:
-		_add_position_row(topic_id)
+		_add_position_row(positions, topic_id)
 	var contradictions := IdeologySystem.active_contradictions(party, defs)
 	if not contradictions.is_empty():
-		content.add_child(UiKit.heading(tr("ui.party.contradictions")))
+		var box := _section("contradictions", tr("ui.party.contradictions"))
 		for id: String in contradictions:
-			content.add_child(UiKit.label("• " + tr(id + ".name")))
-		content.add_child(UiKit.hint(tr("ui.party.contradictions_hint") % (
+			box.add_child(UiKit.label("• " + tr(id + ".name")))
+		box.add_child(UiKit.hint(tr("ui.party.contradictions_hint") % (
 			defs.params.value("inconsistency_penalty") * IdeologySystem.inconsistency(party, defs))))
 	if not party.regional_messages.is_empty():
-		content.add_child(UiKit.heading(tr("ui.party.regional_messages")))
+		var box := _section("messages", tr("ui.party.regional_messages"))
 		for region_id: String in party.regional_messages:
 			for topic_id: String in party.regional_messages[region_id]:
-				content.add_child(UiKit.label("%s – %s: %s" % [
+				box.add_child(UiKit.label("%s – %s: %s" % [
 					tr(region_id + ".name"), tr(topic_id + ".name"),
 					tr("position.%d" % int(party.regional_messages[region_id][topic_id])),
 				]))
-	content.add_child(UiKit.heading(tr("ui.party.rivals")))
+	var rivals := _section("rivals", tr("ui.party.rivals"))
 	for rival: RivalPartyDef in defs.rivals.values():
-		content.add_child(UiKit.label(tr("ui.party.rival_status") % [
+		rivals.add_child(UiKit.label(tr("ui.party.rival_status") % [
 			tr(rival.id + ".name"), RivalSystem.national_strength(defs, rival),
 			RivalSystem.attitude(defs, rival, ideology, party),
 		]))
 
 
-func _add_position_row(topic_id: String) -> void:
+func _section(key: String, title: String) -> VBoxContainer:
+	return UiKit.section(content, title, _folded.get(key, true), func(folded: bool) -> void: _folded[key] = folded)
+
+
+func _add_position_row(box: VBoxContainer, topic_id: String) -> void:
 	var intended := session.intended_position(topic_id)
 	var text := tr(topic_id + ".name") + ": " + (tr("position.%d" % intended) if intended != 0 else tr("ui.party.no_position"))
 	if session.is_position_planned(topic_id):
 		text += " " + tr("ui.party.planned_marker")
-	content.add_child(UiKit.label(text))
+	box.add_child(UiKit.label(text))
 	var slider := UiKit.position_slider(intended, func(value: int) -> void:
 		report("action.set_position", session.plan_position(topic_id, value)))
 	var cost_hints := PackedStringArray()
@@ -82,7 +88,7 @@ func _add_position_row(topic_id: String) -> void:
 	slider.tooltip_text = tr("ui.party.slider_hint")
 	if not cost_hints.is_empty():
 		slider.tooltip_text += "\n" + tr("ui.party.change_costs") + " " + ", ".join(cost_hints)
-	content.add_child(slider)
+	box.add_child(slider)
 
 
 ## Overlay with the party-wide actions.

@@ -17,8 +17,6 @@ var state: GameState
 var planned: Array[ActionOrder] = []
 ## Protocol entries of the last resolved turn.
 var last_report: Array[Dictionary] = []
-## Staff member who carries out delegable actions planned from now on; empty means the chair.
-var performer: String = ""
 
 
 func _init(definitions: GameDefs) -> void:
@@ -48,7 +46,7 @@ func remaining() -> Dictionary:
 	}
 	for order in planned:
 		var def := defs.actions[order.action_id]
-		budget["action_points"] -= ActionResolver.action_point_cost(state, def, order)
+		budget["action_points"] -= ActionResolver.action_point_cost(state, defs, order)
 		budget["money"] -= def.cost_money
 		budget["activists"] -= def.cost_activists
 	return budget
@@ -98,6 +96,20 @@ func date_of(turn: int) -> Array[int]:
 	return [defs.scenarios[state.scenario_id].start_year + (turn - 1) / 4, (turn - 1) % 4 + 1]
 
 
+## Lets the chair carry out a planned order personally instead of the responsible staff
+## member, or hands it back. Taking over costs ActionResolver.PERSONAL_SURCHARGE action points.
+## Returns the rejection reason or "".
+func set_personal(index: int, personal: bool) -> String:
+	var order := planned[index]
+	var previous := order.performer
+	order.performer = PersonSystem.by_role(state, "chair").id if personal else ""
+	if remaining()["action_points"] < 0:
+		order.performer = previous
+		return "not enough action points"
+	changed.emit()
+	return ""
+
+
 ## Removes a planned order.
 func unplan(index: int) -> void:
 	if index >= 0 and index < planned.size():
@@ -111,8 +123,6 @@ func end_turn() -> Array[Dictionary]:
 	var first_entry := state.log_entries.size()
 	TurnRunner.finish_turn(state, defs, planned)
 	planned.clear()
-	if PersonSystem.by_id(state, performer) == null:
-		performer = ""
 	if not state.is_over():
 		TurnRunner.start_turn(state, defs)
 	last_report.clear()

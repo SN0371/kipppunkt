@@ -282,6 +282,9 @@ msgstr "%s%s carried out."
 msgid "log.action_abandoned"
 msgstr "%s abandoned: the person in charge left the party."
 
+msgid "log.action_by"
+msgstr "(by %s)"
+
 msgid "log.action_failed"
 msgstr "%s%s failed."
 
@@ -867,6 +870,12 @@ msgstr "Activists"
 msgid "ui.planning.budget"
 msgstr "Left this turn"
 
+msgid "ui.planning.carried_out_by"
+msgstr "Carried out by: %s"
+
+msgid "ui.planning.delegation_hint"
+msgstr "Tasks are carried out by the responsible function once it is filled: regional actions by the state chair, finances by the treasurer, everything else by the general secretary. If the party chair takes over such a task, it costs %d action point more."
+
 msgid "ui.planning.money"
 msgstr "Money"
 
@@ -876,11 +885,8 @@ msgstr "Nothing planned yet."
 msgid "ui.planning.orders"
 msgstr "Planned orders"
 
-msgid "ui.planning.performer"
-msgstr "Carried out by"
-
-msgid "ui.planning.performer_hint"
-msgstr "Delegated actions cost one action point less but rely on the person's loyalty."
+msgid "ui.planning.personal"
+msgstr "Party chair takes over personally (+%d AP)"
 
 msgid "ui.planning.remove"
 msgstr "Remove"
@@ -903,6 +909,9 @@ msgstr "Text size %d %%"
 msgid "ui.settings.ui_scale_hint"
 msgstr "Size of text and controls"
 
+msgid "ui.staff.appointment_planned"
+msgstr "Appointment as %s planned"
+
 msgid "ui.staff.candidate"
 msgstr "Candidate"
 
@@ -910,13 +919,22 @@ msgid "ui.staff.candidates"
 msgstr "Candidates"
 
 msgid "ui.staff.candidates_hint"
-msgstr "New candidates arrive every turn. Some have a hidden agenda – conspicuously strong values are a reason for suspicion, not proof."
+msgstr "New candidates arrive every turn; those not appointed leave again."
+
+msgid "ui.staff.competence"
+msgstr "Competence"
 
 msgid "ui.staff.functions"
 msgstr "Party functions"
 
-msgid "ui.staff.person"
-msgstr "%s – loyalty %d, persuasion %d, network %d, competence %d"
+msgid "ui.staff.loyalty"
+msgstr "Loyalty"
+
+msgid "ui.staff.network"
+msgstr "Network"
+
+msgid "ui.staff.persuasion"
+msgstr "Persuasion"
 
 msgid "ui.staff.scale_hint"
 msgstr "All values range from 0 to 100."

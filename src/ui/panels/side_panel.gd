@@ -37,14 +37,10 @@ func build() -> void:
 	pass
 
 
-## Plans an order and reports the result in the status line.
-## Delegable actions are carried out by the performer chosen in the planning panel.
+## Plans an order and reports the result in the status line. The responsible staff member
+## carries it out; the planning panel lets the chair take it over.
 func plan(action_id: String, target: String = "", fields: Dictionary = {}) -> void:
-	var def := session.defs.actions[action_id]
-	var order_fields := fields.duplicate()
-	if def.delegable and not session.performer.is_empty() and not order_fields.has("performer"):
-		order_fields["performer"] = session.performer
-	report(action_id, session.plan(ActionOrder.create(action_id, target, order_fields)))
+	report(action_id, session.plan(ActionOrder.create(action_id, target, fields)))
 
 
 ## Reports the result of planning an action in the status line and in open overlays.

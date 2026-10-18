@@ -27,7 +27,11 @@ static func format(entry: Dictionary, defs: GameDefs) -> String:
 			if data["success"] and SELF_REPORTING_ACTIONS.has(order["action"]):
 				return ""
 			var key := "log.action" if data["success"] else "log.action_failed"
-			return server.translate(key) % [server.translate(order["action"] + ".name"), _target(order, defs)]
+			var text := String(server.translate(key) % [server.translate(order["action"] + ".name"), _target(order, defs)])
+			var role: String = data.get("performer", "chair")
+			if role != "chair":
+				text += " " + server.translate("log.action_by") % server.translate("role." + role)
+			return text
 		"order_rejected":
 			var order: Dictionary = data["order"]
 			return server.translate("log.order_rejected") % [

@@ -282,6 +282,9 @@ msgstr "%s%s ausgeführt."
 msgid "log.action_abandoned"
 msgstr "%s abgebrochen: Die beauftragte Person hat die Partei verlassen."
 
+msgid "log.action_by"
+msgstr "(durch %s)"
+
 msgid "log.action_failed"
 msgstr "%s%s ist misslungen."
 
@@ -867,6 +870,12 @@ msgstr "Aktivisten"
 msgid "ui.planning.budget"
 msgstr "Verbleibend in dieser Runde"
 
+msgid "ui.planning.carried_out_by"
+msgstr "Ausführung: %s"
+
+msgid "ui.planning.delegation_hint"
+msgstr "Aufgaben erledigt automatisch die zuständige Funktion, sobald sie besetzt ist: regionale Aktionen der Landesvorsitz, Finanzen der Schatzmeister, alles andere der Generalsekretär. Übernimmt der Parteichef eine solche Aufgabe selbst, kostet das %d Aktionspunkt mehr."
+
 msgid "ui.planning.money"
 msgstr "Geld"
 
@@ -876,11 +885,8 @@ msgstr "Noch nichts geplant."
 msgid "ui.planning.orders"
 msgstr "Geplante Aufträge"
 
-msgid "ui.planning.performer"
-msgstr "Ausführung"
-
-msgid "ui.planning.performer_hint"
-msgstr "Delegierte Aktionen kosten einen Aktionspunkt weniger, setzen aber die Loyalität der Person voraus."
+msgid "ui.planning.personal"
+msgstr "Parteichef übernimmt persönlich (+%d AP)"
 
 msgid "ui.planning.remove"
 msgstr "Entfernen"
@@ -903,6 +909,9 @@ msgstr "Textgröße %d %%"
 msgid "ui.settings.ui_scale_hint"
 msgstr "Größe von Schrift und Bedienelementen"
 
+msgid "ui.staff.appointment_planned"
+msgstr "Ernennung zum %s geplant"
+
 msgid "ui.staff.candidate"
 msgstr "Kandidat"
 
@@ -910,13 +919,22 @@ msgid "ui.staff.candidates"
 msgstr "Kandidaten"
 
 msgid "ui.staff.candidates_hint"
-msgstr "Neue Kandidaten kommen jede Runde. Manche haben eine verborgene Agenda – auffällig starke Werte sind ein Verdachtsmoment, aber kein Beweis."
+msgstr "Jede Runde kommen neue Kandidaten; nicht ernannte gehen wieder."
+
+msgid "ui.staff.competence"
+msgstr "Kompetenz"
 
 msgid "ui.staff.functions"
 msgstr "Parteifunktionen"
 
-msgid "ui.staff.person"
-msgstr "%s – Loyalität %d, Überzeugungskraft %d, Vernetzung %d, Kompetenz %d"
+msgid "ui.staff.loyalty"
+msgstr "Loyalität"
+
+msgid "ui.staff.network"
+msgstr "Vernetzung"
+
+msgid "ui.staff.persuasion"
+msgstr "Überzeugungskraft"
 
 msgid "ui.staff.scale_hint"
 msgstr "Alle Werte reichen von 0 bis 100."

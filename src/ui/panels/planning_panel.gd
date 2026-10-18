@@ -1,7 +1,7 @@
 class_name PlanningPanel
 extends SidePanel
-## Orders planned for the current turn, the remaining budget and who carries out
-## delegable actions.
+## Orders planned for the current turn and the remaining budget. Responsible staff carry out
+## their tasks; the chair can take a task over personally for one extra action point.
 
 
 ## Fills the content.
@@ -13,25 +13,28 @@ func build() -> void:
 		[tr("ui.planning.money"), UiKit.money(budget["money"])],
 		[tr("ui.planning.activists"), str(budget["activists"])],
 	]))
-	content.add_child(UiKit.heading(tr("ui.planning.performer")))
-	content.add_child(UiKit.hint(tr("ui.planning.performer_hint")))
-	var entries := [[tr("role.chair"), ""]]
-	for person in PersonSystem.staff(session.state):
-		if person.role != "chair":
-			entries.append([tr("role." + person.role), person.id])
-	var performer_choice := UiKit.choice(entries)
-	for i in entries.size():
-		if entries[i][1] == session.performer:
-			performer_choice.selected = i
-	performer_choice.item_selected.connect(func(index: int) -> void:
-		session.performer = performer_choice.get_item_metadata(index))
-	content.add_child(performer_choice)
 	content.add_child(UiKit.heading(tr("ui.planning.orders")))
+	content.add_child(UiKit.hint(tr("ui.planning.delegation_hint") % ActionResolver.PERSONAL_SURCHARGE))
 	if session.planned.is_empty():
 		content.add_child(UiKit.hint(tr("ui.planning.no_orders")))
 	for i in session.planned.size():
-		var text := order_text(session.planned[i])
-		content.add_child(UiKit.row([UiKit.label(text), UiKit.button("✕", session.unplan.bind(i), tr("ui.planning.remove"))]))
+		var order := session.planned[i]
+		content.add_child(UiKit.row([
+			UiKit.label(order_text(order)),
+			UiKit.button("✕", session.unplan.bind(i), tr("ui.planning.remove")),
+		]))
+		var responsible := ActionResolver.responsible(session.state, session.defs, order)
+		var performer := ActionResolver.performer(session.state, session.defs, order)
+		content.add_child(UiKit.hint(tr("ui.planning.carried_out_by") % tr("role." + performer.role)))
+		if responsible != null:
+			var personal := CheckBox.new()
+			personal.text = tr("ui.planning.personal") % ActionResolver.PERSONAL_SURCHARGE
+			personal.button_pressed = ActionResolver.is_personal_override(session.state, session.defs, order)
+			personal.toggled.connect(func(on: bool) -> void:
+				var reason := session.set_personal(i, on)
+				if not reason.is_empty():
+					report(order.action_id, reason))
+			content.add_child(personal)
 
 
 ## Returns a readable description of a planned order, for example

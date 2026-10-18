@@ -2,6 +2,8 @@ class_name ActionResolver
 extends RefCounted
 ## Checks and carries out action orders (rechenmodell.md sections 4 and 10.3).
 
+## Extra action points when the chair takes over a task whose responsible function is filled.
+const PERSONAL_SURCHARGE := 1
 const CHANCE_MIN := 0.05
 const CHANCE_MAX := 0.95
 ## Competence above average adds this much success chance per point (1/200).
@@ -45,13 +47,13 @@ static func check(state: GameState, defs: GameDefs, order: ActionOrder, budget: 
 		if PersonSystem.by_role(state, order.role) != null:
 			return "role already filled"
 	if not order.performer.is_empty():
-		var performer := PersonSystem.by_id(state, order.performer)
-		if performer == null or performer.role.is_empty():
+		var assigned := PersonSystem.by_id(state, order.performer)
+		if assigned == null or assigned.role.is_empty():
 			return "performer is not on the staff"
-		if not def.delegable and performer.role != "chair":
+		if not def.is_delegable() and assigned.role != "chair":
 			return "action cannot be delegated"
 	var party := state.party
-	if action_point_cost(state, def, order) > budget.get("action_points", party.action_points):
+	if action_point_cost(state, defs, order) > budget.get("action_points", party.action_points):
 		return "not enough action points"
 	if def.cost_money > 0.0 and def.cost_money > budget.get("money", party.money):
 		return "not enough money"
@@ -60,18 +62,53 @@ static func check(state: GameState, defs: GameDefs, order: ActionOrder, budget: 
 	return ""
 
 
-## Returns the action points an order costs; delegation saves one point (minimum 1).
-static func action_point_cost(state: GameState, def: ActionDef, order: ActionOrder) -> int:
-	if _is_delegated(state, order) and def.cost_action_points > 0:
-		return maxi(1, def.cost_action_points - 1)
-	return def.cost_action_points
+## Returns the action points an order costs. Delegation costs nothing extra, but the chair
+## taking over a task whose responsible function is filled costs PERSONAL_SURCHARGE more.
+static func action_point_cost(state: GameState, defs: GameDefs, order: ActionOrder) -> int:
+	var cost := defs.actions[order.action_id].cost_action_points
+	return cost + PERSONAL_SURCHARGE if is_personal_override(state, defs, order) else cost
+
+
+## Returns the staff member responsible for an order's action, or null if the function is
+## vacant or the chair is always responsible (rechenmodell.md 4.1).
+static func responsible(state: GameState, defs: GameDefs, order: ActionOrder) -> PersonState:
+	var def := defs.actions[order.action_id]
+	match def.delegate:
+		"treasurer", "general_secretary":
+			return PersonSystem.by_role(state, def.delegate)
+		"regional":
+			var region := order.target
+			if defs.lands.has(order.target):
+				region = defs.lands[order.target].region
+			if PersonSystem.REGION_CHAIRS.has(region):
+				return PersonSystem.by_role(state, PersonSystem.REGION_CHAIRS[region])
+	return null
+
+
+## Returns true if the order explicitly assigns the chair although a responsible staff
+## member exists.
+static func is_personal_override(state: GameState, defs: GameDefs, order: ActionOrder) -> bool:
+	if order.performer.is_empty():
+		return false
+	var chair := PersonSystem.by_role(state, "chair")
+	return chair != null and order.performer == chair.id and responsible(state, defs, order) != null
+
+
+## Returns who carries out an order: the explicitly assigned person, otherwise the responsible
+## staff member, otherwise the chair.
+static func performer(state: GameState, defs: GameDefs, order: ActionOrder) -> PersonState:
+	if not order.performer.is_empty():
+		return PersonSystem.by_id(state, order.performer)
+	var person := responsible(state, defs, order)
+	return person if person != null else PersonSystem.by_role(state, "chair")
 
 
 ## Returns the success chance of an order (rechenmodell.md 4.1).
-static func success_chance(state: GameState, def: ActionDef, order: ActionOrder) -> float:
+static func success_chance(state: GameState, defs: GameDefs, order: ActionOrder) -> float:
+	var def := defs.actions[order.action_id]
 	if def.base_chance >= 1.0:
 		return 1.0
-	var competence := _performer(state, order).competence
+	var competence := performer(state, defs, order).competence
 	var chance := def.base_chance + (competence - 50.0) / COMPETENCE_DIVISOR
 	chance = ModifierSystem.apply(state, "action_chance." + def.id, chance)
 	return clampf(chance, CHANCE_MIN, CHANCE_MAX)
@@ -82,25 +119,25 @@ static func success_chance(state: GameState, def: ActionDef, order: ActionOrder)
 static func execute(state: GameState, defs: GameDefs, order: ActionOrder) -> void:
 	var def := defs.actions[order.action_id]
 	var party := state.party
-	party.action_points -= action_point_cost(state, def, order)
+	party.action_points -= action_point_cost(state, defs, order)
 	party.money -= def.cost_money
 	party.activists -= def.cost_activists
-	var performer := _performer(state, order)
+	var person := performer(state, defs, order)
 	var extra_radicalism := 0.0
-	if _is_delegated(state, order) and _has_conflict(state, def, performer, order) \
-			and not PersonSystem.loyalty_check(state, performer):
-		match performer.agenda:
+	if person.role != "chair" and _has_conflict(state, def, person, order) \
+			and not PersonSystem.loyalty_check(state, person):
+		match person.agenda:
 			"careerist":
-				state.persons.erase(performer)
-				SimLog.add(state, "action_abandoned", {"order": order.to_dict(), "person": performer.id})
+				state.persons.erase(person)
+				SimLog.add(state, "action_abandoned", {"order": order.to_dict(), "person": person.id})
 				return
 			"ideologue":
 				extra_radicalism = IDEOLOGUE_EXTRA_RADICALISM
 			"journalist":
-				performer.material += JOURNALIST_DOCUMENTATION
+				person.material += JOURNALIST_DOCUMENTATION
 			"informant":
 				party.scrutiny = SimMath.clamp100(party.scrutiny + INFORMANT_SCRUTINY)
-	var success := state.rng.randf() < success_chance(state, def, order)
+	var success := state.rng.randf() < success_chance(state, defs, order)
 	for op in (def.effects if success else def.failure_effects):
 		_apply(state, defs, def, order, op)
 	for op in def.side_effects:
@@ -108,7 +145,7 @@ static func execute(state: GameState, defs: GameDefs, order: ActionOrder) -> voi
 	if extra_radicalism > 0.0:
 		party.radicalism = SimMath.clamp100(party.radicalism + extra_radicalism)
 		party.radical_action_this_turn = true
-	SimLog.add(state, "action", {"order": order.to_dict(), "success": success})
+	SimLog.add(state, "action", {"order": order.to_dict(), "success": success, "performer": person.role})
 
 
 static func _check_target(state: GameState, defs: GameDefs, def: ActionDef, order: ActionOrder) -> String:
@@ -167,16 +204,6 @@ static func _has_conflict(state: GameState, def: ActionDef, person: PersonState,
 		"journalist":
 			return def.raises("party.intransparency") or def.agenda_conflicts.has("journalist")
 	return def.agenda_conflicts.has(person.agenda)
-
-
-static func _is_delegated(state: GameState, order: ActionOrder) -> bool:
-	return not order.performer.is_empty() and _performer(state, order).role != "chair"
-
-
-static func _performer(state: GameState, order: ActionOrder) -> PersonState:
-	if not order.performer.is_empty():
-		return PersonSystem.by_id(state, order.performer)
-	return PersonSystem.by_role(state, "chair")
 
 
 static func _apply(state: GameState, defs: GameDefs, def: ActionDef, order: ActionOrder, op: Dictionary) -> void:
