@@ -113,6 +113,14 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   Delegation automatisch nach zuständiger Funktion (`delegate` in `data/actions.json`),
   kein AP-Rabatt, Parteichef übernimmt für +1 AP (Planungs-Reiter)
 
+- **Spieltest-Rückmeldung 3 (2026-10-18) umgesetzt:** Aktionsknöpfe zeigen „✓ n× geplant“
+  (grün getönt; Mehrfachplanung bleibt erlaubt), sind mit Grund im Tooltip deaktiviert, wenn
+  die Aktion gerade nicht möglich ist (auch Positionsregler); Rückmeldezeile oben im Reiter;
+  abgelehnter Positionswechsel setzt den Regler zurück (das war die Ursache für „nur eine
+  Position pro Runde“: Ablehnung wegen Aktionspunkten war nur in der Statuszeile sichtbar)
+- **Datei `feedback`:** private Spieltest-Notizen des Nutzers, in `.git/info/exclude`,
+  nie committen (war einmal versehentlich in 61484c6, Historie bleibt so)
+
 **Spiel starten:** `godot --path .` (oder im Editor F5).
 **Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
 

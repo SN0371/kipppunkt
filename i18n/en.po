@@ -762,6 +762,9 @@ msgstr "no"
 msgid "ui.not_planned"
 msgstr "%s not possible: %s"
 
+msgid "ui.not_possible"
+msgstr "Not possible right now: %s"
+
 msgid "ui.party.actions"
 msgstr "Actions"
 
@@ -860,6 +863,9 @@ msgstr "Domestic intelligence"
 
 msgid "ui.planned"
 msgstr "Planned: %s"
+
+msgid "ui.planned_count"
+msgstr "planned %d×"
 
 msgid "ui.planning.action_points"
 msgstr "Action points"

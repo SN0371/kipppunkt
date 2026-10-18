@@ -52,17 +52,30 @@ func remaining() -> Dictionary:
 	return budget
 
 
-## Adds an order to the plan. Returns an empty string, or the reason why it cannot be planned.
-func plan(order: ActionOrder) -> String:
+## Returns why an order cannot be added to the current plan, or an empty string if it can.
+func check(order: ActionOrder) -> String:
 	if not has_game() or state.is_over():
 		return "game is over"
 	var reason := ActionResolver.check(state, defs, order, remaining())
-	if reason.is_empty():
-		reason = _conflict_with_plan(order)
+	return reason if not reason.is_empty() else _conflict_with_plan(order)
+
+
+## Adds an order to the plan. Returns an empty string, or the reason why it cannot be planned.
+func plan(order: ActionOrder) -> String:
+	var reason := check(order)
 	if reason.is_empty():
 		planned.append(order)
 		changed.emit()
 	return reason
+
+
+## Returns how often an action is planned this turn, optionally only for one target.
+func planned_count(action_id: String, target: String = "") -> int:
+	var count := 0
+	for order in planned:
+		if order.action_id == action_id and (target.is_empty() or order.target == target):
+			count += 1
+	return count
 
 
 ## Plans the federal position on a topic, replacing an earlier plan for the same topic.
@@ -75,7 +88,11 @@ func plan_position(topic_id: String, value: int) -> String:
 	if value == state.party.positions.get(topic_id, 0):
 		changed.emit()
 		return ""
-	return plan(ActionOrder.create("action.set_position", topic_id, {"value": value}))
+	var reason := plan(ActionOrder.create("action.set_position", topic_id, {"value": value}))
+	if not reason.is_empty():
+		# Let the views reset the slider: nothing is planned for this topic now.
+		changed.emit()
+	return reason
 
 
 ## Returns the planned position for a topic, or the current one if none is planned (0 = none).

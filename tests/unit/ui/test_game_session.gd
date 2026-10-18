@@ -91,3 +91,21 @@ func test_chair_taking_over_costs_an_extra_action_point() -> void:
 	assert_eq(_session.remaining()["action_points"], points - 1 - ActionResolver.PERSONAL_SURCHARGE)
 	assert_eq(_session.set_personal(0, false), "")
 	assert_eq(_session.remaining()["action_points"], points - 1)
+
+
+func test_planned_count_and_check() -> void:
+	assert_eq(_session.plan(ActionOrder.create("action.found_local_branch", "region.south")), "")
+	assert_eq(_session.plan(ActionOrder.create("action.found_local_branch", "region.south")), "", "Twice in one turn is allowed")
+	assert_eq(_session.planned_count("action.found_local_branch"), 2)
+	assert_eq(_session.planned_count("action.found_local_branch", "region.north"), 0)
+	# 4 action points are used up by the two branches.
+	assert_eq(_session.check(ActionOrder.create("action.press_conference")), "not enough action points")
+
+
+func test_rejected_position_change_resets_the_views() -> void:
+	_session.plan(ActionOrder.create("action.found_local_branch", "region.south"))
+	_session.plan(ActionOrder.create("action.found_local_branch", "region.north"))
+	watch_signals(_session)
+	assert_eq(_session.plan_position("topic.taxes", 1), "not enough action points")
+	assert_signal_emitted(_session, "changed", "Views reset the slider")
+	assert_eq(_session.intended_position("topic.taxes"), 0)

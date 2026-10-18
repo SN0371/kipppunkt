@@ -115,8 +115,16 @@ func _build_message_dialog(box: VBoxContainer) -> void:
 		_message_value = value
 		value_label.text = tr("ui.message.choose") + " " + tr("position.%d" % value)))
 	box.add_child(UiKit.hint(tr("ui.message.risk")))
-	box.add_child(UiKit.button(tr("ui.message.plan"), func() -> void:
-		plan("action.regional_message", region, {"topic": _message_topic, "value": _message_value})))
+	var plan_button := UiKit.button(tr("ui.message.plan"), func() -> void:
+		plan("action.regional_message", region, {"topic": _message_topic, "value": _message_value}))
+	var reason := session.check(ActionOrder.create("action.regional_message", region, {"topic": _message_topic, "value": 2}))
+	if not reason.is_empty():
+		plan_button.disabled = true
+		plan_button.tooltip_text = tr("ui.not_possible") % LogFormatter.reason_text(reason)
+	var count := session.planned_count("action.regional_message", region)
+	if count > 0:
+		box.add_child(UiKit.label("✓ " + tr("ui.planned_count") % count))
+	box.add_child(plan_button)
 
 
 func _build_media(media_id: String) -> void:

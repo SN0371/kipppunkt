@@ -80,6 +80,14 @@ func _add_position_row(box: VBoxContainer, topic_id: String) -> void:
 	box.add_child(UiKit.label(text))
 	var slider := UiKit.position_slider(intended, func(value: int) -> void:
 		report("action.set_position", session.plan_position(topic_id, value)))
+	var reason := ""
+	if not session.is_position_planned(topic_id):
+		# Probe with any other value: what blocks a change is the budget, not the value.
+		var probe := 1 if intended != 1 else -1
+		reason = session.check(ActionOrder.create("action.set_position", topic_id, {"value": probe}))
+	if not reason.is_empty():
+		slider.editable = false
+		slider.modulate = Color(1, 1, 1, 0.5)
 	var cost_hints := PackedStringArray()
 	for value in [-2, -1, 0, 1, 2]:
 		var cost := IdeologySystem.change_cost(session.state, session.defs, topic_id, value)
@@ -88,6 +96,8 @@ func _add_position_row(box: VBoxContainer, topic_id: String) -> void:
 	slider.tooltip_text = tr("ui.party.slider_hint")
 	if not cost_hints.is_empty():
 		slider.tooltip_text += "\n" + tr("ui.party.change_costs") + " " + ", ".join(cost_hints)
+	if not reason.is_empty():
+		slider.tooltip_text = tr("ui.not_possible") % LogFormatter.reason_text(reason)
 	box.add_child(slider)
 
 
@@ -111,8 +121,8 @@ func _build_actions(box: VBoxContainer) -> void:
 
 ## Returns the outrage button; the topic comes from the drop-down at the time of the click.
 func _outrage_button() -> Button:
-	return UiKit.button(tr("action.outrage_wave.name") + " (" + tr("ui.cost.action_points") % 1 + ")",
-		func() -> void: plan("action.outrage_wave", _outrage_topic))
+	return action_button("action.outrage_wave", _outrage_topic, {}, func() -> void:
+		plan("action.outrage_wave", _outrage_topic))
 
 
 ## Overlay with the donors and the funding actions.

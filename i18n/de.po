@@ -762,6 +762,9 @@ msgstr "nein"
 msgid "ui.not_planned"
 msgstr "%s nicht möglich: %s"
 
+msgid "ui.not_possible"
+msgstr "Gerade nicht möglich: %s"
+
 msgid "ui.party.actions"
 msgstr "Aktionen"
 
@@ -860,6 +863,9 @@ msgstr "Verfassungsschutz"
 
 msgid "ui.planned"
 msgstr "Geplant: %s"
+
+msgid "ui.planned_count"
+msgstr "%d× geplant"
 
 msgid "ui.planning.action_points"
 msgstr "Aktionspunkte"

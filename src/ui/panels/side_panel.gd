@@ -6,10 +6,16 @@ extends ScrollContainer
 ## Emitted with a translated message for the status line.
 signal message(text: String)
 
+## Tint of buttons whose action is already planned this turn.
+const PLANNED_TINT := Color(0.75, 1.0, 0.8)
+
 var session: GameSession
 ## Content container that refresh() fills.
 var content: VBoxContainer
 var _dialogs: Array[ContentDialog] = []
+## Feedback on the last planning attempt in this panel, shown at the top until the turn ends.
+var _notice: String = ""
+var _notice_ok: bool = true
 
 
 ## Prepares the panel; call before it enters the tree.
@@ -23,13 +29,19 @@ func setup(game_session: GameSession) -> void:
 	# Deferred: a slider or drop-down that triggered the change must not be freed while
 	# its signal is still being handled; several changes in one frame rebuild only once.
 	session.changed.connect(refresh, CONNECT_DEFERRED)
+	session.turn_finished.connect(func(_report: Array[Dictionary]) -> void: _notice = "")
 
 
 ## Rebuilds the content.
 func refresh() -> void:
 	UiKit.clear(content)
-	if session.has_game():
-		build()
+	if not session.has_game():
+		return
+	if not _notice.is_empty():
+		var notice := UiKit.label(_notice)
+		notice.add_theme_color_override("font_color", Color(0.55, 0.9, 0.6) if _notice_ok else Color(1.0, 0.55, 0.5))
+		content.add_child(notice)
+	build()
 
 
 ## Fills the content; overridden by each panel.
@@ -49,6 +61,10 @@ func report(action_id: String, reason: String) -> void:
 	if not reason.is_empty():
 		text = tr("ui.not_planned") % [tr(action_id + ".name"), LogFormatter.reason_text(reason)]
 	message.emit(text)
+	_notice = text
+	_notice_ok = reason.is_empty()
+	if not _notice_ok:
+		refresh.call_deferred()
 	for dialog in _dialogs:
 		if dialog.visible:
 			dialog.show_message(text)
@@ -65,8 +81,13 @@ func make_dialog(title_key: String, builder: Callable) -> ContentDialog:
 	return dialog
 
 
-## Returns a button that plans an action, labelled with its name and costs.
-func action_button(action_id: String, target: String = "", fields: Dictionary = {}) -> Button:
+## Returns a button that plans an action, labelled with its name and costs. It shows how often
+## the action is already planned and is disabled, with the reason as tooltip, if the action
+## cannot be planned now. An optional callback replaces the default "plan this order", for
+## example when the target comes from a drop-down at the time of the click.
+func action_button(
+	action_id: String, target: String = "", fields: Dictionary = {}, on_press: Callable = Callable()
+) -> Button:
 	var def := session.defs.actions[action_id]
 	var costs := PackedStringArray()
 	if def.cost_action_points > 0:
@@ -78,4 +99,15 @@ func action_button(action_id: String, target: String = "", fields: Dictionary = 
 	var text := tr(action_id + ".name")
 	if not costs.is_empty():
 		text += " (" + ", ".join(costs) + ")"
-	return UiKit.button(text, plan.bind(action_id, target, fields), tr(action_id + ".description"))
+	var count := session.planned_count(action_id, target)
+	if count > 0:
+		text += "  ✓ " + tr("ui.planned_count") % count
+	var callback := on_press if on_press.is_valid() else plan.bind(action_id, target, fields)
+	var button := UiKit.button(text, callback, tr(action_id + ".description"))
+	if count > 0:
+		button.modulate = PLANNED_TINT
+	var reason := session.check(ActionOrder.create(action_id, target, fields))
+	if not reason.is_empty():
+		button.disabled = true
+		button.tooltip_text = tr("ui.not_possible") % LogFormatter.reason_text(reason)
+	return button

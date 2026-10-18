@@ -44,3 +44,30 @@ func test_end_turn_fills_the_report() -> void:
 	assert_eq(_main.session.state.turn, 2)
 	assert_eq(_main.tabs.get_current_tab_control(), _main.report_panel)
 	assert_gt(_main.report_panel.content.get_child_count(), 0)
+
+
+func test_buttons_show_planned_actions_and_disable_without_budget() -> void:
+	_main._select("land.by")
+	await wait_process_frames(2)
+	var branch := _find_button(_main.selection_panel.content, "action.found_local_branch")
+	assert_not_null(branch)
+	branch.pressed.emit()
+	await wait_process_frames(2)
+	branch = _find_button(_main.selection_panel.content, "action.found_local_branch")
+	assert_true(branch.text.contains("✓"), branch.text)
+	branch.pressed.emit()
+	await wait_process_frames(2)
+	branch = _find_button(_main.selection_panel.content, "action.found_local_branch")
+	assert_true(branch.disabled, "No action points left")
+	assert_ne(branch.tooltip_text, "")
+
+
+func _find_button(node: Node, action_id: String) -> Button:
+	var name_text := tr(action_id + ".name")
+	for child in node.get_children():
+		if child is Button and (child as Button).text.begins_with(name_text):
+			return child
+		var found := _find_button(child, action_id)
+		if found != null:
+			return found
+	return null
