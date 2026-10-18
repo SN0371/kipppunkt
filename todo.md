@@ -147,6 +147,23 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   ob der Weg zum Bundestag spannend genug ist; ggf. Korridore um Obergrenzen ergänzen.
 - Geld am Ende noch reichlich (Median 4.000–8.000 T€), aber erstmals in sinnvoller Größe.
 
+## Personen-Attribute mit mehr Wirkung (noch nicht eingeplant)
+Heute wirken die Attribute kaum je nach Funktion:
+- Kompetenz: Erfolgschance der Aktionen der ausführenden Person (`action_resolver.gd`)
+- Überzeugungskraft: Führungsterm im Umfrageziel (Parteichef + Landesvorsitz der Region)
+- Vernetzung: **keine positive Wirkung**, nur über die Agenda gegen die Partei (Journalist
+  sammelt schneller Material, Karrierist läuft über). Spieler sehen den Wert, er nützt nichts.
+
+Ziel: Jedes Attribut wirkt je nach Funktion. Wirkungsmatrix Funktion × Attribut ausarbeiten,
+im Rechenmodell festhalten, dann mit Bots nachbalancieren. Ideen bisher:
+- Generalsekretär mit Überzeugungskraft: mehr Einfluss auf Medien (Ton, klassische Reichweite)
+- Generalsekretär mit Vernetzung: Pressekonferenz bringt mehr Reichweite
+- Landesvorsitz mit Überzeugungskraft: mobilisiert mehr (Mobilisierung in der Region)
+- Landesvorsitz mit Kompetenz: Bonus-Aktivisten in der Region
+- Schatzmeister mit Vernetzung: "Spender umwerben" wirkt stärker
+- Nach dem MVP: Vernetzung entscheidet über Koalitionen, Bundesrat-Deals, Richterwahlen
+  (passt zu den Aufträgen an Funktionäre, siehe nächster Abschnitt)
+
 ## Nach dem MVP: Aktionen im späten Spiel
 Problem: Mit vielen Funktionären wird das Planen repetitiv (der 10. Ortsverband ist keine
 Entscheidung mehr). Beschlossen: beide Ansätze zusammen verfolgen, sie bauen aufeinander auf.
