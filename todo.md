@@ -96,6 +96,17 @@ mkdir -p reports && godot --headless -s addons/gut/gut_cmdln.gd -gjunit_xml_file
   zusätzlich Einstellung „Textgröße“ (80–200 %) in der Kopfzeile, gespeichert in
   `user://settings.cfg` (`UiSettings`).
 
+- **Spieltest-Rückmeldung 1 (Datei `feedback`, 2026-10-18) umgesetzt:**
+  - Modell: Themen als gerichtete Aussagen, 8 Themen (neu: Naturschutz, Schuldenbremse),
+    widersprüchliche Positionen kosten dauerhaft Glaubwürdigkeit (`data/contradictions.json`,
+    Rechenmodell 5.7), Reglermitte = keine Position, `P_Mob` 9
+  - Oberfläche: Kopfzeile nur Datum, Geld, Aktionspunkte, Aktivisten; Overlay beim Rundenende
+    (erst geplante Aufträge mit Abbrechen/Runde beenden, dann Ergebnisse mit Schließen);
+    Overlays für regionale Botschaft (mit Erklärung), Partei-Aktionen und Geldgeber
+    (`ContentDialog`); Schieberegler für Positionen (rot/grün); Werte als „x / 100“;
+    Tooltips für Medienklima, Reichweite, Wahlbeteiligung; Runden bis zur nächsten Wahl;
+    Länderbeschreibungen statt Themen-Tabelle; Repräsentationslücke nicht mehr sichtbar
+
 **Spiel starten:** `godot --path .` (oder im Editor F5).
 **Bildschirmfotos ohne Hand:** Debug-Skript mit Fenster, `root.get_texture().get_image().save_png()`.
 

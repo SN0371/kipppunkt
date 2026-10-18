@@ -10,6 +10,8 @@ const SHOWN_KINDS: PackedStringArray = [
 	"press_exposed_insider", "media_conflict", "media_new_owner", "donor_withdrew",
 	"donor_returned", "person_left", "agenda_revealed", "purge", "phase", "game_over",
 ]
+## Actions whose effect has its own, more precise report line.
+const SELF_REPORTING_ACTIONS: PackedStringArray = ["action.set_position", "action.regional_message"]
 
 
 ## Returns the sentence for an entry, or an empty string for entries not shown in the report.
@@ -22,6 +24,8 @@ static func format(entry: Dictionary, defs: GameDefs) -> String:
 	match kind:
 		"action":
 			var order: Dictionary = data["order"]
+			if data["success"] and SELF_REPORTING_ACTIONS.has(order["action"]):
+				return ""
 			var key := "log.action" if data["success"] else "log.action_failed"
 			return server.translate(key) % [server.translate(order["action"] + ".name"), _target(order, defs)]
 		"order_rejected":
@@ -32,13 +36,15 @@ static func format(entry: Dictionary, defs: GameDefs) -> String:
 		"action_abandoned":
 			return server.translate("log.action_abandoned") % server.translate(data["order"]["action"] + ".name")
 		"position_set":
-			return server.translate("log.position_set") % [
-				server.translate(data["topic"] + ".name"), UiKit.position(int(data["value"])), data["credibility_cost"],
-			]
+			var topic := server.translate(data["topic"] + ".name")
+			var value := server.translate("position.%d" % int(data["value"]))
+			if float(data["credibility_cost"]) <= 0.0:
+				return server.translate("log.position_set_free") % [topic, value]
+			return server.translate("log.position_set") % [topic, value, data["credibility_cost"]]
 		"regional_message_set":
 			return server.translate("log.regional_message_set") % [
 				server.translate(data["region"] + ".name"), server.translate(data["topic"] + ".name"),
-				UiKit.position(int(data["value"])),
+				server.translate("position.%d" % int(data["value"])),
 			]
 		"income":
 			return server.translate("log.income") % [

@@ -35,6 +35,21 @@ static func land_votes(state: GameState, defs: GameDefs, land_id: String) -> boo
 	return false
 
 
+## Returns the turn of the next election of a type in a land (current turn included),
+## or -1 if the scenario holds none. Federal elections ignore the land.
+static func next_turn(state: GameState, defs: GameDefs, type: String, land_id: String = "") -> int:
+	var next := -1
+	for election in defs.scenarios[state.scenario_id].elections:
+		if election.type != type or (type != "federal" and election.land != land_id):
+			continue
+		var turn := election.first_turn
+		if state.turn > turn:
+			turn += ceili(float(state.turn - turn) / election.interval) * election.interval
+		if next < 0 or turn < next:
+			next = turn
+	return next
+
+
 ## Holds all elections due this turn (step 8 of the turn).
 static func step(state: GameState, defs: GameDefs) -> void:
 	for election in due(state, defs):

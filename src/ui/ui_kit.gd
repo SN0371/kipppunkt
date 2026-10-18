@@ -47,19 +47,66 @@ static func row(children: Array) -> HBoxContainer:
 	return result
 
 
-## Returns a two-column grid for "name: value" pairs.
+## Returns a two-column grid for [name, value] or [name, value, tooltip] entries.
 static func grid(pairs: Array) -> GridContainer:
 	var result := GridContainer.new()
 	result.columns = 2
 	for pair: Array in pairs:
+		var tooltip: String = pair[2] if pair.size() > 2 else ""
 		var name_label := Label.new()
-		name_label.text = pair[0]
+		name_label.text = pair[0] + (" (?)" if not tooltip.is_empty() else "")
 		name_label.modulate = Color(1, 1, 1, 0.75)
-		result.add_child(name_label)
 		var value_label := Label.new()
 		value_label.text = pair[1]
-		result.add_child(value_label)
+		for item: Label in [name_label, value_label]:
+			if not tooltip.is_empty():
+				item.tooltip_text = tooltip
+				item.mouse_filter = Control.MOUSE_FILTER_PASS
+			result.add_child(item)
 	return result
+
+
+## Returns a slider for a position -2..+2; the middle means "no position". The track turns
+## green for "for" and red for "against". The callback receives the new value once the
+## player lets go (or clicks).
+static func position_slider(value: int, on_change: Callable) -> HSlider:
+	var slider := HSlider.new()
+	slider.min_value = -2
+	slider.max_value = 2
+	slider.step = 1
+	slider.tick_count = 5
+	slider.ticks_on_borders = true
+	slider.value = value
+	slider.custom_minimum_size = Vector2(200, 0)
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_color_slider(slider, value)
+	var dragging := [false]
+	slider.drag_started.connect(func() -> void: dragging[0] = true)
+	slider.drag_ended.connect(func(changed: bool) -> void:
+		dragging[0] = false
+		if changed:
+			on_change.call(int(slider.value)))
+	slider.value_changed.connect(func(new_value: float) -> void:
+		_color_slider(slider, int(new_value))
+		if not dragging[0]:
+			on_change.call(int(new_value)))
+	return slider
+
+
+static func _color_slider(slider: HSlider, value: int) -> void:
+	var color := Color(0.45, 0.45, 0.48)
+	if value > 0:
+		color = Color(0.2, 0.65, 0.3)
+	elif value < 0:
+		color = Color(0.8, 0.25, 0.25)
+	var track := StyleBoxFlat.new()
+	track.bg_color = color
+	track.content_margin_top = 4
+	track.content_margin_bottom = 4
+	track.set_corner_radius_all(3)
+	slider.add_theme_stylebox_override("slider", track)
+	slider.add_theme_stylebox_override("grabber_area", track)
+	slider.add_theme_stylebox_override("grabber_area_highlight", track)
 
 
 ## Returns a drop-down with the given entries [[text, metadata], ...].
@@ -93,9 +140,14 @@ static func money(value: float) -> String:
 	return "%d T€" % roundi(value)
 
 
-## Formats a value on a 0..100 scale.
+## Formats a value on a 0..100 scale together with its maximum, for example "20 / 100".
 static func score(value: float) -> String:
-	return "%d" % roundi(value)
+	return "%d / 100" % roundi(value)
+
+
+## Formats a turn as "Q3/2042".
+static func quarter_label(date: Array[int]) -> String:
+	return "Q%d/%d" % [date[1], date[0]]
 
 
 ## Formats a position -2..+2 with sign.

@@ -69,3 +69,13 @@ func test_save_and_load() -> void:
 func test_loading_a_missing_slot_reports_an_error() -> void:
 	assert_ne(_session.load_game("does_not_exist"), "")
 	assert_true(_session.has_game(), "The running game stays")
+
+
+func test_planning_a_position_replaces_the_earlier_plan() -> void:
+	assert_eq(_session.plan_position("topic.taxes", 1), "")
+	assert_eq(_session.plan_position("topic.taxes", 2), "")
+	assert_eq(_session.planned.size(), 1)
+	assert_eq(_session.intended_position("topic.taxes"), 2)
+	assert_eq(_session.plan_position("topic.taxes", 0), "", "Back to no position removes the plan")
+	assert_eq(_session.planned.size(), 0)
+	assert_false(_session.is_position_planned("topic.taxes"))

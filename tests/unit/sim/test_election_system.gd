@@ -60,3 +60,14 @@ func test_federal_election() -> void:
 	ElectionSystem.step(_state, _defs)
 	assert_almost_eq(_state.party.last_federal_result, 6.0, 0.0001)
 	assert_true(_state.party.in_bundestag)
+
+
+func test_next_election_turn() -> void:
+	_state.turn = 1
+	assert_eq(ElectionSystem.next_turn(_state, _defs, "municipal", "land.by"), 3)
+	assert_eq(ElectionSystem.next_turn(_state, _defs, "federal"), 8)
+	_state.turn = 9
+	assert_eq(ElectionSystem.next_turn(_state, _defs, "federal"), 24)
+	_state.turn = 24
+	assert_eq(ElectionSystem.next_turn(_state, _defs, "federal"), 24, "Election in the current turn")
+	assert_eq(ElectionSystem.next_turn(_state, _defs, "state", "land.nw"), -1, "No state election for NRW in the scenario")

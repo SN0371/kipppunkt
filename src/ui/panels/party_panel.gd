@@ -1,74 +1,63 @@
 class_name PartyPanel
 extends SidePanel
-## The party: indicators, ideology, positions, donors, rivals and party-wide actions.
+## The party: indicators, positions as sliders, contradictions and rivals. Party-wide
+## actions and donors open as overlays.
+
+const PARTY_ACTIONS: PackedStringArray = [
+	"action.social_media_campaign", "action.press_conference", "action.win_influencer",
+	"action.discredit_opponents", "action.party_congress", "action.purge",
+]
+
+var _actions_dialog: ContentDialog
+var _donors_dialog: ContentDialog
+var _outrage_topic: String = ""
 
 
 ## Fills the content.
 func build() -> void:
+	if _actions_dialog == null:
+		_actions_dialog = make_dialog("ui.party.actions", _build_actions)
+		_donors_dialog = make_dialog("ui.party.donors", _build_donors)
 	var state := session.state
 	var defs := session.defs
 	var party := state.party
-	var ideology := IdeologySystem.profile(party, defs)
+	content.add_child(UiKit.row([
+		UiKit.button(tr("ui.party.actions") + " …", _actions_dialog.open),
+		UiKit.button(tr("ui.party.donors") + " …", _donors_dialog.open),
+	]))
 	content.add_child(UiKit.heading(tr("ui.party.indicators")))
+	var ideology := IdeologySystem.profile(party, defs)
 	content.add_child(UiKit.grid([
-		[tr("ui.party.credibility"), UiKit.score(party.credibility)],
+		[tr("ui.party.credibility"), UiKit.score(party.credibility), tr("ui.party.credibility_hint")],
 		[tr("ui.party.radicalism"), UiKit.score(party.radicalism)],
 		[tr("ui.party.unity"), UiKit.score(party.unity)],
 		[tr("ui.party.scrutiny"), UiKit.score(party.scrutiny)],
 		[tr("ui.party.vs_level"), tr("vs_level.%d" % party.vs_level)],
 		[tr("ui.party.reach_platform"), UiKit.score(party.reach_platform)],
-		[tr("ui.party.contradiction_risk"), UiKit.score(party.contradiction_risk)],
+		[tr("ui.party.contradiction_risk"), UiKit.score(party.contradiction_risk), tr("ui.party.contradiction_risk_hint")],
+		[tr("ui.party.members"), str(party.members)],
 		[tr("ui.party.resilience"), UiKit.score(state.resilience)],
 		[tr("ui.party.ideology"), tr("ui.party.ideology_value") % [ideology.x, ideology.y]],
 	]))
 	content.add_child(UiKit.heading(tr("ui.party.positions")))
 	content.add_child(UiKit.hint(tr("ui.party.positions_hint")))
 	for topic_id: String in defs.topics:
-		var current: Variant = party.positions.get(topic_id)
-		var text := tr(topic_id + ".name") + ": " + (UiKit.position(current) if current != null else tr("ui.party.no_position"))
-		var buttons: Array = [UiKit.label(text)]
-		for value in [-2, -1, 0, 1, 2]:
-			if current != null and int(current) == value:
-				continue
-			var cost := IdeologySystem.change_cost(state, defs, topic_id, value)
-			var tooltip := tr("ui.party.change_cost") % cost if cost > 0.0 else ""
-			buttons.append(UiKit.button(UiKit.position(value), plan.bind("action.set_position", topic_id, {"value": value}), tooltip))
-		content.add_child(UiKit.row(buttons))
+		_add_position_row(topic_id)
+	var contradictions := IdeologySystem.active_contradictions(party, defs)
+	if not contradictions.is_empty():
+		content.add_child(UiKit.heading(tr("ui.party.contradictions")))
+		for id: String in contradictions:
+			content.add_child(UiKit.label("• " + tr(id + ".name")))
+		content.add_child(UiKit.hint(tr("ui.party.contradictions_hint") % (
+			defs.params.value("inconsistency_penalty") * IdeologySystem.inconsistency(party, defs))))
 	if not party.regional_messages.is_empty():
 		content.add_child(UiKit.heading(tr("ui.party.regional_messages")))
 		for region_id: String in party.regional_messages:
 			for topic_id: String in party.regional_messages[region_id]:
 				content.add_child(UiKit.label("%s – %s: %s" % [
 					tr(region_id + ".name"), tr(topic_id + ".name"),
-					UiKit.position(party.regional_messages[region_id][topic_id]),
+					tr("position.%d" % int(party.regional_messages[region_id][topic_id])),
 				]))
-	content.add_child(UiKit.heading(tr("ui.actions")))
-	for action_id in [
-		"action.social_media_campaign", "action.press_conference", "action.win_influencer",
-		"action.discredit_opponents", "action.party_congress", "action.purge",
-	]:
-		content.add_child(action_button(action_id))
-	var topic_choice := UiKit.choice(_topic_entries())
-	content.add_child(UiKit.row([
-		topic_choice,
-		UiKit.button(tr("action.outrage_wave.name"), func() -> void:
-			plan("action.outrage_wave", UiKit.chosen(topic_choice)), tr("action.outrage_wave.description")),
-	]))
-	content.add_child(UiKit.heading(tr("ui.party.donors")))
-	for donor_id: String in defs.donors:
-		var donor := state.donors[donor_id]
-		var status := tr("ui.party.donor_status") % [
-			UiKit.score(donor.satisfaction), UiKit.money(DonorSystem.payment(state, defs, donor_id)),
-		]
-		if not donor.active:
-			status = tr("ui.party.donor_withdrawn")
-		content.add_child(UiKit.label(tr(donor_id + ".name") + ": " + status))
-		if donor.active:
-			content.add_child(UiKit.row([
-				action_button("action.court_donor", donor_id),
-				action_button("action.accept_large_donation", donor_id),
-				action_button("action.third_party_funding", donor_id),
-			]))
 	content.add_child(UiKit.heading(tr("ui.party.rivals")))
 	for rival: RivalPartyDef in defs.rivals.values():
 		content.add_child(UiKit.label(tr("ui.party.rival_status") % [
@@ -77,8 +66,77 @@ func build() -> void:
 		]))
 
 
-func _topic_entries() -> Array:
+func _add_position_row(topic_id: String) -> void:
+	var intended := session.intended_position(topic_id)
+	var text := tr(topic_id + ".name") + ": " + (tr("position.%d" % intended) if intended != 0 else tr("ui.party.no_position"))
+	if session.is_position_planned(topic_id):
+		text += " " + tr("ui.party.planned_marker")
+	content.add_child(UiKit.label(text))
+	var slider := UiKit.position_slider(intended, func(value: int) -> void:
+		report("action.set_position", session.plan_position(topic_id, value)))
+	var cost_hints := PackedStringArray()
+	for value in [-2, -1, 0, 1, 2]:
+		var cost := IdeologySystem.change_cost(session.state, session.defs, topic_id, value)
+		if cost > 0.0:
+			cost_hints.append("%s: −%.1f" % [UiKit.position(value), cost])
+	slider.tooltip_text = tr("ui.party.slider_hint")
+	if not cost_hints.is_empty():
+		slider.tooltip_text += "\n" + tr("ui.party.change_costs") + " " + ", ".join(cost_hints)
+	content.add_child(slider)
+
+
+## Overlay with the party-wide actions.
+func _build_actions(box: VBoxContainer) -> void:
+	_add_budget(box)
+	for action_id in PARTY_ACTIONS:
+		box.add_child(action_button(action_id))
+		box.add_child(UiKit.hint(tr(action_id + ".description")))
+	if _outrage_topic.is_empty():
+		_outrage_topic = session.defs.topics.keys()[0]
 	var entries := []
 	for topic_id: String in session.defs.topics:
 		entries.append([tr(topic_id + ".name"), topic_id])
-	return entries
+	var topic_choice := UiKit.choice(entries)
+	topic_choice.selected = session.defs.topics.keys().find(_outrage_topic)
+	topic_choice.item_selected.connect(func(index: int) -> void: _outrage_topic = topic_choice.get_item_metadata(index))
+	box.add_child(UiKit.row([topic_choice, _outrage_button()]))
+	box.add_child(UiKit.hint(tr("action.outrage_wave.description")))
+
+
+## Returns the outrage button; the topic comes from the drop-down at the time of the click.
+func _outrage_button() -> Button:
+	return UiKit.button(tr("action.outrage_wave.name") + " (" + tr("ui.cost.action_points") % 1 + ")",
+		func() -> void: plan("action.outrage_wave", _outrage_topic))
+
+
+## Overlay with the donors and the funding actions.
+func _build_donors(box: VBoxContainer) -> void:
+	var state := session.state
+	var defs := session.defs
+	_add_budget(box)
+	box.add_child(UiKit.hint(tr("ui.party.donors_hint")))
+	for donor_id: String in defs.donors:
+		var donor := state.donors[donor_id]
+		box.add_child(UiKit.heading(tr(donor_id + ".name")))
+		if not donor.active:
+			box.add_child(UiKit.label(tr("ui.party.donor_withdrawn")))
+			continue
+		var wishes := PackedStringArray()
+		var preferences := defs.donors[donor_id].topic_preferences
+		for topic_id: String in preferences:
+			wishes.append("%s %s" % [tr(topic_id + ".name"), UiKit.position(preferences[topic_id])])
+		box.add_child(UiKit.grid([
+			[tr("ui.party.donor_satisfaction"), UiKit.score(donor.satisfaction)],
+			[tr("ui.party.donor_payment"), UiKit.money(DonorSystem.payment(state, defs, donor_id))],
+			[tr("ui.party.donor_wishes"), ", ".join(wishes)],
+		]))
+		box.add_child(UiKit.row([
+			action_button("action.court_donor", donor_id),
+			action_button("action.accept_large_donation", donor_id),
+			action_button("action.third_party_funding", donor_id),
+		]))
+
+
+func _add_budget(box: VBoxContainer) -> void:
+	var budget := session.remaining()
+	box.add_child(UiKit.label(tr("ui.budget_line") % [budget["action_points"], UiKit.money(budget["money"]), budget["activists"]]))

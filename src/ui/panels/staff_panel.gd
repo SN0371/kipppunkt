@@ -8,6 +8,7 @@ extends SidePanel
 func build() -> void:
 	var state := session.state
 	content.add_child(UiKit.heading(tr("ui.staff.functions")))
+	content.add_child(UiKit.hint(tr("ui.staff.scale_hint")))
 	var chair := PersonSystem.by_role(state, "chair")
 	content.add_child(_person_line(tr("role.chair"), chair))
 	var vacant: Array = []
@@ -39,8 +40,7 @@ func build() -> void:
 
 func _person_line(title: String, person: PersonState) -> Label:
 	var text := tr("ui.staff.person") % [
-		title, UiKit.score(person.loyalty), UiKit.score(person.persuasion),
-		UiKit.score(person.network), UiKit.score(person.competence),
+		title, roundi(person.loyalty), roundi(person.persuasion), roundi(person.network), roundi(person.competence),
 	]
 	if person.agenda_revealed:
 		text += " – " + tr("agenda." + person.agenda)

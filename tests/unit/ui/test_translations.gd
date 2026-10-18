@@ -71,10 +71,10 @@ func test_every_report_line_is_translated() -> void:
 	var defs := SimFixture.defs()
 	var order := {"action": "action.found_local_branch", "target": "region.south"}
 	var entries := {
-		"action": {"order": order, "success": true},
+		"action": {"order": order, "success": false},
 		"order_rejected": {"order": order, "reason": "not enough money"},
 		"action_abandoned": {"order": order},
-		"position_set": {"topic": "topic.taxes", "value": 1.0, "credibility_cost": 0.0},
+		"position_set": {"topic": "topic.taxes", "value": 1.0, "credibility_cost": 2.5},
 		"regional_message_set": {"region": "region.south", "topic": "topic.taxes", "value": -2.0},
 		"income": {"fees": 1.0, "donations": 2.0, "state_funding": 3.0, "costs": 4.0},
 		"crisis_omen": {"crisis": "crisis.energy"},

@@ -7,7 +7,8 @@ signal land_selected(land_id: String)
 signal place_selected(place_id: String)
 
 ## Overlay modes, in the order of the selector.
-const OVERLAYS: PackedStringArray = ["regions", "polling", "turnout", "gap", "climate"]
+## The representation gap stays internal; players infer it from the turnout.
+const OVERLAYS: PackedStringArray = ["regions", "polling", "turnout", "climate"]
 const BORDER_COLOR := Color(0.2, 0.2, 0.25)
 const SELECTED_BORDER_COLOR := Color(0.95, 0.75, 0.1)
 const HOVER_TINT := Color(1, 1, 1, 0.25)
@@ -155,8 +156,6 @@ func _fill_color(land_id: String) -> Color:
 			color = Color(1, 1, 1).lerp(Color(0.6, 0.15, 0.5), clampf(land.polling / 10.0, 0.0, 1.0))
 		"turnout":
 			color = Color(0.95, 0.85, 0.75).lerp(Color(0.2, 0.45, 0.7), clampf((land.turnout - 55.0) / 30.0, 0.0, 1.0))
-		"gap":
-			color = Color(1, 1, 1).lerp(Color(0.85, 0.35, 0.1), clampf(land.representation_gap / 0.6, 0.0, 1.0))
 		"climate":
 			var climate := land.media_climate
 			color = Color(1, 1, 1).lerp(Color(0.2, 0.6, 0.3) if climate >= 0.0 else Color(0.8, 0.25, 0.25), absf(climate))
@@ -179,6 +178,4 @@ func _hover_text() -> String:
 	if hovered_land.is_empty():
 		return ""
 	var land := session.state.lands[hovered_land]
-	return tr("ui.map.hover") % [
-		tr(hovered_land + ".name"), land.polling, land.turnout, land.representation_gap * 100.0,
-	]
+	return tr("ui.map.hover") % [tr(hovered_land + ".name"), land.polling, land.turnout]

@@ -30,8 +30,25 @@ func build() -> void:
 	if session.planned.is_empty():
 		content.add_child(UiKit.hint(tr("ui.planning.no_orders")))
 	for i in session.planned.size():
-		var order := session.planned[i]
-		var text := tr(order.action_id + ".name")
-		if not order.target.is_empty() and not order.target.begins_with("person."):
-			text += " – " + tr(order.target + ".name")
+		var text := order_text(session.planned[i])
 		content.add_child(UiKit.row([UiKit.label(text), UiKit.button("✕", session.unplan.bind(i), tr("ui.planning.remove"))]))
+
+
+## Returns a readable description of a planned order, for example
+## "Position beziehen – Steuern senken: +1 dafür".
+static func order_text(order: ActionOrder) -> String:
+	var server := TranslationServer
+	var text := String(server.translate(order.action_id + ".name"))
+	match order.action_id:
+		"action.set_position":
+			var value := server.translate("position.%d" % order.value) if order.value != 0 \
+				else server.translate("ui.party.no_position")
+			return "%s – %s: %s" % [text, server.translate(order.target + ".name"), value]
+		"action.regional_message":
+			return "%s – %s, %s: %s" % [text, server.translate(order.target + ".name"),
+				server.translate(order.topic + ".name"), server.translate("position.%d" % order.value)]
+		"action.appoint":
+			return "%s – %s" % [text, server.translate("role." + order.role)]
+	if not order.target.is_empty() and not order.target.begins_with("person."):
+		text += " – " + server.translate(order.target + ".name")
+	return text

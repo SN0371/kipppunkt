@@ -9,6 +9,7 @@ signal message(text: String)
 var session: GameSession
 ## Content container that refresh() fills.
 var content: VBoxContainer
+var _dialogs: Array[ContentDialog] = []
 
 
 ## Prepares the panel; call before it enters the tree.
@@ -19,7 +20,9 @@ func setup(game_session: GameSession) -> void:
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 8)
 	add_child(content)
-	session.changed.connect(refresh)
+	# Deferred: a slider or drop-down that triggered the change must not be freed while
+	# its signal is still being handled; several changes in one frame rebuild only once.
+	session.changed.connect(refresh, CONNECT_DEFERRED)
 
 
 ## Rebuilds the content.
@@ -41,11 +44,29 @@ func plan(action_id: String, target: String = "", fields: Dictionary = {}) -> vo
 	var order_fields := fields.duplicate()
 	if def.delegable and not session.performer.is_empty() and not order_fields.has("performer"):
 		order_fields["performer"] = session.performer
-	var reason := session.plan(ActionOrder.create(action_id, target, order_fields))
-	if reason.is_empty():
-		message.emit(tr("ui.planned") % tr(action_id + ".name"))
-	else:
-		message.emit(tr("ui.not_planned") % [tr(action_id + ".name"), LogFormatter.reason_text(reason)])
+	report(action_id, session.plan(ActionOrder.create(action_id, target, order_fields)))
+
+
+## Reports the result of planning an action in the status line and in open overlays.
+func report(action_id: String, reason: String) -> void:
+	var text := tr("ui.planned") % tr(action_id + ".name")
+	if not reason.is_empty():
+		text = tr("ui.not_planned") % [tr(action_id + ".name"), LogFormatter.reason_text(reason)]
+	message.emit(text)
+	for dialog in _dialogs:
+		if dialog.visible:
+			dialog.show_message(text)
+
+
+## Creates an overlay owned by this panel; the builder fills its content.
+func make_dialog(title_key: String, builder: Callable) -> ContentDialog:
+	var dialog := ContentDialog.new()
+	dialog.setup(session, tr(title_key), builder)
+	dialog.get_cancel_button().visible = false
+	dialog.ok_button_text = tr("ui.close")
+	add_child(dialog)
+	_dialogs.append(dialog)
+	return dialog
 
 
 ## Returns a button that plans an action, labelled with its name and costs.

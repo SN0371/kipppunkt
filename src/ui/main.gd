@@ -20,6 +20,9 @@ var save_name: LineEdit
 var load_dialog: ConfirmationDialog
 var load_list: ItemList
 var info_dialog: AcceptDialog
+var turn_dialog: ContentDialog
+## True while the turn dialog shows the results of the resolved turn.
+var _showing_results: bool = false
 var settings: UiSettings
 
 
@@ -78,7 +81,7 @@ func _build(map: MapData) -> void:
 		UiKit.button(tr("ui.new_game"), new_game),
 		UiKit.button(tr("ui.save"), _open_save_dialog),
 		UiKit.button(tr("ui.load"), _open_load_dialog),
-		UiKit.button(tr("ui.end_turn"), _end_turn),
+		UiKit.button(tr("ui.end_turn"), _open_turn_dialog),
 	]))
 	var split := HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -170,6 +173,10 @@ func _build_dialogs() -> void:
 	add_child(load_dialog)
 	info_dialog = AcceptDialog.new()
 	add_child(info_dialog)
+	turn_dialog = ContentDialog.new()
+	turn_dialog.setup(session, tr("ui.end_turn"), _build_turn_dialog)
+	turn_dialog.confirmed.connect(_on_turn_dialog_confirmed)
+	add_child(turn_dialog)
 
 
 func _refresh() -> void:
@@ -177,10 +184,8 @@ func _refresh() -> void:
 	var party := state.party
 	var budget := session.remaining()
 	top_bar_label.text = tr("ui.top_bar") % [
-		session.quarter(), session.year(), state.phase, UiKit.money(party.money),
-		budget["action_points"], party.action_points, party.members, party.activists,
-		PollingSystem.national(state, session.defs), UiKit.score(party.credibility),
-		tr("vs_level.%d" % party.vs_level),
+		session.quarter(), session.year(), UiKit.money(budget["money"]),
+		budget["action_points"], party.action_points, budget["activists"],
 	]
 
 
@@ -189,19 +194,57 @@ func _select(id: String) -> void:
 	tabs.current_tab = 0
 
 
-func _end_turn() -> void:
+## Opens the end-of-turn overlay with the planned orders.
+func _open_turn_dialog() -> void:
 	if session.state.is_over():
 		_set_status(tr("ui.status.game_over"))
 		return
-	session.end_turn()
+	_showing_results = false
+	turn_dialog.get_cancel_button().visible = true
+	turn_dialog.ok_button_text = tr("ui.end_turn")
+	turn_dialog.open()
+
+
+## Resolves the turn without the overlay (also used by tests).
+func _end_turn() -> void:
+	if not session.state.is_over():
+		session.end_turn()
+
+
+func _on_turn_dialog_confirmed() -> void:
+	if _showing_results:
+		return
+	_end_turn()
+	_showing_results = true
+	turn_dialog.get_cancel_button().visible = false
+	turn_dialog.ok_button_text = tr("ui.close")
+	turn_dialog.rebuild()
+	turn_dialog.popup_centered_ratio(ContentDialog.SIZE_RATIO)
+
+
+## First the planned orders, after confirming the results of the turn.
+func _build_turn_dialog(box: VBoxContainer) -> void:
+	if _showing_results:
+		box.add_child(UiKit.heading(tr("ui.turn.results")))
+		for entry in session.last_report:
+			var text := LogFormatter.format(entry, session.defs)
+			if not text.is_empty():
+				box.add_child(UiKit.label("• " + text))
+		if session.state.is_over():
+			box.add_child(UiKit.heading(tr("outcome." + session.state.outcome)))
+			box.add_child(UiKit.label(tr("outcome." + session.state.outcome + ".description")))
+		return
+	box.add_child(UiKit.heading(tr("ui.turn.planned") % [session.quarter(), session.year()]))
+	if session.planned.is_empty():
+		box.add_child(UiKit.hint(tr("ui.planning.no_orders")))
+	for order in session.planned:
+		box.add_child(UiKit.label("• " + PlanningPanel.order_text(order)))
+	var budget := session.remaining()
+	box.add_child(UiKit.hint(tr("ui.turn.unused") % [budget["action_points"], UiKit.money(budget["money"])]))
 
 
 func _on_turn_finished(_report: Array[Dictionary]) -> void:
 	tabs.current_tab = tabs.get_tab_idx_from_control(report_panel)
-	if session.state.is_over():
-		info_dialog.title = tr("ui.game_over")
-		info_dialog.dialog_text = tr("outcome." + session.state.outcome + ".description")
-		info_dialog.popup_centered()
 
 
 func _open_save_dialog() -> void:

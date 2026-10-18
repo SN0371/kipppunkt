@@ -67,6 +67,37 @@ func plan(order: ActionOrder) -> String:
 	return reason
 
 
+## Plans the federal position on a topic, replacing an earlier plan for the same topic.
+## Choosing the current position again just removes the plan. Returns the rejection reason or "".
+func plan_position(topic_id: String, value: int) -> String:
+	for i in planned.size():
+		if planned[i].action_id == "action.set_position" and planned[i].target == topic_id:
+			planned.remove_at(i)
+			break
+	if value == state.party.positions.get(topic_id, 0):
+		changed.emit()
+		return ""
+	return plan(ActionOrder.create("action.set_position", topic_id, {"value": value}))
+
+
+## Returns the planned position for a topic, or the current one if none is planned (0 = none).
+func intended_position(topic_id: String) -> int:
+	for order in planned:
+		if order.action_id == "action.set_position" and order.target == topic_id:
+			return order.value
+	return state.party.positions.get(topic_id, 0)
+
+
+## Returns true if a position change is planned for the topic.
+func is_position_planned(topic_id: String) -> bool:
+	return planned.any(func(o: ActionOrder) -> bool: return o.action_id == "action.set_position" and o.target == topic_id)
+
+
+## Returns the year and quarter of a turn as [year, quarter].
+func date_of(turn: int) -> Array[int]:
+	return [defs.scenarios[state.scenario_id].start_year + (turn - 1) / 4, (turn - 1) % 4 + 1]
+
+
 ## Removes a planned order.
 func unplan(index: int) -> void:
 	if index >= 0 and index < planned.size():
