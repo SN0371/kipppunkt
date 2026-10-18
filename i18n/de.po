@@ -162,6 +162,114 @@ msgstr "Immobilienkonzern"
 msgid "donor.wind_energy.name"
 msgstr "Windenergie AG"
 
+msgid "event.blackout.name"
+msgstr "Großflächiger Stromausfall"
+
+msgid "event.blackout.text"
+msgstr "Mitten in der Energiekrise fällt in mehreren Ländern stundenlang der Strom aus. Alle fragen: Mehr Windkraft – oder weniger?"
+
+msgid "event.bridge_closed.name"
+msgstr "Autobahnbrücke gesperrt"
+
+msgid "event.bridge_closed.text"
+msgstr "Eine marode Autobahnbrücke muss gesperrt werden, Pendler stehen stundenlang im Stau. Investieren auf Pump – oder die Schuldenbremse einhalten?"
+
+msgid "event.century_flood.name"
+msgstr "Jahrhunderthochwasser"
+
+msgid "event.century_flood.text"
+msgstr "Flüsse treten über die Ufer, ganze Ortschaften stehen unter Wasser. Fachleute fordern mehr Raum für Auen und Moore."
+
+msgid "event.craft_tax_burden.name"
+msgstr "Handwerk klagt über Steuerlast"
+
+msgid "event.craft_tax_burden.text"
+msgstr "Die Handwerkskammern im Süden warnen: Hohe Steuern und Abgaben treiben Betriebe in die Aufgabe."
+
+msgid "event.farmer_blockades.name"
+msgstr "Bauern blockieren Autobahnen"
+
+msgid "event.farmer_blockades.text"
+msgstr "Mit Traktoren legen Landwirte den Verkehr lahm. Sie protestieren gegen neue Umweltauflagen. Ökologische oder konventionelle Landwirtschaft – wofür steht die Partei?"
+
+msgid "event.fleet_limits.name"
+msgstr "Strengere Flottengrenzwerte"
+
+msgid "event.fleet_limits.text"
+msgstr "Die EU verschärft die Grenzwerte für Neuwagen. Soll das Verbrenner-Aus festgeschrieben werden?"
+
+msgid "event.food_banks.name"
+msgstr "Tafeln am Limit"
+
+msgid "event.food_banks.text"
+msgstr "Die Tafeln müssen erstmals Bedürftige abweisen. Muss der Sozialstaat ausgebaut werden?"
+
+msgid "event.forest_dieback.name"
+msgstr "Waldsterben nach Dürresommer"
+
+msgid "event.forest_dieback.text"
+msgstr "Nach dem dritten Dürresommer sterben im Süden ganze Wälder ab. Muss der Naturschutz gestärkt werden?"
+
+msgid "event.grid_standstill.name"
+msgstr "Windräder stehen still"
+
+msgid "event.grid_standstill.text"
+msgstr "Weil Stromleitungen fehlen, müssen Windräder bei Sturm abgeschaltet werden, während der Süden teuren Strom zukauft. Wie hält es die Partei mit der Windkraft?"
+
+msgid "event.heating_bills.name"
+msgstr "Heizkosten-Schock"
+
+msgid "event.heating_bills.text"
+msgstr "Die Energiekrise schlägt auf die Nebenkostenabrechnungen durch. Viele Haushalte wissen nicht, wie sie zahlen sollen."
+
+msgid "event.inheritance_tax_ruling.name"
+msgstr "Urteil zur Erbschaftsteuer"
+
+msgid "event.inheritance_tax_ruling.text"
+msgstr "Ein Gerichtsurteil zwingt zur Neuregelung der Erbschaftsteuer für Familienunternehmen. Sollen Steuern gesenkt werden?"
+
+msgid "event.nitrate_wells.name"
+msgstr "Nitrat im Grundwasser"
+
+msgid "event.nitrate_wells.text"
+msgstr "Im Norden müssen Trinkwasserbrunnen wegen zu viel Nitrat geschlossen werden. Die Ursache sieht das Umweltamt in der Landwirtschaft."
+
+msgid "event.pension_alarm.name"
+msgstr "Rentenkasse schlägt Alarm"
+
+msgid "event.pension_alarm.text"
+msgstr "Die Rentenversicherung warnt vor steigenden Beiträgen oder sinkenden Renten. Mehr Sozialstaat oder weniger?"
+
+msgid "event.rating_warning.name"
+msgstr "Ratingagentur warnt"
+
+msgid "event.rating_warning.text"
+msgstr "Mitten in der Finanzkrise droht eine Ratingagentur mit einer Herabstufung. Soll die Schuldenbremse unbedingt eingehalten werden?"
+
+msgid "event.rent_demonstration.name"
+msgstr "Massendemo gegen Mieten"
+
+msgid "event.rent_demonstration.text"
+msgstr "Zehntausende gehen gegen steigende Mieten auf die Straße. Sollen Mieten stärker reguliert werden?"
+
+msgid "event.supplier_closure.name"
+msgstr "Zulieferer schließt Werk"
+
+msgid "event.supplier_closure.text"
+msgstr "Ein großer Autozulieferer im Süden kündigt die Schließung eines Werks an und verweist auf das kommende Verbrenner-Aus. Tausende Arbeitsplätze stehen auf dem Spiel."
+
+msgid "event.wind_farm_protest.name"
+msgstr "Bürgerinitiative gegen Windpark"
+
+msgid "event.wind_farm_protest.text"
+msgstr "Im Norden blockieren Anwohner den Bau eines großen Windparks. Die Lokalpresse will wissen: Steht die Partei zum Ausbau der Windkraft?"
+
+msgid "event.wolf_attack.name"
+msgstr "Wolf verletzt Kind"
+
+msgid "event.wolf_attack.text"
+msgstr "Auf einer Weide im Norden verletzt ein Wolf ein Kind leicht. Die Debatte über Naturschutz kocht hoch."
+
 msgid "institution.bundestag.description"
 msgstr "Ziel des MVP: der Einzug in den Bundestag mit mindestens 5 %."
 
@@ -486,6 +594,9 @@ msgstr "Person ist kein Kandidat"
 msgid "reason.person_is_not_on_the_staff"
 msgstr "Person gehört nicht zum Personal"
 
+msgid "reason.position_unchanged"
+msgstr "die Position ist bereits so gesetzt"
+
 msgid "reason.region_has_no_municipal_level"
 msgstr "Region hat keine Kommunalebene"
 
@@ -494,6 +605,9 @@ msgstr "Region ist im MVP nicht spielbar"
 
 msgid "reason.role_already_filled"
 msgstr "Funktion ist schon besetzt"
+
+msgid "reason.topic_not_addressed_yet"
+msgstr "zu diesem Thema hat die Partei noch nicht Stellung bezogen – das geht erst, wenn ein Ereignis es erfordert"
 
 msgid "reason.unknown_action"
 msgstr "unbekannte Aktion"

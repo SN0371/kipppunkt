@@ -162,6 +162,114 @@ msgstr "Real estate group"
 msgid "donor.wind_energy.name"
 msgstr "Wind energy corporation"
 
+msgid "event.blackout.name"
+msgstr "Large-scale blackout"
+
+msgid "event.blackout.text"
+msgstr "In the middle of the energy crisis, power fails in several lands for hours. Everyone asks: more wind power – or less?"
+
+msgid "event.bridge_closed.name"
+msgstr "Motorway bridge closed"
+
+msgid "event.bridge_closed.text"
+msgstr "A crumbling motorway bridge has to be closed, commuters are stuck in traffic for hours. Invest with borrowed money – or keep the debt brake?"
+
+msgid "event.century_flood.name"
+msgstr "Flood of the century"
+
+msgid "event.century_flood.text"
+msgstr "Rivers burst their banks, whole villages are under water. Experts call for more room for floodplains and moors."
+
+msgid "event.craft_tax_burden.name"
+msgstr "Crafts complain about tax burden"
+
+msgid "event.craft_tax_burden.text"
+msgstr "The chambers of crafts in the South warn: high taxes and levies drive businesses to give up."
+
+msgid "event.farmer_blockades.name"
+msgstr "Farmers block motorways"
+
+msgid "event.farmer_blockades.text"
+msgstr "With tractors, farmers bring traffic to a halt, protesting against new environmental rules. Organic or conventional farming – what does the party stand for?"
+
+msgid "event.fleet_limits.name"
+msgstr "Stricter fleet limits"
+
+msgid "event.fleet_limits.text"
+msgstr "The EU tightens the limits for new cars. Should the combustion engine ban be fixed?"
+
+msgid "event.food_banks.name"
+msgstr "Food banks at their limit"
+
+msgid "event.food_banks.text"
+msgstr "For the first time, food banks have to turn people in need away. Must the welfare state be expanded?"
+
+msgid "event.forest_dieback.name"
+msgstr "Forest dieback after a drought summer"
+
+msgid "event.forest_dieback.text"
+msgstr "After the third drought summer, entire forests in the South are dying. Must nature conservation be strengthened?"
+
+msgid "event.grid_standstill.name"
+msgstr "Wind turbines standing still"
+
+msgid "event.grid_standstill.text"
+msgstr "Because power lines are missing, wind turbines have to be switched off in storms while the South buys expensive electricity. Where does the party stand on wind power?"
+
+msgid "event.heating_bills.name"
+msgstr "Heating cost shock"
+
+msgid "event.heating_bills.text"
+msgstr "The energy crisis hits the utility bills. Many households do not know how to pay."
+
+msgid "event.inheritance_tax_ruling.name"
+msgstr "Ruling on inheritance tax"
+
+msgid "event.inheritance_tax_ruling.text"
+msgstr "A court ruling forces a new inheritance tax rule for family businesses. Should taxes be cut?"
+
+msgid "event.nitrate_wells.name"
+msgstr "Nitrate in the groundwater"
+
+msgid "event.nitrate_wells.text"
+msgstr "In the North, drinking water wells have to be closed because of too much nitrate. The environment agency sees farming as the cause."
+
+msgid "event.pension_alarm.name"
+msgstr "Pension fund raises the alarm"
+
+msgid "event.pension_alarm.text"
+msgstr "Pension insurance warns of rising contributions or falling pensions. More welfare state or less?"
+
+msgid "event.rating_warning.name"
+msgstr "Rating agency warns"
+
+msgid "event.rating_warning.text"
+msgstr "In the middle of the financial crisis, a rating agency threatens a downgrade. Must the debt brake be kept at all costs?"
+
+msgid "event.rent_demonstration.name"
+msgstr "Mass demonstration against rents"
+
+msgid "event.rent_demonstration.text"
+msgstr "Tens of thousands take to the streets against rising rents. Should rents be regulated more strictly?"
+
+msgid "event.supplier_closure.name"
+msgstr "Supplier closes a plant"
+
+msgid "event.supplier_closure.text"
+msgstr "A large car supplier in the South announces the closure of a plant, pointing to the coming combustion engine ban. Thousands of jobs are at stake."
+
+msgid "event.wind_farm_protest.name"
+msgstr "Citizens' initiative against a wind farm"
+
+msgid "event.wind_farm_protest.text"
+msgstr "In the North, residents block the construction of a large wind farm. The local press wants to know: does the party support expanding wind power?"
+
+msgid "event.wolf_attack.name"
+msgstr "Wolf injures child"
+
+msgid "event.wolf_attack.text"
+msgstr "On a pasture in the North, a wolf slightly injures a child. The debate about nature conservation boils over."
+
 msgid "institution.bundestag.description"
 msgstr "Goal of the MVP: entering the Bundestag with at least 5 %."
 
@@ -486,6 +594,9 @@ msgstr "person is not a candidate"
 msgid "reason.person_is_not_on_the_staff"
 msgstr "person is not on the staff"
 
+msgid "reason.position_unchanged"
+msgstr "the position is already set like this"
+
 msgid "reason.region_has_no_municipal_level"
 msgstr "region has no municipal level"
 
@@ -494,6 +605,9 @@ msgstr "region is not playable in the MVP"
 
 msgid "reason.role_already_filled"
 msgstr "role already filled"
+
+msgid "reason.topic_not_addressed_yet"
+msgstr "the party has not taken a stand on this topic yet – that only becomes possible when an event demands it"
 
 msgid "reason.unknown_action"
 msgstr "unknown action"
